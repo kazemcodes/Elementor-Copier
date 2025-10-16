@@ -57,31 +57,49 @@ jobs:
 
       - name: Create Release
         if: steps.check_release.outputs.RELEASE_EXISTS == 'false'
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ steps.get_version.outputs.VERSION }}
           name: Elementor Copier v${{ steps.get_version.outputs.VERSION }}
           body: |
-            ## Elementor Copier v${{ steps.get_version.outputs.VERSION }}
+            ## 🎉 Elementor Copier v${{ steps.get_version.outputs.VERSION }}
             
-            ### Installation Instructions
-            1. Download `elementor-copier-v${{ steps.get_version.outputs.VERSION }}.zip`
+            ### ⚠️ Important: Download the Correct File
+            
+            **Download this file:** `elementor-copier-v${{ steps.get_version.outputs.VERSION }}.zip` (see Assets below)
+            
+            **DO NOT download:** "Source code (zip)" or "Source code (tar.gz)" - these are NOT the extension!
+            
+            👉 [Not sure which file? Read the download guide](https://github.com/kazemcodes/Elementor-Copier/blob/main/RELEASE_DOWNLOAD_GUIDE.md)
+            
+            ### 📦 Installation Instructions
+            1. Download the ZIP file above
             2. Extract the ZIP file
             3. Open Chrome and go to `chrome://extensions/`
             4. Enable "Developer mode" (toggle in top-right)
             5. Click "Load unpacked"
             6. Select the extracted `chrome-extension` folder
+            7. The extension is now installed! 🎉
             
-            ### What's New
-            See [CHANGELOG.md](https://github.com/kazemcodes/Elementor-Copier/blob/main/CHANGELOG.md) for details.
+            ### ✨ What's New
+            See [CHANGELOG.md](https://github.com/kazemcodes/Elementor-Copier/blob/main/CHANGELOG.md) for complete details.
             
-            ### Support
+            ### 💝 Support Development
             If you find this extension helpful, consider supporting development:
-            **Bitcoin**: `bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm`
+            
+            **Bitcoin (BTC):** `bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm`
+            
+            Your support helps maintain and improve this free extension!
+            
+            ---
+            
+            **Note:** This extension is distributed through GitHub only. It's completely free and open-source.
           files: |
             releases/elementor-copier-v${{ steps.get_version.outputs.VERSION }}.zip
           draft: false
           prerelease: false
+          generate_release_notes: false
+          make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

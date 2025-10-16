@@ -2,6 +2,44 @@
 
 All notable changes to Elementor Copier will be documented in this file.
 
+## [1.2.1] - 2025-10-16
+
+### Fixed - Debug Logging
+- **Added extensive logging** to diagnose copy issues
+- **Content script logs** show copy request details
+- **Background script logs** show processing steps
+- **Better error messages** for troubleshooting
+
+### Debug
+- Added `[Copy]` prefix to copy-related logs
+- Added `[Background]` prefix to background script logs
+- Log data size and type for each copy operation
+- Log response from background script
+
+### Documentation
+- Added `COPY_NOT_WORKING_DEBUG.md` - Complete debug guide
+- Added `COPY_FROM_FRONTEND_VS_EDITOR.md` - Explains extraction methods
+
+## [1.2.0] - 2025-10-16
+
+### Added - Improved Copy Functionality
+- **Elementor API Data Extraction**: Now extracts data directly from Elementor's internal API instead of just HTML
+- **Native Elementor Format**: Copies proper Elementor element data with all settings and structure
+- **Better Editor Support**: When copying from Elementor editor, gets actual element models with complete data
+- **Automatic Fallback**: Falls back to DOM extraction when API is not available (frontend pages)
+
+### Improved
+- ✅ **Proper Settings**: All element settings are now preserved correctly
+- ✅ **Widget Data**: Widget configurations are copied with full fidelity
+- ✅ **Nested Elements**: Child elements maintain proper structure and relationships
+- ✅ **Cross-Site Paste**: Pasted elements work better in target Elementor editor
+
+### Technical
+- New `elementor-data-extractor.js` module for API-based extraction
+- Integrated with Elementor's model system
+- Supports both Elementor 2.x and 3.x+ API structures
+- Maintains backward compatibility with DOM extraction
+
 ## [1.1.0] - 2025-10-16
 
 ### Added - Donation Features

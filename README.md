@@ -35,13 +35,18 @@
 ## 🚀 Installation
 
 ### From GitHub Releases (Recommended)
-1. Download the latest `elementor-copier-v*.zip` from [GitHub Releases](https://github.com/kazemcodes/Elementor-Copier/releases)
-2. Extract the ZIP file
-3. Open Chrome and navigate to `chrome://extensions/`
-4. Enable "Developer mode" (toggle in top-right corner)
-5. Click "Load unpacked"
-6. Select the extracted `chrome-extension` folder
-7. The extension icon should appear in your toolbar
+
+> ⚠️ **Important:** Download `elementor-copier-v*.zip` from Assets, **NOT** "Source code" files!
+> See [Download Guide](RELEASE_DOWNLOAD_GUIDE.md) if unsure.
+
+1. Go to [GitHub Releases](https://github.com/kazemcodes/Elementor-Copier/releases)
+2. Download the latest `elementor-copier-v*.zip` file (from Assets section)
+3. Extract the ZIP file
+4. Open Chrome and navigate to `chrome://extensions/`
+5. Enable "Developer mode" (toggle in top-right corner)
+6. Click "Load unpacked"
+7. Select the extracted `chrome-extension` folder
+8. The extension icon should appear in your toolbar
 
 ### Building from Source
 ```bash
@@ -54,8 +59,10 @@ cd Elementor-Copier
 
 ## 📖 How to Use
 
+> 💡 **Pro Tip:** For best results, copy from **Elementor editor** (not frontend pages). This ensures complete element data with all settings. [Learn more](COPY_FROM_FRONTEND_VS_EDITOR.md)
+
 ### Quick Start (30 seconds)
-1. Open any Elementor editor
+1. Open any page in **Elementor editor** (not just viewing the page)
 2. Press **Ctrl+Shift+C** to enable element selector
 3. Click on any element to copy it
 4. Go to another Elementor editor

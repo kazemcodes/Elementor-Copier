@@ -183,7 +183,7 @@ function setupEventListeners() {
   if (donateBtn) {
     donateBtn.addEventListener('click', () => {
       chrome.tabs.create({ 
-        url: 'https://github.com/kazemcodes/elementor-copy#-support-the-project' 
+        url: 'https://github.com/kazemcodes/Elementor-Copier#-support-the-project' 
       });
     });
   }

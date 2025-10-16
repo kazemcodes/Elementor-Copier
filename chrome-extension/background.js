@@ -17,13 +17,15 @@ const RETRY_CONFIG = {
 // Track context menu state per tab
 const tabContextState = new Map();
 
-// Import donation manager
-importScripts('donation-manager.js');
+// Donation manager (optional feature)
+// TODO: Convert to ES6 module or remove importScripts
+// importScripts('donation-manager.js');
+let donationManager = null; // Disabled for now to fix module compatibility
 
 // Create context menu when extension is installed
 chrome.runtime.onInstalled.addListener(async () => {
   // Show welcome message on first install
-  if (typeof donationManager !== 'undefined') {
+  if (typeof donationManager !== 'undefined' && donationManager !== null) {
     await donationManager.showWelcomeIfNeeded();
   }
 
@@ -128,7 +130,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       console.log('✓ Action completed successfully:', response);
       
       // Increment usage counter
-      if (typeof donationManager !== 'undefined') {
+      if (typeof donationManager !== 'undefined' && donationManager !== null) {
         donationManager.incrementUsage().then(count => {
           console.log(`Usage count: ${count}`);
           
@@ -166,13 +168,27 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Message received in background:', request, 'from:', sender);
 
+  // Handle ping to wake up service worker
+  if (request.action === 'ping') {
+    console.log('[Background] Ping received, service worker is awake');
+    sendResponse({ success: true, message: 'pong' });
+    return true;
+  }
+
   if (request.action === 'copyToClipboard') {
+    console.log('[Background] Received copyToClipboard request');
+    console.log('[Background] Sender URL:', sender.url);
+    console.log('[Background] Data type:', request.data?.elementType);
+    
     // Only handle if this is from content script, not from offscreen document
     // Offscreen document will handle its own copyToClipboard messages
     if (sender.url && sender.url.includes('offscreen.html')) {
       // This is from offscreen document, ignore it
+      console.log('[Background] Ignoring message from offscreen document');
       return false;
     }
+    
+    console.log('[Background] Processing copy request...');
     
     // Copy data to clipboard with retry logic
     copyToClipboardWithRetry(request.data, 0)
@@ -182,7 +198,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         showNotification(`${elementType.charAt(0).toUpperCase() + elementType.slice(1)} copied to clipboard!`, 'success');
         
         // Increment usage counter
-        if (typeof donationManager !== 'undefined') {
+        if (typeof donationManager !== 'undefined' && donationManager !== null) {
           const count = await donationManager.incrementUsage();
           console.log(`Usage count: ${count}`);
           
@@ -521,12 +537,12 @@ function getErrorLog() {
 chrome.notifications.onButtonClicked.addListener(async (notificationId, buttonIndex) => {
   if (buttonIndex === 0) {
     // First button - usually "Support Developer" or "Donate"
-    if (typeof donationManager !== 'undefined') {
+    if (typeof donationManager !== 'undefined' && donationManager !== null) {
       donationManager.openDonationPage();
     }
   } else if (buttonIndex === 1) {
     // Second button - usually "Remind Me Later" or "Maybe Later"
-    if (typeof donationManager !== 'undefined') {
+    if (typeof donationManager !== 'undefined' && donationManager !== null) {
       await donationManager.dismissReminder();
     }
   }

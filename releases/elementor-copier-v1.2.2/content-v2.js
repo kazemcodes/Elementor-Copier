@@ -32,6 +32,7 @@
   let versionCompatibilityLoaded = false;
   let contentSanitizerLoaded = false;
   let notificationManagerLoaded = false;
+  let dataExtractorLoaded = false;
 
   // Module instances
   let editorDetector = null;
@@ -42,6 +43,7 @@
   let versionCompatibilityManager = null;
   let contentSanitizer = null;
   let notificationManager = null;
+  let dataExtractor = null;
 
   // NOTE: This function is no longer needed as modules are loaded via manifest.json
   // in the MAIN world. Kept for backwards compatibility.
@@ -233,6 +235,19 @@
         console.warn('✗ Failed to load notification manager');
       };
       (document.head || document.documentElement).appendChild(notificationScript);
+
+      // Load data extractor
+      const dataExtractorScript = document.createElement('script');
+      dataExtractorScript.src = chrome.runtime.getURL('elementor-data-extractor.js');
+      dataExtractorScript.onload = () => {
+        dataExtractorLoaded = true;
+        console.log('✓ Data extractor loaded');
+        checkAndInitializeEditorIntegration();
+      };
+      dataExtractorScript.onerror = () => {
+        console.warn('✗ Failed to load data extractor');
+      };
+      (document.head || document.documentElement).appendChild(dataExtractorScript);
     } catch (error) {
       console.warn('Error loading additional modules:', error);
     }
@@ -296,6 +311,17 @@
       if (notificationManagerLoaded && window.NotificationManager) {
         notificationManager = new window.NotificationManager();
         console.log('✓ Notification manager instance created');
+      }
+
+      // Initialize data extractor if available
+      if (dataExtractorLoaded && window.ElementorDataExtractor) {
+        dataExtractor = new window.ElementorDataExtractor();
+        // Initialize asynchronously
+        dataExtractor.initialize().then(() => {
+          console.log('✓ Data extractor initialized');
+        }).catch(err => {
+          console.warn('✗ Data extractor initialization failed:', err);
+        });
       }
 
       // Requirement 1.2: Initialize paste interceptor when editor is detected
@@ -754,6 +780,12 @@
           sourceUrl: window.location.href,
           copiedAt: new Date().toISOString(),
           elementorVersion: detectElementorVersion()
+        },
+        // Extension marker for paste interceptor recognition
+        __ELEMENTOR_COPIER_DATA__: {
+          version: '1.0.0',
+          timestamp: Date.now(),
+          source: 'elementor-copier-extension'
         }
       };
 
@@ -781,8 +813,10 @@
    * Copy section data
    */
   function copySection(element, callback) {
+    console.log('[CopySection] Function called, element:', element, 'callback:', typeof callback);
     try {
       const sectionElement = findElementorElement(element, 'section');
+      console.log('[CopySection] Section element found:', !!sectionElement);
 
       if (!sectionElement) {
         const error = createDetailedError(
@@ -796,6 +830,7 @@
       }
 
       const data = extractElementData(sectionElement);
+      console.log('[CopySection] Data extracted:', !!data);
 
       if (!data) {
         const error = createDetailedError(
@@ -819,7 +854,9 @@
       }
 
       // Extract media URLs
+      console.log('[CopySection] About to extract media URLs');
       const media = extractMediaUrls(sectionElement);
+      console.log('[CopySection] Media extracted, count:', media ? media.length : 0);
 
       let clipboardData = {
         version: '1.0.0',
@@ -831,15 +868,29 @@
           sourceUrl: window.location.href,
           copiedAt: new Date().toISOString(),
           elementorVersion: detectElementorVersion()
+        },
+        // Extension marker for paste interceptor recognition
+        __ELEMENTOR_COPIER_DATA__: {
+          version: '1.0.0',
+          timestamp: Date.now(),
+          source: 'elementor-copier-extension'
         }
       };
 
       // Process clipboard data with all modules
+      console.log('[CopySection] Before processClipboardData');
       clipboardData = processClipboardData(clipboardData);
+      console.log('[CopySection] After processClipboardData, data exists:', !!clipboardData);
 
+      console.log('[CopySection] About to call copyToClipboardWithRetry');
+      console.log('[CopySection] Callback type:', typeof callback);
+      console.log('[CopySection] Clipboard data ready:', !!clipboardData);
+      
       copyToClipboardWithRetry(clipboardData, callback);
 
     } catch (error) {
+      console.error('[CopySection] CAUGHT ERROR:', error);
+      console.error('[CopySection] Error stack:', error.stack);
       const detailedError = createDetailedError(
         'UNEXPECTED_ERROR',
         'An unexpected error occurred while copying section',
@@ -896,6 +947,12 @@
           sourceUrl: window.location.href,
           copiedAt: new Date().toISOString(),
           elementorVersion: detectElementorVersion()
+        },
+        // Extension marker for paste interceptor recognition
+        __ELEMENTOR_COPIER_DATA__: {
+          version: '1.0.0',
+          timestamp: Date.now(),
+          source: 'elementor-copier-extension'
         }
       };
 
@@ -962,6 +1019,12 @@
           copiedAt: new Date().toISOString(),
           elementorVersion: detectElementorVersion(),
           pageTitle: document.title
+        },
+        // Extension marker for paste interceptor recognition
+        __ELEMENTOR_COPIER_DATA__: {
+          version: '1.0.0',
+          timestamp: Date.now(),
+          source: 'elementor-copier-extension'
         }
       };
 
@@ -1023,6 +1086,20 @@
       console.log('[Extract] Element:', element);
       console.log('[Extract] Element classes:', element.className);
 
+      // Try to use the data extractor if available (gets proper Elementor data)
+      if (dataExtractor && dataExtractor.initialized) {
+        console.log('[Extract] Using ElementorDataExtractor (API method)');
+        const extractedData = dataExtractor.extractElementData(element);
+        if (extractedData) {
+          console.log('[Extract] ✓ Successfully extracted via API');
+          return extractedData;
+        }
+        console.log('[Extract] API extraction failed, falling back to DOM method');
+      } else {
+        console.log('[Extract] Data extractor not available, using DOM method');
+      }
+
+      // Fallback to DOM extraction
       const data = {
         id: element.getAttribute('data-id') || generateId(),
         elType: element.getAttribute('data-element_type') || 'unknown',
@@ -1355,45 +1432,18 @@
    * Copy data to clipboard via background script with retry logic
    */
   function copyToClipboardWithRetry(data, callback, retryCount = 0) {
-    // Send to background script for clipboard access
-    chrome.runtime.sendMessage({
-      action: 'copyToClipboard',
-      data: data
-    }, (response) => {
-      if (chrome.runtime.lastError) {
-        const error = chrome.runtime.lastError;
-        console.error('✗ Runtime error:', error);
-
-        // Retry logic
-        if (retryCount < RETRY_CONFIG.maxRetries) {
-          const delay = RETRY_CONFIG.retryDelay * Math.pow(RETRY_CONFIG.backoffMultiplier, retryCount);
-          console.log(`Retrying clipboard operation in ${delay}ms (attempt ${retryCount + 1}/${RETRY_CONFIG.maxRetries})...`);
-
-          setTimeout(() => {
-            copyToClipboardWithRetry(data, callback, retryCount + 1);
-          }, delay);
-          return;
-        }
-
-        // Max retries reached
-        const detailedError = createDetailedError(
-          'CLIPBOARD_COMMUNICATION_FAILED',
-          'Failed to communicate with extension',
-          'Try reloading the page or reinstalling the extension. Check that the extension is enabled in your browser settings.',
-          error
-        );
-        logError(detailedError);
-        callback({
-          success: false,
-          error: detailedError.userMessage,
-          errorCode: detailedError.code
-        });
-        return;
-      }
-
-      if (response && response.success) {
-        console.log('✓ Copied to clipboard');
-
+    console.log('[Copy] Attempting clipboard write...');
+    console.log('[Copy] Data type:', data.elementType);
+    console.log('[Copy] Data size:', JSON.stringify(data).length, 'characters');
+    
+    // Try direct clipboard API first (works in most modern browsers)
+    const jsonString = JSON.stringify(data, null, 2);
+    
+    console.log('[Copy] Using direct Clipboard API');
+    navigator.clipboard.writeText(jsonString)
+      .then(() => {
+        console.log('✓ Copied to clipboard via Clipboard API');
+        
         // Verify clipboard content
         navigator.clipboard.readText().then(text => {
           console.log('[Clipboard Verify] Length:', text.length);
@@ -1414,34 +1464,62 @@
           message: `${formatElementType(data.elementType)} copied successfully!`,
           elementType: data.elementType
         });
-      } else {
-        // Retry logic for failed clipboard operations
-        if (retryCount < RETRY_CONFIG.maxRetries) {
-          const delay = RETRY_CONFIG.retryDelay * Math.pow(RETRY_CONFIG.backoffMultiplier, retryCount);
-          console.log(`Retrying clipboard operation in ${delay}ms (attempt ${retryCount + 1}/${RETRY_CONFIG.maxRetries})...`);
+      })
+      .catch((error) => {
+        console.error('[Copy] Clipboard API failed:', error);
+        console.log('[Copy] Falling back to background script method...');
+        
+        // Fallback to background script
+        chrome.runtime.sendMessage({
+          action: 'copyToClipboard',
+          data: data
+        }, (response) => {
+          console.log('[Copy] Response callback invoked');
+          console.log('[Copy] Received response from background:', response);
+      
+          if (chrome.runtime.lastError) {
+            const error = chrome.runtime.lastError;
+            console.error('✗ Background script error:', error);
+            
+            const detailedError = createDetailedError(
+              'CLIPBOARD_FALLBACK_FAILED',
+              'Both clipboard methods failed',
+              'Try reloading the page. If the problem persists, check browser permissions.',
+              error
+            );
+            logError(detailedError);
+            callback({
+              success: false,
+              error: detailedError.userMessage,
+              errorCode: detailedError.code
+            });
+            return;
+          }
 
-          setTimeout(() => {
-            copyToClipboardWithRetry(data, callback, retryCount + 1);
-          }, delay);
-          return;
-        }
-
-        // Max retries reached
-        const detailedError = createDetailedError(
-          'CLIPBOARD_WRITE_FAILED',
-          'Failed to copy to clipboard',
-          'Check browser clipboard permissions. You can also try using the extension popup to copy manually.',
-          new Error(response?.error || 'Unknown clipboard error')
-        );
-        logError(detailedError);
-        console.error('✗ Failed to copy to clipboard:', response?.error);
-        callback({
-          success: false,
-          error: detailedError.userMessage,
-          errorCode: detailedError.code
+          if (response && response.success) {
+            console.log('✓ Copied via background script');
+            showSuccessAnimation(data.elementType);
+            callback({
+              success: true,
+              message: `${formatElementType(data.elementType)} copied successfully!`,
+              elementType: data.elementType
+            });
+          } else {
+            const detailedError = createDetailedError(
+              'CLIPBOARD_WRITE_FAILED',
+              'Failed to copy to clipboard',
+              'Check browser clipboard permissions.',
+              new Error(response?.error || 'Unknown error')
+            );
+            logError(detailedError);
+            callback({
+              success: false,
+              error: detailedError.userMessage,
+              errorCode: detailedError.code
+            });
+          }
         });
-      }
-    });
+      });
   }
 
   /**
@@ -1669,6 +1747,7 @@
 
     // Determine what to copy based on element type
     if (elementType === 'section' || elementType.startsWith('section')) {
+      console.log('[Click] Calling copySection for element type:', elementType);
       copySection(element, handleCopyResult);
     } else if (elementType === 'column') {
       copySection(element, handleCopyResult); // Copy column as section

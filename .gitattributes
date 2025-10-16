@@ -1,0 +1,6 @@
+# Prevent GitHub from creating source code archives in releases
+# Only the manually uploaded ZIP file should be available
+* export-ignore
+
+# But include the releases folder
+!releases/** export-subst

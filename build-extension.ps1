@@ -15,8 +15,14 @@ New-Item -ItemType Directory -Path $buildDir | Out-Null
 Write-Host "Copying extension files..." -ForegroundColor Yellow
 Copy-Item -Path "chrome-extension\*" -Destination $buildDir -Recurse -Exclude "*.md","build-release.ps1"
 
+# Get version from manifest.json
+Write-Host "Reading version from manifest.json..." -ForegroundColor Yellow
+$manifestPath = "chrome-extension\manifest.json"
+$manifest = Get-Content -Path $manifestPath -Raw | ConvertFrom-Json
+$version = $manifest.version
+Write-Host "Version: $version" -ForegroundColor Cyan
+
 # Create ZIP file
-$version = "1.0.0"
 $zipName = "elementor-copier-v$version.zip"
 $releasesDir = "releases"
 $extractedDir = "$releasesDir\elementor-copier-v$version"

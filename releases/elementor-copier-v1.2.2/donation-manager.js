@@ -226,7 +226,7 @@ class DonationManager {
    * Open donation page
    */
   openDonationPage() {
-    const url = `https://github.com/kazemcodes/elementor-copy#-support-the-project`;
+    const url = `https://github.com/kazemcodes/Elementor-Copier#-support-the-project`;
     chrome.tabs.create({ url });
   }
 
