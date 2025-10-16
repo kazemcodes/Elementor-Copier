@@ -4,7 +4,7 @@ This guide will help you create the first release of Elementor Copier on GitHub.
 
 ## Prerequisites
 
-✅ Repository is on GitHub: https://github.com/kazemcodes/elementor-copy
+✅ Repository is on GitHub: https://github.com/kazemcodes/Elementor-Copier
 ✅ GitHub Actions is enabled (should be by default)
 ✅ You have push access to the main branch
 
@@ -29,12 +29,12 @@ The easiest way to create your first release is to let GitHub Actions do it auto
    ```
 
 3. **Watch the workflow run:**
-   - Go to https://github.com/kazemcodes/elementor-copy/actions
+   - Go to https://github.com/kazemcodes/Elementor-Copier/actions
    - You should see "Build and Release Extension" workflow running
    - Click on it to see progress
 
 4. **Check the release:**
-   - Once workflow completes, go to https://github.com/kazemcodes/elementor-copy/releases
+   - Once workflow completes, go to https://github.com/kazemcodes/Elementor-Copier/releases
    - You should see "Elementor Copier v1.0.0" release
    - Download the ZIP to verify it works
 
@@ -60,7 +60,7 @@ If you prefer to create the first release manually:
    - Extract and test the extension
 
 3. **Create GitHub release:**
-   - Go to https://github.com/kazemcodes/elementor-copy/releases
+   - Go to https://github.com/kazemcodes/Elementor-Copier/releases
    - Click "Draft a new release"
    - Fill in:
      - **Tag:** `v1.0.0`
@@ -75,7 +75,7 @@ If you prefer to create the first release manually:
 
 The GitHub Release badge will automatically show the latest version:
 ```markdown
-[![GitHub Release](https://img.shields.io/github/v/release/kazemcodes/elementor-copy?logo=github)](https://github.com/kazemcodes/elementor-copy/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/kazemcodes/Elementor-Copier?logo=github)](https://github.com/kazemcodes/Elementor-Copier/releases)
 ```
 
 ### Test Installation
@@ -161,7 +161,7 @@ Examples:
 
 After creating your first release:
 
-- [ ] Release appears at https://github.com/kazemcodes/elementor-copy/releases
+- [ ] Release appears at https://github.com/kazemcodes/Elementor-Copier/releases
 - [ ] ZIP file is attached to release
 - [ ] ZIP file can be downloaded
 - [ ] Extension can be extracted from ZIP
@@ -182,7 +182,7 @@ After creating your first release:
 
 Need help?
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Open an Issue](https://github.com/kazemcodes/elementor-copy/issues)
+- [Open an Issue](https://github.com/kazemcodes/Elementor-Copier/issues)
 - [Workflow Guide](.github/WORKFLOW_GUIDE.md)
 
 **Bitcoin**: `bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm`

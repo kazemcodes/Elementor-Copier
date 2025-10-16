@@ -5,7 +5,7 @@
 ### Installation from GitHub Releases
 
 1. **Download the Extension**
-   - Go to [GitHub Releases](https://github.com/kazemcodes/elementor-copy/releases)
+   - Go to [GitHub Releases](https://github.com/kazemcodes/Elementor-Copier/releases)
    - Download the latest `elementor-copier-v1.0.0.zip` file
    - Extract it to a folder on your computer
 
@@ -100,7 +100,7 @@ All operations happen locally in your browser. No data is sent to external serve
 ## Support
 
 Need help? 
-- [Report an issue](https://github.com/kazemcodes/elementor-copy/issues)
+- [Report an issue](https://github.com/kazemcodes/Elementor-Copier/issues)
 - [Read the FAQ](README.md#troubleshooting)
 - [View troubleshooting guide](TROUBLESHOOTING.md)
 

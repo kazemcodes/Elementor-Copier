@@ -2,8 +2,8 @@
 
 > Copy and paste Elementor sections across different WordPress sites with ease!
 
-[![GitHub Release](https://img.shields.io/github/v/release/kazemcodes/elementor-copy?logo=github)](https://github.com/kazemcodes/elementor-copy/releases)
-[![GitHub](https://img.shields.io/badge/GitHub-kazemcodes%2Felementor--copy-181717?logo=github)](https://github.com/kazemcodes/elementor-copy)
+[![GitHub Release](https://img.shields.io/github/v/release/kazemcodes/Elementor-Copier?logo=github)](https://github.com/kazemcodes/Elementor-Copier/releases)
+[![GitHub](https://img.shields.io/badge/GitHub-kazemcodes%2FElementor--Copier-181717?logo=github)](https://github.com/kazemcodes/Elementor-Copier)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Support](https://img.shields.io/badge/Support-Bitcoin-orange?logo=bitcoin)](https://blockchain.com/btc/address/bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm)
 
@@ -35,7 +35,7 @@
 ## 🚀 Installation
 
 ### From GitHub Releases (Recommended)
-1. Download the latest `elementor-copier-v*.zip` from [GitHub Releases](https://github.com/kazemcodes/elementor-copy/releases)
+1. Download the latest `elementor-copier-v*.zip` from [GitHub Releases](https://github.com/kazemcodes/Elementor-Copier/releases)
 2. Extract the ZIP file
 3. Open Chrome and navigate to `chrome://extensions/`
 4. Enable "Developer mode" (toggle in top-right corner)
@@ -45,8 +45,8 @@
 
 ### Building from Source
 ```bash
-git clone https://github.com/kazemcodes/elementor-copy.git
-cd elementor-copy
+git clone https://github.com/kazemcodes/Elementor-Copier.git
+cd Elementor-Copier
 # Run the build script
 .\build-extension.ps1
 # Load the chrome-extension folder in Chrome as unpacked extension
@@ -121,12 +121,29 @@ When you copy content with custom widgets (like Slider Revolution or WoodMart wi
 
 ## 💖 Support the Project
 
-If you find this extension helpful, consider supporting its development:
+This extension is **completely free** and **open source**! It will always remain free with full functionality.
+
+If you find this extension helpful and it saves you time, consider supporting its development:
 
 **Bitcoin (BTC)**
 ```
 bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm
 ```
+
+### Why Support?
+- ✅ Keeps the extension free for everyone
+- ✅ Helps maintain and improve features
+- ✅ Supports development from regions with payment restrictions
+- ✅ Shows appreciation for open-source work
+
+### What You Get
+- 🎉 Milestone celebrations as you use the extension
+- 📊 Usage statistics in the popup
+- 🏆 Achievement badges (Power User, Legendary User, etc.)
+- 💝 Gentle reminders (every 7 days, fully dismissible)
+- ✨ **Full functionality regardless of donation**
+
+**Note**: The extension includes ethical, non-intrusive donation reminders. You can always dismiss them, and the extension works fully without any payment. See [DONATION_FEATURES.md](DONATION_FEATURES.md) for details.
 
 Your support helps maintain and improve this extension!
 
@@ -164,7 +181,7 @@ Your support helps maintain and improve this extension!
 - The visual appearance is preserved, but you won't be able to edit them as the original widget type
 - Install the required plugin on the target site for full functionality
 
-For more help, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md) or [open an issue](https://github.com/kazemcodes/elementor-copy/issues).
+For more help, see [TROUBLESHOOTING.md](TROUBLESHOOTING.md) or [open an issue](https://github.com/kazemcodes/Elementor-Copier/issues).
 
 ## 📝 Changelog
 
@@ -214,4 +231,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ for the WordPress & Elementor community**
 
-[Report Bug](https://github.com/kazemcodes/elementor-copy/issues) · [Request Feature](https://github.com/kazemcodes/elementor-copy/issues) · [Donate Bitcoin](https://blockchain.com/btc/address/bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm)
+[Report Bug](https://github.com/kazemcodes/Elementor-Copier/issues) · [Request Feature](https://github.com/kazemcodes/Elementor-Copier/issues) · [Donate Bitcoin](https://blockchain.com/btc/address/bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm)

@@ -17,8 +17,16 @@ const RETRY_CONFIG = {
 // Track context menu state per tab
 const tabContextState = new Map();
 
+// Import donation manager
+importScripts('donation-manager.js');
+
 // Create context menu when extension is installed
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(async () => {
+  // Show welcome message on first install
+  if (typeof donationManager !== 'undefined') {
+    await donationManager.showWelcomeIfNeeded();
+  }
+
   // Parent menu
   chrome.contextMenus.create({
     id: 'elementor-copier-parent',
@@ -119,6 +127,18 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (response && response.success) {
       console.log('✓ Action completed successfully:', response);
       
+      // Increment usage counter
+      if (typeof donationManager !== 'undefined') {
+        donationManager.incrementUsage().then(count => {
+          console.log(`Usage count: ${count}`);
+          
+          // Check if we should show reminder (every 7 days)
+          if (count % 25 === 0) { // Check every 25 uses
+            donationManager.showReminder();
+          }
+        });
+      }
+      
       // Show success notification with element type
       if (response.message) {
         showNotification(response.message, 'success');
@@ -156,10 +176,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     
     // Copy data to clipboard with retry logic
     copyToClipboardWithRetry(request.data, 0)
-      .then(() => {
+      .then(async () => {
         sendResponse({ success: true });
         const elementType = request.data.elementType || 'Element';
         showNotification(`${elementType.charAt(0).toUpperCase() + elementType.slice(1)} copied to clipboard!`, 'success');
+        
+        // Increment usage counter
+        if (typeof donationManager !== 'undefined') {
+          const count = await donationManager.incrementUsage();
+          console.log(`Usage count: ${count}`);
+          
+          // Check if we should show reminder (every 25 uses)
+          if (count % 25 === 0) {
+            donationManager.showReminder();
+          }
+        }
       })
       .catch((error) => {
         const errorMessage = getActionableErrorMessage(error.message);
@@ -485,6 +516,24 @@ function getActionableErrorMessage(technicalError) {
 function getErrorLog() {
   return errorLog;
 }
+
+// Handle notification button clicks
+chrome.notifications.onButtonClicked.addListener(async (notificationId, buttonIndex) => {
+  if (buttonIndex === 0) {
+    // First button - usually "Support Developer" or "Donate"
+    if (typeof donationManager !== 'undefined') {
+      donationManager.openDonationPage();
+    }
+  } else if (buttonIndex === 1) {
+    // Second button - usually "Remind Me Later" or "Maybe Later"
+    if (typeof donationManager !== 'undefined') {
+      await donationManager.dismissReminder();
+    }
+  }
+  
+  // Clear the notification
+  chrome.notifications.clear(notificationId);
+});
 
 // Log when background script is loaded
 console.log('Elementor Copier: Background script loaded');

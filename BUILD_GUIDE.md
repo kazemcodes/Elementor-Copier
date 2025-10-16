@@ -135,7 +135,7 @@ The ZIP file is ready at: `releases/elementor-copier-v1.0.0.zip`
 
 ### 2. Create GitHub Release
 The GitHub Actions workflow will automatically create a release when you push changes to the main branch. Alternatively, you can manually create a release:
-1. Go to [GitHub Releases](https://github.com/kazemcodes/elementor-copy/releases)
+1. Go to [GitHub Releases](https://github.com/kazemcodes/Elementor-Copier/releases)
 2. Click "Draft a new release"
 3. Upload `releases/elementor-copier-v1.0.0.zip`
 4. Fill in store listing details

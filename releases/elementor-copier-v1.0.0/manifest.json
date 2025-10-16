@@ -2,9 +2,9 @@
   "manifest_version": 3,
   "name": "Elementor Copier",
   "version": "1.0.0",
-  "description": "Copy and paste Elementor sections across different WordPress sites with ease!",
-  "homepage_url": "https://github.com/yourusername/elementor-copier",
-  
+  "description": "Copy and paste Elementor sections, columns, and widgets across different WordPress sites. Features visual selector, keyboard shortcuts, and cross-site compatibility.",
+  "homepage_url": "https://github.com/kazemcodes/elementor-copy",
+  "author": "kazemcodes",
   "permissions": [
     "activeTab",
     "clipboardWrite",
@@ -15,27 +15,35 @@
     "storage",
     "notifications"
   ],
-  
   "host_permissions": [
     "http://*/*",
     "https://*/*"
   ],
-  
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
-  
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["element-selector.js", "content-v2.js"],
-      "css": ["styles/highlight.css"],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "element-selector.js",
+        "content-v2.js"
+      ],
+      "css": [
+        "styles/highlight.css"
+      ],
       "run_at": "document_end",
       "all_frames": false
     },
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
       "js": [
         "content-sanitizer.js",
         "elementor-format-converter.js",
@@ -50,7 +58,6 @@
       "all_frames": false
     }
   ],
-  
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
@@ -59,13 +66,11 @@
       "128": "icons/icon128.png"
     }
   },
-  
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  
   "web_accessible_resources": [
     {
       "resources": [
@@ -81,9 +86,13 @@
         "editor-injector.js",
         "page-bridge.js",
         "element-selector.js",
+        "donation-manager.js",
         "styles/highlight.css"
       ],
-      "matches": ["http://*/*", "https://*/*"]
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
     }
   ]
 }

@@ -1,9 +1,9 @@
 {
   "manifest_version": 3,
   "name": "Elementor Copier",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Copy and paste Elementor sections, columns, and widgets across different WordPress sites. Features visual selector, keyboard shortcuts, and cross-site compatibility.",
-  "homepage_url": "https://github.com/kazemcodes/elementor-copy",
+  "homepage_url": "https://github.com/kazemcodes/Elementor-Copier",
   "author": "kazemcodes",
   "permissions": [
     "activeTab",
@@ -86,6 +86,7 @@
         "editor-injector.js",
         "page-bridge.js",
         "element-selector.js",
+        "donation-manager.js",
         "styles/highlight.css"
       ],
       "matches": [

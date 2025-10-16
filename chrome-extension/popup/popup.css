@@ -231,6 +231,160 @@ kbd {
   font-size: 12px;
 }
 
+/* Support Section */
+.support-section {
+  padding: 20px;
+  background: linear-gradient(135deg, #fff5f5 0%, #ffe8f0 100%);
+  border-top: 3px solid #ff6b9d;
+  border-bottom: 3px solid #ff6b9d;
+}
+
+.support-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.support-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #c2185b;
+}
+
+.support-badge {
+  background: #4caf50;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.support-text {
+  color: #666;
+  font-size: 13px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.usage-stats {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.usage-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.usage-item:first-child {
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 10px;
+  margin-bottom: 4px;
+}
+
+.usage-icon {
+  font-size: 16px;
+}
+
+.usage-label {
+  color: #666;
+  font-size: 13px;
+  flex: 1;
+}
+
+.usage-value {
+  font-weight: 700;
+  color: #c2185b;
+  font-size: 16px;
+}
+
+.bitcoin-section {
+  background: white;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.bitcoin-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.bitcoin-address-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.bitcoin-address {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  background: #f9f9f9;
+  color: #333;
+  cursor: text;
+}
+
+.bitcoin-address:focus {
+  outline: none;
+  border-color: #ff6b9d;
+  background: white;
+}
+
+.btn-copy-btc {
+  padding: 8px 12px;
+  background: #ff6b9d;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+  min-width: 40px;
+}
+
+.btn-copy-btc:hover {
+  background: #e91e63;
+  transform: scale(1.05);
+}
+
+.btn-copy-btc:active {
+  transform: scale(0.95);
+}
+
+.btn-donate {
+  background: linear-gradient(135deg, #ff6b9d 0%, #c2185b 100%);
+  color: white;
+}
+
+.btn-donate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+}
+
+.support-thanks {
+  text-align: center;
+  color: #999;
+  font-size: 12px;
+  margin-top: 12px;
+  font-style: italic;
+}
+
 /* Instructions */
 .instructions {
   padding: 20px;

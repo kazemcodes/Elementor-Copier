@@ -2,6 +2,37 @@
 
 All notable changes to Elementor Copier will be documented in this file.
 
+## [1.1.0] - 2025-10-16
+
+### Added - Donation Features
+- **Usage Counter**: Track how many elements you've copied
+- **Milestone Celebrations**: Get congratulated at 10, 50, 100, 250, and 500 copies
+- **Welcome Message**: First-time users see a friendly welcome notification
+- **Support Section**: New section in popup showing usage stats and donation info
+- **User Badges**: Earn badges based on usage (Active User, Power User, Legendary User, etc.)
+- **Periodic Reminders**: Gentle donation reminders every 7 days (fully dismissible)
+- **One-Click Bitcoin Copy**: Easy copy button for Bitcoin donation address
+- **Days Counter**: See how many days you've been using the extension
+
+### Features - Ethical Design
+- ✅ **Always Free**: Full functionality regardless of donation
+- ✅ **Non-Intrusive**: All reminders are dismissible
+- ✅ **Privacy First**: All data stored locally, never sent anywhere
+- ✅ **Transparent**: Open source, anyone can verify
+- ✅ **Respectful**: Reminders only every 7 days, not on every use
+
+### Technical
+- New `donation-manager.js` module for tracking and reminders
+- Enhanced popup UI with support section
+- Notification button handlers for donation actions
+- Local storage for usage statistics
+- Milestone detection system
+
+### Documentation
+- Added `DONATION_FEATURES.md` - Complete documentation of donation features
+- Updated README with donation information
+- Added ethical design principles documentation
+
 ## [1.0.0] - 2025-10-16
 
 ### Added

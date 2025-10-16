@@ -40,7 +40,7 @@ If you prefer to create releases manually:
    ```
 
 3. **Create GitHub Release**
-   - Go to [Releases](https://github.com/kazemcodes/elementor-copy/releases)
+   - Go to [Releases](https://github.com/kazemcodes/Elementor-Copier/releases)
    - Click "Draft a new release"
    - Tag: `v1.0.1`
    - Title: `Elementor Copier v1.0.1`
@@ -51,7 +51,7 @@ If you prefer to create releases manually:
 
 Users can install the extension by:
 
-1. Downloading the latest ZIP from [Releases](https://github.com/kazemcodes/elementor-copy/releases)
+1. Downloading the latest ZIP from [Releases](https://github.com/kazemcodes/Elementor-Copier/releases)
 2. Extracting the ZIP file
 3. Loading it as an unpacked extension in Chrome:
    - Go to `chrome://extensions/`

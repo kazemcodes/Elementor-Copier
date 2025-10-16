@@ -10,6 +10,9 @@ on:
       - '.github/workflows/build-and-release.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  
 jobs:
   build-and-release:
     runs-on: windows-latest
@@ -70,7 +73,7 @@ jobs:
             6. Select the extracted `chrome-extension` folder
             
             ### What's New
-            See [CHANGELOG.md](https://github.com/kazemcodes/elementor-copy/blob/main/CHANGELOG.md) for details.
+            See [CHANGELOG.md](https://github.com/kazemcodes/Elementor-Copier/blob/main/CHANGELOG.md) for details.
             
             ### Support
             If you find this extension helpful, consider supporting development:

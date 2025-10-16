@@ -14,6 +14,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load last copied data
   loadLastCopied();
   
+  // Load donation stats
+  loadDonationStats();
+  
   // Setup event listeners
   setupEventListeners();
 });
@@ -126,9 +129,89 @@ async function loadLastCopied() {
 }
 
 /**
+ * Load donation stats
+ */
+async function loadDonationStats() {
+  try {
+    const data = await chrome.storage.local.get(['donationData', 'firstInstallDate']);
+    const donationData = data.donationData || { usageCount: 0 };
+    const installDate = data.firstInstallDate ? new Date(data.firstInstallDate) : new Date();
+    const daysSinceInstall = Math.floor((new Date() - installDate) / (24 * 60 * 60 * 1000));
+
+    // Update usage count
+    const usageCountEl = document.getElementById('usageCount');
+    if (usageCountEl) {
+      usageCountEl.textContent = donationData.usageCount || 0;
+    }
+
+    // Update days using
+    const daysUsingEl = document.getElementById('daysUsing');
+    if (daysUsingEl) {
+      daysUsingEl.textContent = daysSinceInstall;
+    }
+
+    // Show milestone badge if applicable
+    const usageCount = donationData.usageCount || 0;
+    const supportBadge = document.getElementById('supportBadge');
+    if (supportBadge) {
+      if (usageCount >= 500) {
+        supportBadge.textContent = '🏆 Legendary User!';
+        supportBadge.style.background = '#ffd700';
+        supportBadge.style.color = '#333';
+      } else if (usageCount >= 250) {
+        supportBadge.textContent = '⭐ Power User!';
+        supportBadge.style.background = '#ff9800';
+      } else if (usageCount >= 100) {
+        supportBadge.textContent = '💯 Super User!';
+        supportBadge.style.background = '#9c27b0';
+      } else if (usageCount >= 50) {
+        supportBadge.textContent = '🚀 Active User!';
+        supportBadge.style.background = '#2196f3';
+      }
+    }
+  } catch (error) {
+    console.error('Error loading donation stats:', error);
+  }
+}
+
+/**
  * Setup event listeners
  */
 function setupEventListeners() {
+  // Donate button
+  const donateBtn = document.getElementById('donateBtn');
+  if (donateBtn) {
+    donateBtn.addEventListener('click', () => {
+      chrome.tabs.create({ 
+        url: 'https://github.com/kazemcodes/Elementor-Copier#-support-the-project' 
+      });
+    });
+  }
+
+  // Copy Bitcoin address button
+  const copyBtcBtn = document.getElementById('copyBtcBtn');
+  if (copyBtcBtn) {
+    copyBtcBtn.addEventListener('click', async () => {
+      const bitcoinAddress = document.getElementById('bitcoinAddress');
+      try {
+        await navigator.clipboard.writeText(bitcoinAddress.value);
+        copyBtcBtn.textContent = '✓';
+        copyBtcBtn.style.background = '#4caf50';
+        showMessage('✓ Bitcoin address copied!', 'success');
+        
+        setTimeout(() => {
+          copyBtcBtn.textContent = '📋';
+          copyBtcBtn.style.background = '';
+        }, 2000);
+      } catch (error) {
+        // Fallback: select the text
+        bitcoinAddress.select();
+        bitcoinAddress.setSelectionRange(0, 99999);
+        showMessage('Please copy manually (Ctrl+C)', 'info');
+      }
+    });
+  }
+
   // Highlight button
   const highlightBtn = document.getElementById('highlightBtn');
   if (highlightBtn) {

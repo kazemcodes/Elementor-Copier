@@ -42,7 +42,7 @@ chrome-extension/
 ## Installation
 
 This extension is distributed through GitHub Releases only. Download the latest release from:
-https://github.com/kazemcodes/elementor-copy/releases
+https://github.com/kazemcodes/Elementor-Copier/releases
 
 ## Support
 

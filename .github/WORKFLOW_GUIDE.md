@@ -60,7 +60,7 @@ Each release includes:
 
 3. **Wait for workflow** to complete (check Actions tab)
 
-4. **Verify release** at https://github.com/kazemcodes/elementor-copy/releases
+4. **Verify release** at https://github.com/kazemcodes/Elementor-Copier/releases
 
 ### Manual Trigger
 
@@ -180,7 +180,7 @@ Add steps before or after existing ones:
 
 For workflow issues:
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Open an Issue](https://github.com/kazemcodes/elementor-copy/issues)
+- [Open an Issue](https://github.com/kazemcodes/Elementor-Copier/issues)
 
 For extension support:
 **Bitcoin**: `bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm`

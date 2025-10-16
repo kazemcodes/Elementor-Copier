@@ -65,11 +65,11 @@
 2. **Update version** in `chrome-extension/manifest.json` if needed
 3. **Commit and push** to `main` branch
 4. **GitHub Actions** automatically builds and releases
-5. **Check releases** at https://github.com/kazemcodes/elementor-copy/releases
+5. **Check releases** at https://github.com/kazemcodes/Elementor-Copier/releases
 
 ### For Users
 
-1. **Download** latest ZIP from [Releases](https://github.com/kazemcodes/elementor-copy/releases)
+1. **Download** latest ZIP from [Releases](https://github.com/kazemcodes/Elementor-Copier/releases)
 2. **Extract** the ZIP file
 3. **Load** in Chrome as unpacked extension
 4. **Enjoy** the extension!
