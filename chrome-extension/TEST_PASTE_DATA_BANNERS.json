@@ -1,0 +1,176 @@
+{
+  "__ELEMENTOR_COPIER_DATA__": {
+    "version": "1.0.0",
+    "timestamp": 1760612210150,
+    "source": "elementor-copier-extension"
+  },
+  "version": "1.0.0",
+  "type": "elementor-copier",
+  "elementType": "section",
+  "data": {
+    "id": "bfff1bd",
+    "elType": "section",
+    "settings": {},
+    "elements": [
+      {
+        "id": "50d611b",
+        "elType": "column",
+        "settings": {},
+        "elements": [
+          {
+            "id": "a36b9fd",
+            "elType": "widget",
+            "settings": {},
+            "widgetType": "wd_banner.default",
+            "renderedContent": "\n\t\t\t\t\t\t\t<div class=\"promo-banner-wrapper\">\n\t\t\t<div class=\"promo-banner banner-default banner-hover-none color-scheme- banner-btn-size-default banner-btn-style-default wd-with-link\">\n\t\t\t\t<div class=\"main-wrapp-img\">\n\t\t\t\t\t<div class=\"banner-image wd-without-height\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img loading=\"lazy\" decoding=\"async\" width=\"400\" height=\"300\" src=\"https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722427839_5vFURF.jpg\" class=\"attachment-full size-full\" alt=\"\" srcset=\"https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722427839_5vFURF.jpg 400w, https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722427839_5vFURF-300x225.jpg 300w, https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722427839_5vFURF-150x113.jpg 150w\" sizes=\"(max-width: 400px) 100vw, 400px\">\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"wrapper-content-banner wd-fill wd-items-top wd-justify-center\">\n\t\t\t\t\t<div class=\"content-banner  text-left\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"wd-promo-banner-link wd-fill\" aria-label=\"لینک بنر\"></a>\n\t\t\t\t\t\t\t</div>\n\t\t</div>\n\t\t\t\t\t\t"
+          }
+        ]
+      },
+      {
+        "id": "4e4d0ca",
+        "elType": "column",
+        "settings": {},
+        "elements": [
+          {
+            "id": "16eac8c",
+            "elType": "widget",
+            "settings": {},
+            "widgetType": "wd_banner.default",
+            "renderedContent": "\n\t\t\t\t\t\t\t<div class=\"promo-banner-wrapper\">\n\t\t\t<div class=\"promo-banner banner-default banner-hover-none color-scheme- banner-btn-size-default banner-btn-style-default wd-with-link\">\n\t\t\t\t<div class=\"main-wrapp-img\">\n\t\t\t\t\t<div class=\"banner-image wd-without-height\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img loading=\"lazy\" decoding=\"async\" width=\"400\" height=\"300\" src=\"https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722076601_Smc9M6.jpg\" class=\"attachment-full size-full\" alt=\"\" srcset=\"https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722076601_Smc9M6.jpg 400w, https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722076601_Smc9M6-300x225.jpg 300w, https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722076601_Smc9M6-150x113.jpg 150w\" sizes=\"(max-width: 400px) 100vw, 400px\">\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"wrapper-content-banner wd-fill wd-items-top wd-justify-center\">\n\t\t\t\t\t<div class=\"content-banner  text-left\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"wd-promo-banner-link wd-fill\" aria-label=\"لینک بنر\"></a>\n\t\t\t\t\t\t\t</div>\n\t\t</div>\n\t\t\t\t\t\t"
+          }
+        ]
+      },
+      {
+        "id": "53f3ac2",
+        "elType": "column",
+        "settings": {},
+        "elements": [
+          {
+            "id": "aa08035",
+            "elType": "widget",
+            "settings": {},
+            "widgetType": "wd_banner.default",
+            "renderedContent": "\n\t\t\t\t\t\t\t<div class=\"promo-banner-wrapper\">\n\t\t\t<div class=\"promo-banner banner-default banner-hover-none color-scheme- banner-btn-size-default banner-btn-style-default wd-with-link\">\n\t\t\t\t<div class=\"main-wrapp-img\">\n\t\t\t\t\t<div class=\"banner-image wd-without-height\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img loading=\"lazy\" decoding=\"async\" width=\"400\" height=\"300\" src=\"https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074934_Pbdj4g.jpg\" class=\"attachment-full size-full\" alt=\"\" srcset=\"https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074934_Pbdj4g.jpg 400w, https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074934_Pbdj4g-300x225.jpg 300w, https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074934_Pbdj4g-150x113.jpg 150w\" sizes=\"(max-width: 400px) 100vw, 400px\">\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"wrapper-content-banner wd-fill wd-items-top wd-justify-center\">\n\t\t\t\t\t<div class=\"content-banner  text-left\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"wd-promo-banner-link wd-fill\" aria-label=\"لینک بنر\"></a>\n\t\t\t\t\t\t\t</div>\n\t\t</div>\n\t\t\t\t\t\t"
+          }
+        ]
+      },
+      {
+        "id": "c84676b",
+        "elType": "column",
+        "settings": {},
+        "elements": [
+          {
+            "id": "0fece46",
+            "elType": "widget",
+            "settings": {},
+            "widgetType": "wd_banner.default",
+            "renderedContent": "\n\t\t\t\t\t\t\t<div class=\"promo-banner-wrapper\">\n\t\t\t<div class=\"promo-banner banner-default banner-hover-none color-scheme- banner-btn-size-default banner-btn-style-default wd-with-link\">\n\t\t\t\t<div class=\"main-wrapp-img\">\n\t\t\t\t\t<div class=\"banner-image wd-without-height\">\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t<img loading=\"lazy\" decoding=\"async\" width=\"400\" height=\"300\" src=\"https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074927_crJEbe.jpg\" class=\"attachment-full size-full\" alt=\"\" srcset=\"https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074927_crJEbe.jpg 400w, https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074927_crJEbe-300x225.jpg 300w, https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074927_crJEbe-150x113.jpg 150w\" sizes=\"(max-width: 400px) 100vw, 400px\">\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t<div class=\"wrapper-content-banner wd-fill wd-items-top wd-justify-center\">\n\t\t\t\t\t<div class=\"content-banner  text-left\">\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\n\t\t\t\t\t\t\t\t\t<a href=\"#\" class=\"wd-promo-banner-link wd-fill\" aria-label=\"لینک بنر\"></a>\n\t\t\t\t\t\t\t</div>\n\t\t</div>\n\t\t\t\t\t\t"
+          }
+        ]
+      }
+    ]
+  },
+  "media": [
+    {
+      "id": "el_pryysez0a",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722427839_5vFURF.jpg",
+      "type": "image",
+      "alt": "",
+      "width": 400,
+      "height": 300
+    },
+    {
+      "id": "el_knettf39s",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722427839_5vFURF-300x225.jpg",
+      "type": "image",
+      "alt": "",
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "el_l57v8gucj",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722427839_5vFURF-150x113.jpg",
+      "type": "image",
+      "alt": "",
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "el_j9lgrcumn",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722076601_Smc9M6.jpg",
+      "type": "image",
+      "alt": "",
+      "width": 400,
+      "height": 300
+    },
+    {
+      "id": "el_ta8rs2reb",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722076601_Smc9M6-300x225.jpg",
+      "type": "image",
+      "alt": "",
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "el_9j7tb7ake",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722076601_Smc9M6-150x113.jpg",
+      "type": "image",
+      "alt": "",
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "el_wmbntzxwt",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074934_Pbdj4g.jpg",
+      "type": "image",
+      "alt": "",
+      "width": 400,
+      "height": 300
+    },
+    {
+      "id": "el_9kk40y4qx",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074934_Pbdj4g-300x225.jpg",
+      "type": "image",
+      "alt": "",
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "el_32o0i9p20",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074934_Pbdj4g-150x113.jpg",
+      "type": "image",
+      "alt": "",
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "el_47se4ssfw",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074927_crJEbe.jpg",
+      "type": "image",
+      "alt": "",
+      "width": 400,
+      "height": 300
+    },
+    {
+      "id": "el_hicc2wtr4",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074927_crJEbe-300x225.jpg",
+      "type": "image",
+      "alt": "",
+      "width": null,
+      "height": null
+    },
+    {
+      "id": "el_0a0jpqjai",
+      "url": "https://demo.i-wp.ir/woodland/aroj/wp-content/uploads/2024/08/1722074927_crJEbe-150x113.jpg",
+      "type": "image",
+      "alt": "",
+      "width": null,
+      "height": null
+    }
+  ],
+  "metadata": {
+    "sourceUrl": "https://demo.i-wp.ir/woodland/aroj/",
+    "copiedAt": "2025-10-16T10:56:47.920Z",
+    "elementorVersion": "3.31.2"
+  }
+}

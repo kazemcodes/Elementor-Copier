@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Version Compatibility Manager Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #92003b;
+      padding-bottom: 10px;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .test-case {
+      margin: 15px 0;
+      padding: 15px;
+      border-left: 4px solid #ddd;
+      background: #f9f9f9;
+    }
+    .test-case.pass {
+      border-left-color: #4caf50;
+      background: #f1f8f4;
+    }
+    .test-case.fail {
+      border-left-color: #f44336;
+      background: #fef1f0;
+    }
+    .test-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .test-result {
+      margin: 5px 0;
+      font-family: monospace;
+      font-size: 14px;
+    }
+    .success { color: #4caf50; }
+    .error { color: #f44336; }
+    .warning { color: #ff9800; }
+    .info { color: #2196f3; }
+    pre {
+      background: #263238;
+      color: #aed581;
+      padding: 15px;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-size: 13px;
+    }
+    button {
+      background: #92003b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      margin: 10px 5px;
+    }
+    button:hover {
+      background: #6d002c;
+    }
+    .summary {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔄 Version Compatibility Manager Test Suite</h1>
+  
+  <div class="summary" id="summary">
+    <strong>Test Summary:</strong> <span id="summary-text">Click "Run All Tests" to begin</span>
+  </div>
+
+  <button onclick="runAllTests()">Run All Tests</button>
+  <button onclick="clearResults()">Clear Results</button>
+
+  <div id="results"></div>
+
+  <script src="version-compatibility.js"></script>
+  <script>
+    const manager = new VersionCompatibilityManager();
+    let testResults = [];
+
+    function clearResults() {
+      document.getElementById('results').innerHTML = '';
+      testResults = [];
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const passed = testResults.filter(r => r.pass).length;
+      const failed = testResults.filter(r => !r.pass).length;
+      const total = testResults.length;
+      
+      const summaryText = total === 0 
+        ? 'Click "Run All Tests" to begin'
+        : `${passed} passed, ${failed} failed out of ${total} tests`;
+      
+      document.getElementById('summary-text').textContent = summaryText;
+    }
+
+    function addTestResult(title, pass, details) {
+      testResults.push({ title, pass, details });
+      
+      const resultsDiv = document.getElementById('results');
+      const testDiv = document.createElement('div');
+      testDiv.className = `test-case ${pass ? 'pass' : 'fail'}`;
+      
+      testDiv.innerHTML = `
+        <div class="test-title">${pass ? '✅' : '❌'} ${title}</div>
+        <div class="test-result">${details}</div>
+      `;
+      
+      resultsDiv.appendChild(testDiv);
+      updateSummary();
+    }
+
+    function createTestSection(title) {
+      const resultsDiv = document.getElementById('results');
+      const section = document.createElement('div');
+      section.className = 'test-section';
+      section.innerHTML = `<h2>${title}</h2>`;
+      resultsDiv.appendChild(section);
+      return section;
+    }
+
+    // Test 1: Version Detection
+    function testVersionDetection() {
+      const section = createTestSection('1. Version Detection');
+      
+      // Mock window.elementor
+      window.elementor = {
+        config: {
+          version: '3.5.2'
+        }
+      };
+      
+      const detected = manager.detectVersion();
+      const pass = detected === '3.5.2';
+      addTestResult(
+        'Detect version from window.elementor',
+        pass,
+        `Expected: 3.5.2, Got: ${detected}`
+      );
+      
+      // Test fallback to elementorFrontendConfig
+      delete window.elementor;
+      window.elementorFrontendConfig = {
+        version: '4.0.1'
+      };
+      
+      const detected2 = manager.detectVersion();
+      const pass2 = detected2 === '4.0.1';
+      addTestResult(
+        'Detect version from elementorFrontendConfig',
+        pass2,
+        `Expected: 4.0.1, Got: ${detected2}`
+      );
+      
+      // Restore
+      window.elementor = { config: { version: '3.5.2' } };
+    }
+
+    // Test 2: Version Parsing
+    function testVersionParsing() {
+      createTestSection('2. Version Parsing');
+      
+      const parsed = manager.parseVersion('3.5.2');
+      const pass = parsed.major === 3 && parsed.minor === 5 && parsed.patch === 2;
+      addTestResult(
+        'Parse version string correctly',
+        pass,
+        `Expected: {major: 3, minor: 5, patch: 2}, Got: ${JSON.stringify(parsed)}`
+      );
+      
+      const family = manager.getVersionFamily('3.5.2');
+      const pass2 = family === '3.x';
+      addTestResult(
+        'Get version family',
+        pass2,
+        `Expected: 3.x, Got: ${family}`
+      );
+    }
+
+    // Test 3: Version Comparison
+    function testVersionComparison() {
+      createTestSection('3. Version Comparison');
+      
+      const result1 = manager.compareVersions('3.5.2', '3.5.1');
+      addTestResult(
+        'Compare 3.5.2 > 3.5.1',
+        result1 > 0,
+        `Expected: positive, Got: ${result1}`
+      );
+      
+      const result2 = manager.compareVersions('3.5.2', '4.0.0');
+      addTestResult(
+        'Compare 3.5.2 < 4.0.0',
+        result2 < 0,
+        `Expected: negative, Got: ${result2}`
+      );
+      
+      const result3 = manager.compareVersions('3.5.2', '3.5.2');
+      addTestResult(
+        'Compare 3.5.2 == 3.5.2',
+        result3 === 0,
+        `Expected: 0, Got: ${result3}`
+      );
+    }
+
+    // Test 4: Compatibility Check
+    function testCompatibilityCheck() {
+      createTestSection('4. Compatibility Check');
+      
+      const compat1 = manager.isCompatible('3.5.2', '3.6.0');
+      addTestResult(
+        'Same family compatibility (3.x to 3.x)',
+        compat1.compatible && !compat1.warning,
+        `Compatible: ${compat1.compatible}, Warning: ${compat1.warning}, Message: ${compat1.message}`
+      );
+      
+      const compat2 = manager.isCompatible('3.5.2', '4.0.0');
+      addTestResult(
+        'Cross-family compatibility (3.x to 4.x)',
+        compat2.compatible,
+        `Compatible: ${compat2.compatible}, Warning: ${compat2.warning}, Message: ${compat2.message}`
+      );
+      
+      const compat3 = manager.isCompatible('2.9.0', '4.0.0');
+      addTestResult(
+        'Major version jump (2.x to 4.x)',
+        compat3.warning,
+        `Compatible: ${compat3.compatible}, Warning: ${compat3.warning}, Message: ${compat3.message}`
+      );
+    }
+
+    // Test 5: Widget Type Migration
+    function testWidgetMigration() {
+      createTestSection('5. Widget Type Migration');
+      
+      const rules = manager.getConversionRules('2.9.0', '3.5.0');
+      const hasWidgetRules = rules.some(r => r.type === 'widget_rename');
+      addTestResult(
+        'Get widget migration rules (2.x to 3.x)',
+        hasWidgetRules,
+        `Found ${rules.filter(r => r.type === 'widget_rename').length} widget rename rules`
+      );
+      
+      const testData = {
+        elType: 'widget',
+        widgetType: 'image-box',
+        settings: { title: 'Test' },
+        elements: []
+      };
+      
+      const converted = manager.applyConversionRules(testData, rules);
+      const pass = converted.widgetType === 'icon-box';
+      addTestResult(
+        'Apply widget rename (image-box → icon-box)',
+        pass,
+        `Expected: icon-box, Got: ${converted.widgetType}`
+      );
+    }
+
+    // Test 6: Setting Migration
+    function testSettingMigration() {
+      createTestSection('6. Setting Migration');
+      
+      const rules = manager.getConversionRules('2.9.0', '3.5.0');
+      const hasSettingRules = rules.some(r => r.type === 'setting_rename');
+      addTestResult(
+        'Get setting migration rules',
+        hasSettingRules,
+        `Found ${rules.filter(r => r.type === 'setting_rename').length} setting rename rules`
+      );
+      
+      const testData = {
+        elType: 'widget',
+        widgetType: 'heading',
+        settings: { 
+          title: 'My Heading',
+          tag: 'h2'
+        },
+        elements: []
+      };
+      
+      const converted = manager.applyConversionRules(testData, rules);
+      const pass = converted.settings.header_size === 'h2' && !converted.settings.tag;
+      addTestResult(
+        'Apply setting rename (tag → header_size)',
+        pass,
+        `Expected header_size: h2, Got: ${JSON.stringify(converted.settings)}`
+      );
+    }
+
+    // Test 7: Nested Element Conversion
+    function testNestedConversion() {
+      createTestSection('7. Nested Element Conversion');
+      
+      const testData = {
+        elType: 'section',
+        settings: {},
+        elements: [
+          {
+            elType: 'column',
+            settings: {},
+            elements: [
+              {
+                elType: 'widget',
+                widgetType: 'heading',
+                settings: { tag: 'h3' },
+                elements: []
+              }
+            ]
+          }
+        ]
+      };
+      
+      const rules = manager.getConversionRules('2.9.0', '3.5.0');
+      const converted = manager.applyConversionRules(testData, rules);
+      
+      const nestedWidget = converted.elements[0].elements[0];
+      const pass = nestedWidget.settings.header_size === 'h3' && !nestedWidget.settings.tag;
+      addTestResult(
+        'Apply rules to nested elements',
+        pass,
+        `Nested widget settings: ${JSON.stringify(nestedWidget.settings)}`
+      );
+    }
+
+    // Test 8: Full Version Conversion
+    function testFullConversion() {
+      createTestSection('8. Full Version Conversion');
+      
+      const testData = {
+        elType: 'widget',
+        widgetType: 'heading',
+        settings: { 
+          title: 'Test Heading',
+          tag: 'h2'
+        },
+        elements: []
+      };
+      
+      const result = manager.convertVersion(testData, '2.9.0', '3.5.0');
+      
+      const pass1 = result.data.settings.header_size === 'h2';
+      addTestResult(
+        'Full conversion with metadata',
+        pass1,
+        `Rules applied: ${result.rulesApplied}, Compatibility: ${result.compatibility.compatible}`
+      );
+      
+      const notification = manager.getNotificationMessage(result);
+      const pass2 = notification.type && notification.message;
+      addTestResult(
+        'Generate notification message',
+        pass2,
+        `Type: ${notification.type}, Message: ${notification.message}`
+      );
+    }
+
+    // Test 9: No Conversion Needed
+    function testNoConversion() {
+      createTestSection('9. Same Version (No Conversion)');
+      
+      const testData = {
+        elType: 'widget',
+        widgetType: 'heading',
+        settings: { header_size: 'h2' },
+        elements: []
+      };
+      
+      const rules = manager.getConversionRules('3.5.0', '3.6.0');
+      const pass = rules.length === 0;
+      addTestResult(
+        'No rules for same version family',
+        pass,
+        `Expected 0 rules, Got: ${rules.length}`
+      );
+      
+      const result = manager.convertVersion(testData, '3.5.0', '3.6.0');
+      const pass2 = result.rulesApplied === 0;
+      addTestResult(
+        'No conversion applied for same family',
+        pass2,
+        `Rules applied: ${result.rulesApplied}`
+      );
+    }
+
+    // Test 10: Error Handling
+    function testErrorHandling() {
+      createTestSection('10. Error Handling');
+      
+      const result1 = manager.isCompatible(null, '3.5.0');
+      addTestResult(
+        'Handle null source version',
+        result1.compatible,
+        `Message: ${result1.message}`
+      );
+      
+      const result2 = manager.convertVersion({}, null, '3.5.0');
+      addTestResult(
+        'Handle null versions in conversion',
+        result2.rulesApplied === 0,
+        `Rules applied: ${result2.rulesApplied}`
+      );
+      
+      const rules = manager.getConversionRules('99.x', '3.5.0');
+      addTestResult(
+        'Handle unknown version',
+        Array.isArray(rules),
+        `Returned ${rules.length} rules`
+      );
+    }
+
+    function runAllTests() {
+      clearResults();
+      
+      try {
+        testVersionDetection();
+        testVersionParsing();
+        testVersionComparison();
+        testCompatibilityCheck();
+        testWidgetMigration();
+        testSettingMigration();
+        testNestedConversion();
+        testFullConversion();
+        testNoConversion();
+        testErrorHandling();
+        
+        console.log('All tests completed!');
+      } catch (error) {
+        console.error('Test execution error:', error);
+        addTestResult('Test Execution', false, `Error: ${error.message}`);
+      }
+    }
+
+    // Auto-run tests on load
+    window.addEventListener('load', () => {
+      console.log('Version Compatibility Manager Test Suite loaded');
+      console.log('Click "Run All Tests" to begin testing');
+    });
+  </script>
+</body>
+</html>

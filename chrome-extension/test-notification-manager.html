@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Manager Test Suite</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+    }
+
+    .test-section {
+      background: white;
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .test-section h2 {
+      color: #333;
+      margin-top: 0;
+      margin-bottom: 16px;
+      font-size: 18px;
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #2196f3;
+      color: white;
+    }
+
+    button:hover {
+      background: #1976d2;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    button.success {
+      background: #4caf50;
+    }
+
+    button.success:hover {
+      background: #45a049;
+    }
+
+    button.warning {
+      background: #ff9800;
+    }
+
+    button.warning:hover {
+      background: #f57c00;
+    }
+
+    button.error {
+      background: #f44336;
+    }
+
+    button.error:hover {
+      background: #d32f2f;
+    }
+
+    button.secondary {
+      background: #757575;
+    }
+
+    button.secondary:hover {
+      background: #616161;
+    }
+
+    .test-info {
+      background: #e3f2fd;
+      border-left: 4px solid #2196f3;
+      padding: 12px 16px;
+      margin-top: 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #1565c0;
+    }
+
+    .test-results {
+      margin-top: 20px;
+      padding: 16px;
+      background: #f9f9f9;
+      border-radius: 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+    }
+
+    .test-results h3 {
+      margin-top: 0;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .test-result {
+      padding: 8px;
+      margin: 4px 0;
+      border-radius: 4px;
+    }
+
+    .test-result.pass {
+      background: #c8e6c9;
+      color: #2e7d32;
+    }
+
+    .test-result.fail {
+      background: #ffcdd2;
+      color: #c62828;
+    }
+  </style>
+</head>
+<body>
+  <h1>Notification Manager Test Suite</h1>
+  <p class="subtitle">Test all notification types and visual feedback features</p>
+
+  <div class="test-section">
+    <h2>Basic Notifications</h2>
+    <div class="button-grid">
+      <button class="success" onclick="testSuccess()">Success Notification</button>
+      <button class="warning" onclick="testWarning()">Warning Notification</button>
+      <button class="error" onclick="testError()">Error Notification</button>
+      <button onclick="testInfo()">Info Notification</button>
+    </div>
+    <div class="test-info">
+      Tests basic notification types with different severity levels.
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Element Paste Notifications</h2>
+    <div class="button-grid">
+      <button class="success" onclick="testElementPasted('heading')">Heading Pasted</button>
+      <button class="success" onclick="testElementPasted('section')">Section Pasted</button>
+      <button class="success" onclick="testElementPasted('button', 3)">Multiple Elements</button>
+      <button class="success" onclick="testSuccessAnimation('Image')">Success Animation</button>
+    </div>
+    <div class="test-info">
+      Tests notifications for successful element paste operations.
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Warning Notifications</h2>
+    <div class="button-grid">
+      <button class="warning" onclick="testExternalMedia()">External Media Warning</button>
+      <button class="warning" onclick="testVersionConversion()">Version Conversion</button>
+      <button class="warning" onclick="testEditorNotDetected()">Editor Not Detected</button>
+    </div>
+    <div class="test-info">
+      Tests warning notifications for potential issues.
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Error Notifications</h2>
+    <div class="button-grid">
+      <button class="error" onclick="testPasteError()">Paste Error</button>
+      <button class="error" onclick="testClipboardError()">Clipboard Error</button>
+      <button class="error" onclick="testInvalidData()">Invalid Data</button>
+    </div>
+    <div class="test-info">
+      Tests error notifications with troubleshooting guidance.
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Visual Feedback</h2>
+    <div class="button-grid">
+      <button onclick="testLoading()">Loading Indicator</button>
+      <button onclick="testProgress()">Progress Indicator</button>
+      <button onclick="testToast()">Toast Notification</button>
+      <button class="secondary" onclick="testClearAll()">Clear All</button>
+    </div>
+    <div class="test-info">
+      Tests loading indicators, progress bars, and toast notifications.
+    </div>
+  </div>
+
+  <div class="test-section">
+    <h2>Automated Test Suite</h2>
+    <div class="button-grid">
+      <button onclick="runAllTests()">Run All Tests</button>
+      <button class="secondary" onclick="clearResults()">Clear Results</button>
+    </div>
+    <div id="test-results" class="test-results" style="display: none;">
+      <h3>Test Results</h3>
+      <div id="results-container"></div>
+    </div>
+  </div>
+
+  <script src="notification-manager.js"></script>
+  <script>
+    // Initialize notification manager
+    const notificationManager = new NotificationManager();
+
+    // Basic notification tests
+    function testSuccess() {
+      notificationManager.success(
+        'Operation Successful',
+        'Your action has been completed successfully.'
+      );
+    }
+
+    function testWarning() {
+      notificationManager.warning(
+        'Warning',
+        'Please review this information before proceeding.'
+      );
+    }
+
+    function testError() {
+      notificationManager.error(
+        'Error Occurred',
+        'Something went wrong. Please try again.'
+      );
+    }
+
+    function testInfo() {
+      notificationManager.info(
+        'Information',
+        'Here is some useful information for you.'
+      );
+    }
+
+    // Element paste notification tests
+    function testElementPasted(elementType, count = 1) {
+      notificationManager.notifyElementPasted(elementType, count);
+    }
+
+    function testSuccessAnimation(elementType) {
+      notificationManager.showSuccessAnimation(elementType);
+    }
+
+    // Warning notification tests
+    function testExternalMedia() {
+      const mediaUrls = [
+        'https://example.com/image1.jpg',
+        'https://example.com/image2.jpg',
+        'https://example.com/video.mp4'
+      ];
+      notificationManager.notifyExternalMedia(mediaUrls);
+    }
+
+    function testVersionConversion() {
+      notificationManager.notifyVersionConversion(
+        '3.5.0',
+        '4.0.0',
+        ['Widget type updated', 'Settings migrated']
+      );
+    }
+
+    function testEditorNotDetected() {
+      notificationManager.notifyEditorNotDetected();
+    }
+
+    // Error notification tests
+    function testPasteError() {
+      notificationManager.notifyPasteError(
+        'conversion',
+        'Failed to convert element format.'
+      );
+    }
+
+    function testClipboardError() {
+      notificationManager.notifyClipboardError();
+    }
+
+    function testInvalidData() {
+      notificationManager.notifyInvalidData();
+    }
+
+    // Visual feedback tests
+    function testLoading() {
+      const loading = notificationManager.showLoading('Processing element...');
+      
+      setTimeout(() => {
+        loading.update('Converting format...');
+      }, 1500);
+      
+      setTimeout(() => {
+        loading.update('Almost done...');
+      }, 3000);
+      
+      setTimeout(() => {
+        loading.dismiss();
+        notificationManager.success('Complete', 'Operation finished successfully.');
+      }, 4500);
+    }
+
+    function testProgress() {
+      const progress = notificationManager.showProgress(5);
+      
+      let current = 0;
+      const interval = setInterval(() => {
+        current++;
+        progress.update(current, `Processing element ${current}...`);
+        
+        if (current >= 5) {
+          clearInterval(interval);
+          setTimeout(() => {
+            progress.complete();
+            notificationManager.success('All Elements Pasted', '5 elements added successfully.');
+          }, 500);
+        }
+      }, 800);
+    }
+
+    function testToast() {
+      notificationManager.showToast('Quick action completed!', 'success', 2000);
+      
+      setTimeout(() => {
+        notificationManager.showToast('This is an info toast', 'info', 2000);
+      }, 500);
+      
+      setTimeout(() => {
+        notificationManager.showToast('Warning toast message', 'warning', 2000);
+      }, 1000);
+    }
+
+    function testClearAll() {
+      notificationManager.clearAll();
+    }
+
+    // Automated test suite
+    function runAllTests() {
+      const resultsContainer = document.getElementById('results-container');
+      const resultsSection = document.getElementById('test-results');
+      resultsContainer.innerHTML = '';
+      resultsSection.style.display = 'block';
+
+      const tests = [
+        { name: 'NotificationManager instantiation', fn: () => new NotificationManager() !== null },
+        { name: 'Success notification', fn: () => { notificationManager.success('Test', 'Test'); return true; } },
+        { name: 'Warning notification', fn: () => { notificationManager.warning('Test', 'Test'); return true; } },
+        { name: 'Error notification', fn: () => { notificationManager.error('Test', 'Test'); return true; } },
+        { name: 'Info notification', fn: () => { notificationManager.info('Test', 'Test'); return true; } },
+        { name: 'Element pasted notification', fn: () => { notificationManager.notifyElementPasted('heading'); return true; } },
+        { name: 'External media notification', fn: () => { notificationManager.notifyExternalMedia(['url']); return true; } },
+        { name: 'Version conversion notification', fn: () => { notificationManager.notifyVersionConversion('3.0', '4.0'); return true; } },
+        { name: 'Paste error notification', fn: () => { notificationManager.notifyPasteError('test', 'error'); return true; } },
+        { name: 'Loading indicator', fn: () => { const l = notificationManager.showLoading(); l.dismiss(); return true; } },
+        { name: 'Progress indicator', fn: () => { const p = notificationManager.showProgress(5); p.dismiss(); return true; } },
+        { name: 'Toast notification', fn: () => { notificationManager.showToast('Test', 'info'); return true; } },
+        { name: 'Success animation', fn: () => { notificationManager.showSuccessAnimation('test'); return true; } },
+        { name: 'Format element type', fn: () => notificationManager.formatElementType('heading') === 'Heading' },
+        { name: 'Clear all notifications', fn: () => { notificationManager.clearAll(); return true; } }
+      ];
+
+      let passed = 0;
+      let failed = 0;
+
+      tests.forEach(test => {
+        try {
+          const result = test.fn();
+          if (result) {
+            passed++;
+            addResult(test.name, true);
+          } else {
+            failed++;
+            addResult(test.name, false, 'Test returned false');
+          }
+        } catch (error) {
+          failed++;
+          addResult(test.name, false, error.message);
+        }
+      });
+
+      // Add summary
+      const summary = document.createElement('div');
+      summary.style.marginTop = '16px';
+      summary.style.padding = '12px';
+      summary.style.background = passed === tests.length ? '#c8e6c9' : '#fff3cd';
+      summary.style.borderRadius = '4px';
+      summary.style.fontWeight = 'bold';
+      summary.innerHTML = `Tests: ${tests.length} | Passed: ${passed} | Failed: ${failed}`;
+      resultsContainer.appendChild(summary);
+
+      // Clear notifications after tests
+      setTimeout(() => {
+        notificationManager.clearAll();
+      }, 2000);
+    }
+
+    function addResult(testName, passed, error = '') {
+      const resultsContainer = document.getElementById('results-container');
+      const result = document.createElement('div');
+      result.className = `test-result ${passed ? 'pass' : 'fail'}`;
+      result.textContent = `${passed ? '✓' : '✗'} ${testName}${error ? ': ' + error : ''}`;
+      resultsContainer.appendChild(result);
+    }
+
+    function clearResults() {
+      const resultsContainer = document.getElementById('results-container');
+      const resultsSection = document.getElementById('test-results');
+      resultsContainer.innerHTML = '';
+      resultsSection.style.display = 'none';
+    }
+
+    // Log initialization
+    console.log('Notification Manager Test Suite loaded');
+    console.log('NotificationManager instance:', notificationManager);
+  </script>
+</body>
+</html>

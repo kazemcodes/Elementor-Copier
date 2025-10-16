@@ -1,0 +1,95 @@
+/**
+ * Elementor Copier - Highlight Styles
+ * Styles for highlighting Elementor elements
+ */
+
+/* Highlight overlay */
+.elementor-copier-highlight {
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.elementor-copier-highlight::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 999999;
+}
+
+/* Widget highlight */
+.elementor-copier-highlight-widget::after {
+  border: 2px solid #0073aa;
+  background: rgba(0, 115, 170, 0.1);
+}
+
+/* Section highlight */
+.elementor-copier-highlight-section::after {
+  border: 2px solid #00a32a;
+  background: rgba(0, 163, 42, 0.1);
+}
+
+/* Column highlight */
+.elementor-copier-highlight-column::after {
+  border: 2px solid #f0b849;
+  background: rgba(240, 184, 73, 0.1);
+}
+
+/* Info badge */
+.elementor-copier-badge {
+  position: absolute;
+  top: -25px;
+  left: 0;
+  background: #333;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  z-index: 1000000;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.elementor-copier-badge::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 10px;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #333;
+}
+
+/* Animation */
+@keyframes elementor-copier-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.elementor-copier-copying {
+  animation: elementor-copier-pulse 0.5s ease-in-out;
+}
+
+/* Success flash */
+@keyframes elementor-copier-success {
+  0% {
+    background: rgba(76, 175, 80, 0.3);
+  }
+  100% {
+    background: transparent;
+  }
+}
+
+.elementor-copier-success {
+  animation: elementor-copier-success 0.5s ease-out;
+}

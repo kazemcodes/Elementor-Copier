@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error Handling & Fallback Strategies Test Suite</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 { color: #333; }
+    h2 { color: #555; margin-top: 30px; }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: #0073aa;
+      color: white;
+      font-size: 14px;
+    }
+    button:hover { background: #005a87; }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .success { background: #d4edda; color: #155724; }
+    .error { background: #f8d7da; color: #721c24; }
+    .warning { background: #fff3cd; color: #856404; }
+    .info { background: #d1ecf1; color: #0c5460; }
+    .log {
+      background: #f8f9fa;
+      padding: 15px;
+      margin-top: 10px;
+      border-left: 4px solid #0073aa;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+    .log-entry {
+      margin: 5px 0;
+      padding: 5px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    pre {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛡️ Error Handling & Fallback Strategies Test Suite</h1>
+  <p>Test the error handling and fallback mechanisms for the Elementor Copier extension.</p>
+
+  <!-- Error Handler Tests -->
+  <div class="test-section">
+    <h2>Error Handler Tests</h2>
+    
+    <div>
+      <h3>1. Detection Error</h3>
+      <button onclick="testDetectionError()">Test Detection Error</button>
+      <div id="detection-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>2. Clipboard Error</h3>
+      <button onclick="testClipboardError()">Test Clipboard Error</button>
+      <div id="clipboard-error-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>3. Conversion Error</h3>
+      <button onclick="testConversionError()">Test Conversion Error</button>
+      <div id="conversion-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>4. Injection Error</h3>
+      <button onclick="testInjectionError()">Test Injection Error</button>
+      <div id="injection-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>5. Version Error</h3>
+      <button onclick="testVersionError()">Test Version Error</button>
+      <div id="version-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>6. Error Log</h3>
+      <button onclick="showErrorLog()">Show Error Log</button>
+      <button onclick="clearErrorLog()">Clear Error Log</button>
+      <div id="error-log" class="log" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Fallback Strategies Tests -->
+  <div class="test-section">
+    <h2>Fallback Strategies Tests</h2>
+
+    <div>
+      <h3>1. Clipboard API Check</h3>
+      <button onclick="checkClipboardAPI()">Check Clipboard API</button>
+      <div id="clipboard-api-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>2. Write to Clipboard (with fallback)</h3>
+      <button onclick="testClipboardWrite()">Test Write</button>
+      <div id="clipboard-write-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>3. Read from Clipboard (with fallback)</h3>
+      <button onclick="testClipboardRead()">Test Read</button>
+      <div id="clipboard-read-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>4. execCommand Fallback</h3>
+      <button onclick="testExecCommandFallback()">Test execCommand</button>
+      <div id="execcommand-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>5. Manual Paste Instructions</h3>
+      <button onclick="testManualInstructions()">Show Manual Instructions</button>
+      <div id="manual-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>6. Raw Data Download</h3>
+      <button onclick="testRawDataDownload()">Test Download</button>
+      <div id="download-result" class="result" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Version Compatibility Tests -->
+  <div class="test-section">
+    <h2>Version Compatibility Tests</h2>
+
+    <div>
+      <h3>1. Best-Effort Conversion (2.x → 3.x)</h3>
+      <button onclick="testConversion2to3()">Test 2.x → 3.x</button>
+      <div id="conversion-2to3-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>2. Best-Effort Conversion (4.x → 3.x)</h3>
+      <button onclick="testConversion4to3()">Test 4.x → 3.x</button>
+      <div id="conversion-4to3-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>3. Validation and Fix</h3>
+      <button onclick="testValidationFix()">Test Validation</button>
+      <div id="validation-result" class="result" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Integration Tests -->
+  <div class="test-section">
+    <h2>Integration Tests</h2>
+
+    <div>
+      <h3>1. Complete Copy Flow with Error Handling</h3>
+      <button onclick="testCompleteCopyFlow()">Test Copy Flow</button>
+      <div id="copy-flow-result" class="result" style="display:none;"></div>
+    </div>
+
+    <div>
+      <h3>2. Complete Paste Flow with Fallbacks</h3>
+      <button onclick="testCompletePasteFlow()">Test Paste Flow</button>
+      <div id="paste-flow-result" class="result" style="display:none;"></div>
+    </div>
+  </div>
+
+  <!-- Load Scripts -->
+  <script src="error-handler.js"></script>
+  <script src="fallback-strategies.js"></script>
+  <script src="notification-manager.js"></script>
+
+  <script>
+    // Initialize handlers
+    const errorHandler = new ErrorHandler();
+    const fallbackStrategies = new FallbackStrategies();
+
+    // Test sample data
+    const sampleElementData = {
+      elType: 'widget',
+      widgetType: 'heading',
+      id: 'abc12345',
+      settings: {
+        title: 'Test Heading',
+        header_size: 'h2'
+      },
+      elements: [],
+      isInner: false
+    };
+
+    // Error Handler Tests
+    function testDetectionError() {
+      const result = document.getElementById('detection-result');
+      result.style.display = 'block';
+      
+      try {
+        errorHandler.handleError(
+          new Error('Elementor editor not found'),
+          ErrorCategory.DETECTION,
+          { retryCount: 0 }
+        );
+        result.className = 'result success';
+        result.textContent = '✓ Detection error handled successfully. Check console for details.';
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function testClipboardError() {
+      const result = document.getElementById('clipboard-error-result');
+      result.style.display = 'block';
+      
+      try {
+        errorHandler.handleError(
+          new Error('Clipboard permission denied'),
+          ErrorCategory.CLIPBOARD,
+          { data: sampleElementData }
+        );
+        result.className = 'result success';
+        result.textContent = '✓ Clipboard error handled successfully. Check console for details.';
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function testConversionError() {
+      const result = document.getElementById('conversion-result');
+      result.style.display = 'block';
+      
+      try {
+        errorHandler.handleError(
+          new Error('Invalid widget type'),
+          ErrorCategory.CONVERSION,
+          { data: sampleElementData }
+        );
+        result.className = 'result success';
+        result.textContent = '✓ Conversion error handled successfully. Check console for details.';
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function testInjectionError() {
+      const result = document.getElementById('injection-result');
+      result.style.display = 'block';
+      
+      try {
+        errorHandler.handleError(
+          new Error('Cannot access Elementor API'),
+          ErrorCategory.INJECTION,
+          { retryCount: 0 }
+        );
+        result.className = 'result success';
+        result.textContent = '✓ Injection error handled successfully. Check console for details.';
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function testVersionError() {
+      const result = document.getElementById('version-result');
+      result.style.display = 'block';
+      
+      try {
+        errorHandler.handleError(
+          new Error('Version mismatch'),
+          ErrorCategory.VERSION,
+          { 
+            sourceVersion: '2.9.0',
+            targetVersion: '4.0.0',
+            attemptBestEffort: true,
+            data: sampleElementData
+          }
+        );
+        result.className = 'result success';
+        result.textContent = '✓ Version error handled successfully. Check console for details.';
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function showErrorLog() {
+      const logDiv = document.getElementById('error-log');
+      logDiv.style.display = 'block';
+      
+      const log = errorHandler.getErrorLog();
+      if (log.length === 0) {
+        logDiv.innerHTML = '<p>No errors logged yet.</p>';
+      } else {
+        logDiv.innerHTML = '<h4>Error Log (' + log.length + ' entries)</h4>';
+        log.forEach((entry, index) => {
+          const entryDiv = document.createElement('div');
+          entryDiv.className = 'log-entry';
+          entryDiv.innerHTML = `
+            <strong>#${index + 1}</strong> - ${new Date(entry.timestamp).toLocaleTimeString()}<br>
+            <strong>Category:</strong> ${entry.category}<br>
+            <strong>Message:</strong> ${entry.message}
+          `;
+          logDiv.appendChild(entryDiv);
+        });
+      }
+    }
+
+    function clearErrorLog() {
+      errorHandler.clearErrorLog();
+      const logDiv = document.getElementById('error-log');
+      logDiv.innerHTML = '<p class="success">✓ Error log cleared.</p>';
+    }
+
+    // Fallback Strategies Tests
+    function checkClipboardAPI() {
+      const result = document.getElementById('clipboard-api-result');
+      result.style.display = 'block';
+      
+      const available = fallbackStrategies.isClipboardAPIAvailable();
+      const method = fallbackStrategies.getClipboardMethod();
+      
+      result.className = 'result info';
+      result.innerHTML = `
+        <strong>Clipboard API Available:</strong> ${available ? '✓ Yes' : '✗ No'}<br>
+        <strong>Recommended Method:</strong> ${method}
+      `;
+    }
+
+    async function testClipboardWrite() {
+      const result = document.getElementById('clipboard-write-result');
+      result.style.display = 'block';
+      result.className = 'result info';
+      result.textContent = 'Testing clipboard write...';
+      
+      try {
+        const testData = JSON.stringify(sampleElementData);
+        const writeResult = await fallbackStrategies.writeToClipboard(testData);
+        
+        result.className = writeResult.success ? 'result success' : 'result warning';
+        result.innerHTML = `
+          <strong>Success:</strong> ${writeResult.success ? '✓ Yes' : '✗ No'}<br>
+          <strong>Method Used:</strong> ${writeResult.method}<br>
+          ${writeResult.error ? '<strong>Error:</strong> ' + writeResult.error : ''}
+        `;
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    async function testClipboardRead() {
+      const result = document.getElementById('clipboard-read-result');
+      result.style.display = 'block';
+      result.className = 'result info';
+      result.textContent = 'Testing clipboard read...';
+      
+      try {
+        const readResult = await fallbackStrategies.readFromClipboard();
+        
+        result.className = readResult.success ? 'result success' : 'result warning';
+        result.innerHTML = `
+          <strong>Success:</strong> ${readResult.success ? '✓ Yes' : '✗ No'}<br>
+          <strong>Method Used:</strong> ${readResult.method}<br>
+          <strong>Data Length:</strong> ${readResult.text ? readResult.text.length : 0} characters<br>
+          ${readResult.error ? '<strong>Error:</strong> ' + readResult.error : ''}
+        `;
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    async function testExecCommandFallback() {
+      const result = document.getElementById('execcommand-result');
+      result.style.display = 'block';
+      result.className = 'result info';
+      result.textContent = 'Testing execCommand fallback...';
+      
+      try {
+        const testText = 'Test data for execCommand';
+        const success = await fallbackStrategies.copyWithExecCommand(testText);
+        
+        result.className = success ? 'result success' : 'result error';
+        result.textContent = success 
+          ? '✓ execCommand copy successful' 
+          : '✗ execCommand copy failed';
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function testManualInstructions() {
+      const result = document.getElementById('manual-result');
+      result.style.display = 'block';
+      
+      try {
+        const instructions = fallbackStrategies.createManualPasteInstructions(
+          sampleElementData,
+          'json'
+        );
+        
+        fallbackStrategies.displayManualInstructions(instructions);
+        
+        result.className = 'result success';
+        result.textContent = '✓ Manual instructions modal displayed. Check the modal on screen.';
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function testRawDataDownload() {
+      const result = document.getElementById('download-result');
+      result.style.display = 'block';
+      
+      try {
+        fallbackStrategies.offerRawDataDownload(
+          sampleElementData,
+          new Error('Conversion failed')
+        );
+        
+        result.className = 'result success';
+        result.textContent = '✓ Raw data download initiated. Check your downloads folder.';
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    // Version Compatibility Tests
+    function testConversion2to3() {
+      const result = document.getElementById('conversion-2to3-result');
+      result.style.display = 'block';
+      
+      try {
+        const testData = {
+          elType: 'widget',
+          widgetType: 'image-box',
+          settings: { title: 'Test' }
+        };
+        
+        const conversion = fallbackStrategies.attemptBestEffortConversion(
+          testData,
+          '2.9.0',
+          '3.5.0'
+        );
+        
+        result.className = conversion.success ? 'result success' : 'result error';
+        result.innerHTML = `
+          <strong>Success:</strong> ${conversion.success ? '✓ Yes' : '✗ No'}<br>
+          <strong>Warnings:</strong> ${conversion.warnings.length}<br>
+          <pre>${JSON.stringify(conversion.data, null, 2)}</pre>
+          ${conversion.warnings.length > 0 ? '<strong>Warning Details:</strong><br>' + conversion.warnings.join('<br>') : ''}
+        `;
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function testConversion4to3() {
+      const result = document.getElementById('conversion-4to3-result');
+      result.style.display = 'block';
+      
+      try {
+        const testData = {
+          elType: 'container',
+          settings: { 
+            _flex_direction: 'row',
+            title: 'Test'
+          }
+        };
+        
+        const conversion = fallbackStrategies.attemptBestEffortConversion(
+          testData,
+          '4.0.0',
+          '3.5.0'
+        );
+        
+        result.className = conversion.success ? 'result success' : 'result error';
+        result.innerHTML = `
+          <strong>Success:</strong> ${conversion.success ? '✓ Yes' : '✗ No'}<br>
+          <strong>Warnings:</strong> ${conversion.warnings.length}<br>
+          <pre>${JSON.stringify(conversion.data, null, 2)}</pre>
+          ${conversion.warnings.length > 0 ? '<strong>Warning Details:</strong><br>' + conversion.warnings.join('<br>') : ''}
+        `;
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    function testValidationFix() {
+      const result = document.getElementById('validation-result');
+      result.style.display = 'block';
+      
+      try {
+        const invalidData = {
+          widgetType: 'heading'
+          // Missing: id, elType, settings, elements
+        };
+        
+        const warnings = [];
+        fallbackStrategies.validateAndFix(invalidData, warnings);
+        
+        result.className = 'result success';
+        result.innerHTML = `
+          <strong>Validation Complete</strong><br>
+          <strong>Fixes Applied:</strong> ${warnings.length}<br>
+          <pre>${JSON.stringify(invalidData, null, 2)}</pre>
+          ${warnings.length > 0 ? '<strong>Fix Details:</strong><br>' + warnings.join('<br>') : ''}
+        `;
+      } catch (e) {
+        result.className = 'result error';
+        result.textContent = '✗ Error: ' + e.message;
+      }
+    }
+
+    // Integration Tests
+    async function testCompleteCopyFlow() {
+      const result = document.getElementById('copy-flow-result');
+      result.style.display = 'block';
+      result.className = 'result info';
+      result.textContent = 'Testing complete copy flow...';
+      
+      try {
+        // Simulate copy operation with error handling
+        const writeResult = await fallbackStrategies.writeToClipboard(
+          JSON.stringify(sampleElementData)
+        );
+        
+        if (!writeResult.success) {
+          throw new Error('Clipboard write failed');
+        }
+        
+        result.className = 'result success';
+        result.innerHTML = `
+          ✓ Complete copy flow successful<br>
+          <strong>Method:</strong> ${writeResult.method}<br>
+          <strong>Data:</strong> ${JSON.stringify(sampleElementData).length} bytes
+        `;
+      } catch (e) {
+        errorHandler.handleError(e, ErrorCategory.CLIPBOARD, {
+          data: sampleElementData
+        });
+        
+        result.className = 'result warning';
+        result.textContent = '⚠ Copy flow completed with fallback. Check error log.';
+      }
+    }
+
+    async function testCompletePasteFlow() {
+      const result = document.getElementById('paste-flow-result');
+      result.style.display = 'block';
+      result.className = 'result info';
+      result.textContent = 'Testing complete paste flow...';
+      
+      try {
+        // First write test data
+        await fallbackStrategies.writeToClipboard(JSON.stringify(sampleElementData));
+        
+        // Then read it back
+        const readResult = await fallbackStrategies.readFromClipboard();
+        
+        if (!readResult.success) {
+          throw new Error('Clipboard read failed');
+        }
+        
+        const data = JSON.parse(readResult.text);
+        
+        result.className = 'result success';
+        result.innerHTML = `
+          ✓ Complete paste flow successful<br>
+          <strong>Method:</strong> ${readResult.method}<br>
+          <strong>Data Retrieved:</strong> ${readResult.text.length} bytes<br>
+          <strong>Widget Type:</strong> ${data.widgetType}
+        `;
+      } catch (e) {
+        errorHandler.handleError(e, ErrorCategory.CLIPBOARD, {});
+        
+        result.className = 'result warning';
+        result.textContent = '⚠ Paste flow completed with fallback. Check error log.';
+      }
+    }
+
+    // Auto-run clipboard API check on load
+    window.addEventListener('load', () => {
+      checkClipboardAPI();
+    });
+  </script>
+</body>
+</html>

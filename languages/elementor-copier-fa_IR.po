@@ -1,0 +1,267 @@
+# Persian (Farsi) translation for Elementor Widget Copier
+# Copyright (C) 2024 Elementor Widget Copier
+# This file is distributed under the GPL v2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Elementor Widget Copier 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/elementor-copier\n"
+"POT-Creation-Date: 2024-10-14 12:00:00+00:00\n"
+"PO-Revision-Date: 2024-10-14 12:00:00+00:00\n"
+"Last-Translator: \n"
+"Language-Team: Persian\n"
+"Language: fa_IR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n==0 || n==1);\n"
+"X-Generator: WordPress\n"
+
+#: elementor-copier.php
+msgid "Elementor Widget Copier"
+msgstr "کپی ویجت المنتور"
+
+#: elementor-copier.php
+msgid "Elementor"
+msgstr "المنتور"
+
+#: elementor-copier.php
+#, php-format
+msgid "\"%1$s\" requires \"%2$s\" to be installed and activated."
+msgstr "افزونه \"%1$s\" نیاز به نصب و فعال‌سازی \"%2$s\" دارد."
+
+#: elementor-copier.php
+msgid "Elementor Widget Copier requires WordPress 5.6 or higher."
+msgstr "افزونه کپی ویجت المنتور به وردپرس نسخه ۵.۶ یا بالاتر نیاز دارد."
+
+#: elementor-copier.php
+msgid "Plugin Activation Error"
+msgstr "خطا در فعال‌سازی افزونه"
+
+#: elementor-copier.php
+msgid "Elementor Widget Copier requires PHP 7.4 or higher."
+msgstr "افزونه کپی ویجت المنتور به PHP نسخه ۷.۴ یا بالاتر نیاز دارد."
+
+#: includes/class-plugin.php
+msgid "Cloning is forbidden."
+msgstr "کپی‌برداری از کلاس مجاز نیست."
+
+#: includes/class-plugin.php
+msgid "Unserializing instances of this class is forbidden."
+msgstr "بازسازی نمونه‌های این کلاس مجاز نیست."
+
+# Admin Interface Strings
+msgid "Copy Elementor Widget"
+msgstr "کپی ویجت المنتور"
+
+msgid "Elementor Copier"
+msgstr "کپی‌کننده المنتور"
+
+msgid "Source Site URL"
+msgstr "آدرس سایت مبدا"
+
+msgid "Enter the URL of the WordPress site you want to copy from"
+msgstr "آدرس سایت وردپرسی که می‌خواهید از آن کپی کنید را وارد کنید"
+
+msgid "Authentication"
+msgstr "احراز هویت"
+
+msgid "Public Access"
+msgstr "دسترسی عمومی"
+
+msgid "WordPress Credentials"
+msgstr "اطلاعات ورود وردپرس"
+
+msgid "Application Password"
+msgstr "رمز عبور برنامه"
+
+msgid "Username"
+msgstr "نام کاربری"
+
+msgid "Password"
+msgstr "رمز عبور"
+
+msgid "Load Content"
+msgstr "بارگذاری محتوا"
+
+msgid "Loading..."
+msgstr "در حال بارگذاری..."
+
+msgid "Copy"
+msgstr "کپی"
+
+msgid "Processing..."
+msgstr "در حال پردازش..."
+
+msgid "Select Target"
+msgstr "انتخاب مقصد"
+
+msgid "Create New Page"
+msgstr "ایجاد صفحه جدید"
+
+msgid "Add to Existing Page"
+msgstr "افزودن به صفحه موجود"
+
+msgid "Create as Template"
+msgstr "ایجاد به عنوان قالب"
+
+msgid "Success"
+msgstr "موفقیت"
+
+msgid "Error"
+msgstr "خطا"
+
+# Connection Messages
+msgid "Connection successful"
+msgstr "اتصال با موفقیت برقرار شد"
+
+msgid "Connection failed"
+msgstr "اتصال برقرار نشد"
+
+msgid "Source site is unreachable"
+msgstr "سایت مبدا در دسترس نیست"
+
+msgid "Invalid URL"
+msgstr "آدرس وارد شده معتبر نیست"
+
+msgid "Connection timeout"
+msgstr "زمان اتصال به پایان رسید"
+
+msgid "Please check the site URL and make sure the site is active"
+msgstr "لطفاً آدرس سایت را بررسی کنید و مطمئن شوید که سایت فعال است"
+
+# Authentication Messages
+msgid "Invalid credentials"
+msgstr "اطلاعات ورود نامعتبر است"
+
+msgid "Incorrect username or password"
+msgstr "نام کاربری یا رمز عبور اشتباه است"
+
+msgid "Insufficient permissions"
+msgstr "دسترسی کافی ندارید"
+
+msgid "You do not have sufficient permissions"
+msgstr "شما دسترسی کافی برای انجام این عملیات را ندارید"
+
+# Data Extraction Messages
+msgid "Elementor not found"
+msgstr "المنتور یافت نشد"
+
+msgid "Elementor not found on source site"
+msgstr "المنتور در سایت مبدا یافت نشد"
+
+msgid "Invalid data structure"
+msgstr "ساختار داده نامعتبر است"
+
+msgid "Version incompatibility"
+msgstr "نسخه سازگار نیست"
+
+msgid "Elementor version is not compatible"
+msgstr "نسخه المنتور سازگار نیست"
+
+# Import Messages
+msgid "Import failed"
+msgstr "وارد کردن ناموفق بود"
+
+msgid "Error importing data"
+msgstr "خطا در وارد کردن داده‌ها"
+
+msgid "Media download failed"
+msgstr "دانلود رسانه ناموفق بود"
+
+msgid "Error downloading media files"
+msgstr "خطا در دانلود فایل‌های رسانه"
+
+msgid "Import successful"
+msgstr "وارد کردن با موفقیت انجام شد"
+
+msgid "Widgets copied successfully"
+msgstr "ویجت‌ها با موفقیت کپی شدند"
+
+msgid "Widgets imported: %d"
+msgstr "تعداد ویجت‌های وارد شده: %d"
+
+msgid "Media files downloaded: %d"
+msgstr "تعداد فایل‌های رسانه دانلود شده: %d"
+
+# Content Tree
+msgid "Pages"
+msgstr "صفحات"
+
+msgid "Posts"
+msgstr "نوشته‌ها"
+
+msgid "Sections"
+msgstr "بخش‌ها"
+
+msgid "Widgets"
+msgstr "ویجت‌ها"
+
+msgid "Select All"
+msgstr "انتخاب همه"
+
+msgid "Deselect All"
+msgstr "لغو انتخاب همه"
+
+# Progress Messages
+msgid "Connecting to source site..."
+msgstr "در حال اتصال به سایت مبدا..."
+
+msgid "Loading content..."
+msgstr "در حال بارگذاری محتوا..."
+
+msgid "Extracting data..."
+msgstr "در حال استخراج داده‌ها..."
+
+msgid "Downloading media..."
+msgstr "در حال دانلود رسانه‌ها..."
+
+msgid "Importing content..."
+msgstr "در حال وارد کردن محتوا..."
+
+msgid "Regenerating CSS..."
+msgstr "در حال بازسازی CSS..."
+
+msgid "Complete"
+msgstr "تکمیل شد"
+
+# Error Suggestions
+msgid "Please verify the URL and try again"
+msgstr "لطفاً آدرس را بررسی کنید و دوباره تلاش کنید"
+
+msgid "Please check your credentials"
+msgstr "لطفاً اطلاعات ورود خود را بررسی کنید"
+
+msgid "Please ensure Elementor is installed on the source site"
+msgstr "لطفاً مطمئن شوید که المنتور در سایت مبدا نصب شده است"
+
+msgid "Please try a different extraction method"
+msgstr "لطفاً روش استخراج دیگری را امتحان کنید"
+
+# Buttons
+msgid "Test Connection"
+msgstr "تست اتصال"
+
+msgid "Cancel"
+msgstr "لغو"
+
+msgid "Retry"
+msgstr "تلاش مجدد"
+
+msgid "Close"
+msgstr "بستن"
+
+# Help Text
+msgid "Enter the full URL of the WordPress site (e.g., https://example.com)"
+msgstr "آدرس کامل سایت وردپرس را وارد کنید (مثال: https://example.com)"
+
+msgid "Choose how to authenticate with the source site"
+msgstr "نحوه احراز هویت با سایت مبدا را انتخاب کنید"
+
+msgid "For public pages, no authentication is needed"
+msgstr "برای صفحات عمومی، نیازی به احراز هویت نیست"
+
+msgid "For private content, provide WordPress credentials"
+msgstr "برای محتوای خصوصی، اطلاعات ورود وردپرس را وارد کنید"
+
+msgid "Application passwords are more secure than regular passwords"
+msgstr "رمزهای عبور برنامه امن‌تر از رمزهای عبور معمولی هستند"

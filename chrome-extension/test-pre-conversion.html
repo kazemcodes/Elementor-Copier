@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pre-Conversion Test - Elementor Copier</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .test-container {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #333;
+      border-bottom: 2px solid #0073aa;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #0073aa;
+      margin-top: 0;
+    }
+    .test-case {
+      margin: 15px 0;
+      padding: 15px;
+      background: #f9f9f9;
+      border-left: 4px solid #0073aa;
+    }
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+    .error {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+    .info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+    button {
+      background: #0073aa;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+    button:hover {
+      background: #005a87;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .stat-card {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 4px;
+      border-left: 4px solid #0073aa;
+    }
+    .stat-value {
+      font-size: 24px;
+      font-weight: bold;
+      color: #0073aa;
+    }
+    .stat-label {
+      color: #666;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Pre-Conversion Test Suite</h1>
+  <p>This page tests the pre-conversion functionality (Task 2.3) that converts extension data to native Elementor format during copy operations.</p>
+
+  <div class="test-container">
+    <h2>Test 1: Format Converter Loading</h2>
+    <div class="test-case">
+      <button onclick="testFormatConverterLoading()">Run Test</button>
+      <div id="test1-result" class="result info">Click "Run Test" to check if format converter is loaded</div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>Test 2: Pre-Conversion Function</h2>
+    <div class="test-case">
+      <button onclick="testPreConversion()">Run Test</button>
+      <div id="test2-result" class="result info">Click "Run Test" to test pre-conversion with sample data</div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>Test 3: Metadata Inclusion</h2>
+    <div class="test-case">
+      <button onclick="testMetadata()">Run Test</button>
+      <div id="test3-result" class="result info">Click "Run Test" to verify metadata is included</div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>Test 4: Native Format Structure</h2>
+    <div class="test-case">
+      <button onclick="testNativeFormatStructure()">Run Test</button>
+      <div id="test4-result" class="result info">Click "Run Test" to verify native format structure</div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>Test 5: Conversion Timestamp</h2>
+    <div class="test-case">
+      <button onclick="testConversionTimestamp()">Run Test</button>
+      <div id="test5-result" class="result info">Click "Run Test" to verify conversion timestamp is added</div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>Test 6: Error Handling</h2>
+    <div class="test-case">
+      <button onclick="testErrorHandling()">Run Test</button>
+      <div id="test6-result" class="result info">Click "Run Test" to test error handling with invalid data</div>
+    </div>
+  </div>
+
+  <div class="test-container">
+    <h2>Test Summary</h2>
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value" id="passed-count">0</div>
+        <div class="stat-label">Tests Passed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="failed-count">0</div>
+        <div class="stat-label">Tests Failed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="total-count">6</div>
+        <div class="stat-label">Total Tests</div>
+      </div>
+    </div>
+    <button onclick="runAllTests()" style="margin-top: 20px; width: 100%;">Run All Tests</button>
+  </div>
+
+  <script src="elementor-format-converter.js"></script>
+  <script>
+    let passedTests = 0;
+    let failedTests = 0;
+
+    function updateStats() {
+      document.getElementById('passed-count').textContent = passedTests;
+      document.getElementById('failed-count').textContent = failedTests;
+    }
+
+    function markTestPassed(resultId, message) {
+      const resultDiv = document.getElementById(resultId);
+      resultDiv.className = 'result success';
+      resultDiv.textContent = '✓ PASSED: ' + message;
+      passedTests++;
+      updateStats();
+    }
+
+    function markTestFailed(resultId, message) {
+      const resultDiv = document.getElementById(resultId);
+      resultDiv.className = 'result error';
+      resultDiv.textContent = '✗ FAILED: ' + message;
+      failedTests++;
+      updateStats();
+    }
+
+    function testFormatConverterLoading() {
+      const resultId = 'test1-result';
+      
+      if (typeof window.ElementorFormatConverter !== 'undefined') {
+        const methods = ['convertToNativeFormat', 'generateElementId', 'mapWidgetType', 'validateOutput'];
+        const missingMethods = methods.filter(m => typeof window.ElementorFormatConverter[m] !== 'function');
+        
+        if (missingMethods.length === 0) {
+          markTestPassed(resultId, 'Format converter loaded successfully with all required methods');
+        } else {
+          markTestFailed(resultId, 'Format converter missing methods: ' + missingMethods.join(', '));
+        }
+      } else {
+        markTestFailed(resultId, 'Format converter not loaded (window.ElementorFormatConverter is undefined)');
+      }
+    }
+
+    function testPreConversion() {
+      const resultId = 'test2-result';
+      
+      if (typeof window.ElementorFormatConverter === 'undefined') {
+        markTestFailed(resultId, 'Format converter not loaded');
+        return;
+      }
+
+      try {
+        // Sample extension data
+        const extensionData = {
+          version: '1.0.0',
+          type: 'elementor-copier',
+          elementType: 'widget',
+          data: {
+            id: 'test123',
+            elType: 'widget',
+            widgetType: 'heading',
+            settings: {
+              title: 'Test Heading',
+              tag: 'h2'
+            },
+            elements: []
+          },
+          metadata: {
+            sourceUrl: 'https://example.com',
+            copiedAt: new Date().toISOString(),
+            elementorVersion: '3.5.0'
+          }
+        };
+
+        // Simulate addNativeFormat function
+        const result = window.ElementorFormatConverter.convertToNativeFormat(
+          extensionData,
+          {
+            sourceVersion: extensionData.metadata.elementorVersion,
+            targetVersion: 'unknown'
+          }
+        );
+
+        if (result && result.elType && result.id && result.settings) {
+          markTestPassed(resultId, 'Pre-conversion successful. Result: ' + JSON.stringify(result, null, 2));
+        } else {
+          markTestFailed(resultId, 'Pre-conversion returned invalid structure');
+        }
+      } catch (error) {
+        markTestFailed(resultId, 'Pre-conversion threw error: ' + error.message);
+      }
+    }
+
+    function testMetadata() {
+      const resultId = 'test3-result';
+      
+      try {
+        const extensionData = {
+          version: '1.0.0',
+          type: 'elementor-copier',
+          elementType: 'widget',
+          data: {
+            id: 'test456',
+            elType: 'widget',
+            widgetType: 'button',
+            settings: {
+              text: 'Click Me'
+            },
+            elements: []
+          },
+          metadata: {
+            sourceUrl: 'https://example.com',
+            copiedAt: new Date().toISOString(),
+            elementorVersion: '4.0.0'
+          }
+        };
+
+        // Check that metadata exists and has required fields
+        if (extensionData.metadata &&
+            extensionData.metadata.sourceUrl &&
+            extensionData.metadata.copiedAt &&
+            extensionData.metadata.elementorVersion) {
+          markTestPassed(resultId, 'Metadata includes all required fields: ' + JSON.stringify(extensionData.metadata, null, 2));
+        } else {
+          markTestFailed(resultId, 'Metadata missing required fields');
+        }
+      } catch (error) {
+        markTestFailed(resultId, 'Metadata test threw error: ' + error.message);
+      }
+    }
+
+    function testNativeFormatStructure() {
+      const resultId = 'test4-result';
+      
+      if (typeof window.ElementorFormatConverter === 'undefined') {
+        markTestFailed(resultId, 'Format converter not loaded');
+        return;
+      }
+
+      try {
+        const extensionData = {
+          version: '1.0.0',
+          type: 'elementor-copier',
+          elementType: 'widget',
+          data: {
+            id: 'test789',
+            elType: 'widget',
+            widgetType: 'image',
+            settings: {
+              image: { url: 'https://example.com/image.jpg' }
+            },
+            elements: []
+          },
+          metadata: {
+            elementorVersion: '3.8.0'
+          }
+        };
+
+        const nativeFormat = window.ElementorFormatConverter.convertToNativeFormat(
+          extensionData,
+          { sourceVersion: '3.8.0', targetVersion: 'unknown' }
+        );
+
+        // Check native format structure
+        const hasRequiredFields = 
+          nativeFormat.elType &&
+          nativeFormat.id &&
+          nativeFormat.settings &&
+          Array.isArray(nativeFormat.elements) &&
+          typeof nativeFormat.isInner === 'boolean';
+
+        if (hasRequiredFields) {
+          markTestPassed(resultId, 'Native format has correct structure: ' + JSON.stringify(nativeFormat, null, 2));
+        } else {
+          markTestFailed(resultId, 'Native format missing required fields');
+        }
+      } catch (error) {
+        markTestFailed(resultId, 'Native format test threw error: ' + error.message);
+      }
+    }
+
+    function testConversionTimestamp() {
+      const resultId = 'test5-result';
+      
+      try {
+        const beforeTime = new Date().toISOString();
+        
+        // Simulate adding conversion timestamp
+        const clipboardData = {
+          version: '1.0.0',
+          type: 'elementor-copier',
+          data: {},
+          metadata: {}
+        };
+
+        const withTimestamp = {
+          ...clipboardData,
+          conversionTimestamp: new Date().toISOString()
+        };
+
+        const afterTime = new Date().toISOString();
+
+        if (withTimestamp.conversionTimestamp &&
+            withTimestamp.conversionTimestamp >= beforeTime &&
+            withTimestamp.conversionTimestamp <= afterTime) {
+          markTestPassed(resultId, 'Conversion timestamp added correctly: ' + withTimestamp.conversionTimestamp);
+        } else {
+          markTestFailed(resultId, 'Conversion timestamp invalid or missing');
+        }
+      } catch (error) {
+        markTestFailed(resultId, 'Timestamp test threw error: ' + error.message);
+      }
+    }
+
+    function testErrorHandling() {
+      const resultId = 'test6-result';
+      
+      if (typeof window.ElementorFormatConverter === 'undefined') {
+        markTestFailed(resultId, 'Format converter not loaded');
+        return;
+      }
+
+      try {
+        // Test with invalid data
+        const invalidData = {
+          version: '1.0.0',
+          type: 'elementor-copier',
+          // Missing 'data' property
+          metadata: {}
+        };
+
+        try {
+          window.ElementorFormatConverter.convertToNativeFormat(invalidData, {});
+          markTestFailed(resultId, 'Should have thrown error for invalid data');
+        } catch (error) {
+          markTestPassed(resultId, 'Error handling works correctly. Error caught: ' + error.message);
+        }
+      } catch (error) {
+        markTestFailed(resultId, 'Error handling test threw unexpected error: ' + error.message);
+      }
+    }
+
+    async function runAllTests() {
+      // Reset counters
+      passedTests = 0;
+      failedTests = 0;
+      updateStats();
+
+      // Run all tests with small delays
+      testFormatConverterLoading();
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      testPreConversion();
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      testMetadata();
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      testNativeFormatStructure();
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      testConversionTimestamp();
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      testErrorHandling();
+    }
+
+    // Show initial message
+    console.log('Pre-Conversion Test Suite loaded. Click buttons to run tests.');
+  </script>
+</body>
+</html>

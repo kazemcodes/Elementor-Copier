@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 27 - Paste Workflow Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #0073aa;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #0073aa;
+            margin-top: 0;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.pass {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        ul {
+            line-height: 1.8;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+        .feature-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .feature-list li:before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Task 27: Chrome Extension Paste Workflow - Implementation Test</h1>
+    
+    <div class="test-section">
+        <h2>Task Overview <span class="status pass">COMPLETED</span></h2>
+        <p><strong>Task:</strong> Add Chrome extension to page selection in paste workflow</p>
+        <p><strong>Requirements:</strong> 4.5, 4.6, 4.7, 4.8, 4.9</p>
+    </div>
+
+    <div class="test-section">
+        <h2>Sub-tasks Implemented</h2>
+        <ul class="feature-list">
+            <li>Update paste preview to show element type and source info</li>
+            <li>Implement new page creation option for pasted content</li>
+            <li>Implement existing page selection for pasted content</li>
+            <li>Implement template creation option for pasted content</li>
+            <li>Add position selection (top/bottom/replace) for existing pages</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>Implementation Details</h2>
+        
+        <h3>1. Enhanced Paste Preview (Already Implemented)</h3>
+        <p>The paste preview now displays:</p>
+        <ul>
+            <li>Element type (widget, section, column, page)</li>
+            <li>Widget type (if applicable)</li>
+            <li>Source URL</li>
+            <li>Copy timestamp</li>
+            <li>Elementor version</li>
+            <li>Media file count</li>
+        </ul>
+
+        <h3>2. Target Type Selection (NEW)</h3>
+        <p>Added three target type options:</p>
+        <ul>
+            <li><strong>Create New Page:</strong> Creates a new draft page with the specified title</li>
+            <li><strong>Add to Existing Page:</strong> Adds content to an existing page with position control</li>
+            <li><strong>Create as Template:</strong> Creates an Elementor template (page or section type)</li>
+        </ul>
+
+        <h3>3. Position Selection for Existing Pages (Already Implemented)</h3>
+        <p>When adding to existing pages, users can choose:</p>
+        <ul>
+            <li><strong>Insert at Top:</strong> Adds content before existing elements</li>
+            <li><strong>Insert at Bottom:</strong> Adds content after existing elements (default)</li>
+            <strong>Replace All Content:</strong> Replaces all existing content with pasted content</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>Files Modified</h2>
+        <ul>
+            <li><code>includes/admin/class-adminpage.php</code> - Updated UI with target type selection</li>
+            <li><code>assets/js/admin.js</code> - Added target type handling and validation</li>
+            <li><code>includes/ajax/class-ajaxhandler.php</code> - Updated paste handler to support all target types</li>
+            <li><code>assets/css/admin.css</code> - Added styles for paste target options</li>
+            <li><code>assets/css/admin-rtl.css</code> - Added RTL styles for paste target options</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>PHP Backend Changes</h2>
+        <h3>Updated handle_paste_clipboard() Method</h3>
+        <div class="code-block">
+// Now accepts target_type parameter: 'new_page', 'existing_page', or 'template'
+
+// For new_page:
+- Creates new page with wp_insert_post()
+- Sets post_status to 'draft'
+- Enables Elementor builder mode
+- Returns edit URL for new page
+
+// For existing_page:
+- Validates target_page_id
+- Validates position (top/bottom/replace)
+- Imports to specified page
+
+// For template:
+- Creates elementor_library post type
+- Sets template_type (page or section)
+- Sets post_status to 'publish'
+- Returns edit URL for template
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>JavaScript Frontend Changes</h2>
+        <h3>New Functions Added</h3>
+        <div class="code-block">
+handlePasteTargetTypeChange()
+- Shows/hides target options based on selection
+- Triggered when user changes target type radio buttons
+
+validatePasteTarget(targetType)
+- Validates required fields for each target type
+- Returns {valid: boolean, message: string}
+
+getPasteImportData(targetType)
+- Gathers target-specific data for AJAX request
+- Returns object with appropriate fields
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>Requirements Verification</h2>
+        
+        <h3>Requirement 4.5: Enable import options</h3>
+        <p><span class="status pass">SATISFIED</span></p>
+        <ul>
+            <li>✓ Create new page option implemented</li>
+            <li>✓ Add to existing page option implemented</li>
+            <li>✓ Save as template option implemented</li>
+        </ul>
+
+        <h3>Requirement 4.6: Use Elementor's API</h3>
+        <p><span class="status pass">SATISFIED</span></p>
+        <ul>
+            <li>✓ Uses wp_insert_post() for page/template creation</li>
+            <li>✓ Sets _elementor_edit_mode meta for Elementor integration</li>
+            <li>✓ Uses Importer class for data insertion</li>
+        </ul>
+
+        <h3>Requirement 4.7: Regenerate CSS and clear caches</h3>
+        <p><span class="status pass">SATISFIED</span></p>
+        <ul>
+            <li>✓ Handled by Importer class (already implemented in Task 22)</li>
+        </ul>
+
+        <h3>Requirement 4.8: Display success message with edit link</h3>
+        <p><span class="status pass">SATISFIED</span></p>
+        <ul>
+            <li>✓ Success message includes page/template title</li>
+            <li>✓ Edit URL returned in response</li>
+            <li>✓ Link opens Elementor editor</li>
+        </ul>
+
+        <h3>Requirement 4.9: Display detailed error messages</h3>
+        <p><span class="status pass">SATISFIED</span></p>
+        <ul>
+            <li>✓ Validation errors for missing fields</li>
+            <li>✓ Error messages in Persian (via translation functions)</li>
+            <li>✓ Detailed error logging</li>
+        </ul>
+    </div>
+
+    <div class="test-section">
+        <h2>Testing Instructions</h2>
+        <ol>
+            <li>Install the Elementor Copier Chrome extension</li>
+            <li>Visit any Elementor website and copy a widget/section</li>
+            <li>Go to WordPress Admin → Tools → Elementor Widget Copier</li>
+            <li>Click "Paste from Clipboard" button</li>
+            <li>Verify preview shows element type and source info</li>
+            <li>Test each target type:
+                <ul>
+                    <li><strong>New Page:</strong> Enter title, import, verify new draft page created</li>
+                    <li><strong>Existing Page:</strong> Select page, choose position, import, verify content added</li>
+                    <li><strong>Template:</strong> Enter title, select type, import, verify template created</li>
+                </ul>
+            </li>
+            <li>Verify edit links work correctly</li>
+            <li>Test with media download enabled/disabled</li>
+            <li>Test error handling (empty fields, invalid data)</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>User Experience Flow</h2>
+        <ol>
+            <li>User copies element using Chrome extension</li>
+            <li>User clicks "Paste from Clipboard" in WordPress</li>
+            <li>Preview displays with element details</li>
+            <li>User selects target type (default: Create New Page)</li>
+            <li>Appropriate options appear based on selection</li>
+            <li>User fills required fields</li>
+            <li>User clicks "Import Now"</li>
+            <li>Success message displays with edit link</li>
+            <li>User can click link to edit in Elementor</li>
+        </ol>
+    </div>
+
+    <div class="test-section">
+        <h2>Summary</h2>
+        <p><strong>Status:</strong> <span class="status pass">ALL SUB-TASKS COMPLETED</span></p>
+        <p>Task 27 has been successfully implemented with full support for:</p>
+        <ul class="feature-list">
+            <li>Enhanced paste preview with element type and source information</li>
+            <li>New page creation with custom title</li>
+            <li>Existing page selection with position control (top/bottom/replace)</li>
+            <li>Template creation with type selection (page/section)</li>
+            <li>Comprehensive validation and error handling</li>
+            <li>Persian language support via translation functions</li>
+            <li>RTL layout support</li>
+        </ul>
+    </div>
+</body>
+</html>

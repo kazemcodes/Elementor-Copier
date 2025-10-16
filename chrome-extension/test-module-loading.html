@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Module Loading Test</title>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 20px;
+      background: #1e1e1e;
+      color: #d4d4d4;
+    }
+
+    .pass {
+      color: #4caf50;
+    }
+
+    .fail {
+      color: #f44336;
+    }
+
+    .info {
+      color: #2196f3;
+    }
+
+    pre {
+      background: #2d2d2d;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Module Loading Test</h1>
+  <div id="output"></div>
+
+  <script>
+    const output = document.getElementById('output');
+
+    function log(message, type = 'info') {
+      const div = document.createElement('div');
+      div.className = type;
+      div.textContent = message;
+      output.appendChild(div);
+    }
+
+    log('Starting module loading test...', 'info');
+    log('', 'info');
+
+    // Load modules in order
+    const modules = [
+      'elementor-format-converter.js',
+      'elementor-editor-detector.js',
+      'clipboard-manager.js',
+      'paste-interceptor.js',
+      'editor-injector.js',
+      'media-url-handler.js',
+      'version-compatibility.js',
+      'content-sanitizer.js',
+      'notification-manager.js'
+    ];
+
+    let loadedCount = 0;
+
+    modules.forEach((moduleName, index) => {
+      const script = document.createElement('script');
+      script.src = chrome.runtime.getURL(moduleName);
+
+      script.onload = () => {
+        loadedCount++;
+        log(`✓ ${moduleName} loaded (${loadedCount}/${modules.length})`, 'pass');
+
+        // After all modules loaded, check window
+        if (loadedCount === modules.length) {
+          setTimeout(() => {
+            log('', 'info');
+            log('Checking window object...', 'info');
+            log('', 'info');
+
+            const checks = {
+              'ElementorFormatConverter': window.ElementorFormatConverter,
+              'ElementorEditorDetector': window.ElementorEditorDetector,
+              'ClipboardManager': window.ClipboardManager,
+              'PasteInterceptor': window.PasteInterceptor,
+              'EditorContextInjector': window.EditorContextInjector,
+              'MediaURLHandler': window.MediaURLHandler,
+              'VersionCompatibilityManager': window.VersionCompatibilityManager,
+              'ContentSanitizer': window.ContentSanitizer,
+              'NotificationManager': window.NotificationManager
+            };
+
+            let passCount = 0;
+            let failCount = 0;
+
+            Object.entries(checks).forEach(([name, value]) => {
+              if (value) {
+                log(`✓ window.${name} = ${typeof value}`, 'pass');
+                passCount++;
+              } else {
+                log(`✗ window.${name} = undefined`, 'fail');
+                failCount++;
+              }
+            });
+
+            log('', 'info');
+            log(`Results: ${passCount} passed, ${failCount} failed`, failCount === 0 ? 'pass' : 'fail');
+
+            if (failCount === 0) {
+              log('', 'info');
+              log('✓ All modules loaded successfully!', 'pass');
+              log('The extension should work correctly.', 'pass');
+            } else {
+              log('', 'info');
+              log('✗ Some modules failed to load', 'fail');
+              log('Check the browser console for errors', 'fail');
+            }
+          }, 500);
+        }
+      };
+
+      script.onerror = () => {
+        log(`✗ ${moduleName} failed to load`, 'fail');
+      };
+
+      document.head.appendChild(script);
+    });
+  </script>
+</body>
+
+</html>

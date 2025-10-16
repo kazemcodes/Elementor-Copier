@@ -1,0 +1,49 @@
+{
+  "manifest_version": 3,
+  "name": "Elementor Copier",
+  "version": "1.0.0",
+  "description": "Copy Elementor widgets, sections, and pages from any website with a simple right-click",
+  "permissions": [
+    "contextMenus",
+    "clipboardWrite",
+    "activeTab",
+    "storage",
+    "notifications",
+    "offscreen"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles/highlight.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["styles/highlight.css"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "minimum_chrome_version": "109"
+}

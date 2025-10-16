@@ -1,0 +1,90 @@
+{
+  "__ELEMENTOR_COPIER_DATA__": {
+    "source": "elementor-copier-extension",
+    "version": "1.0.0"
+  },
+  "version": "1.0.0",
+  "type": "elementor-copier",
+  "elementType": "section",
+  "data": {
+    "id": "test123",
+    "elType": "section",
+    "settings": {
+      "background_background": "classic",
+      "background_color": "#f5f5f5"
+    },
+    "elements": [
+      {
+        "id": "col1",
+        "elType": "column",
+        "settings": {},
+        "elements": [
+          {
+            "id": "heading1",
+            "elType": "widget",
+            "widgetType": "heading",
+            "settings": {
+              "title": "Hello from Extension!",
+              "header_size": "h2"
+            },
+            "elements": []
+          },
+          {
+            "id": "text1",
+            "elType": "widget",
+            "widgetType": "text-editor",
+            "settings": {
+              "editor": "<p>This section was pasted using the Elementor Copier extension. It works!</p>"
+            },
+            "elements": []
+          }
+        ]
+      },
+      {
+        "id": "col2",
+        "elType": "column",
+        "settings": {},
+        "elements": [
+          {
+            "id": "image1",
+            "elType": "widget",
+            "widgetType": "image",
+            "settings": {
+              "image": {
+                "url": "https://picsum.photos/800/600",
+                "alt": "Random Image from Picsum",
+                "id": ""
+              },
+              "caption": "Image loaded from external URL"
+            },
+            "elements": []
+          },
+          {
+            "id": "button1",
+            "elType": "widget",
+            "widgetType": "button",
+            "settings": {
+              "text": "Click Me!",
+              "link": {
+                "url": "https://elementor.com"
+              }
+            },
+            "elements": []
+          }
+        ]
+      }
+    ]
+  },
+  "media": [
+    {
+      "type": "image",
+      "url": "https://picsum.photos/800/600",
+      "alt": "Random Image from Picsum"
+    }
+  ],
+  "metadata": {
+    "sourceUrl": "https://test.com",
+    "copiedAt": "2025-01-16T12:00:00.000Z",
+    "elementorVersion": "3.28.0"
+  }
+}

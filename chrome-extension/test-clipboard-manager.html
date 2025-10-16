@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clipboard Manager Test Suite</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #92003b;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #92003b;
+      margin-top: 30px;
+    }
+    .test-section {
+      background: white;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    button {
+      background: #92003b;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background: #b30047;
+    }
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+    .result {
+      margin-top: 10px;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .success {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+    }
+    .error {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+    }
+    .info {
+      background: #d1ecf1;
+      border: 1px solid #bee5eb;
+      color: #0c5460;
+    }
+    .warning {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      color: #856404;
+    }
+    pre {
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 4px;
+      overflow-x: auto;
+    }
+    .test-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Clipboard Manager Test Suite</h1>
+  <p>Test the multi-format clipboard manager functionality for native Elementor paste support.</p>
+
+  <!-- Test 1: Write Multi-Format Data -->
+  <div class="test-section">
+    <h2>Test 1: Write Multi-Format Data</h2>
+    <p>Tests the <code>writeMultiFormat()</code> method to write data with extension marker.</p>
+    <div class="test-controls">
+      <button onclick="testWriteMultiFormat()">Run Test</button>
+      <button onclick="clearResult('result1')">Clear</button>
+    </div>
+    <div id="result1" class="result info">Click "Run Test" to start...</div>
+  </div>
+
+  <!-- Test 2: Read Extension Data -->
+  <div class="test-section">
+    <h2>Test 2: Read Extension Data</h2>
+    <p>Tests the <code>readExtensionData()</code> method to detect and read extension clipboard data.</p>
+    <div class="test-controls">
+      <button onclick="testReadExtensionData()">Run Test</button>
+      <button onclick="clearResult('result2')">Clear</button>
+    </div>
+    <div id="result2" class="result info">Click "Run Test" to start...</div>
+  </div>
+
+  <!-- Test 3: Has Extension Data -->
+  <div class="test-section">
+    <h2>Test 3: Has Extension Data (Quick Check)</h2>
+    <p>Tests the <code>hasExtensionData()</code> method for quick clipboard content detection.</p>
+    <div class="test-controls">
+      <button onclick="testHasExtensionData()">Run Test</button>
+      <button onclick="clearResult('result3')">Clear</button>
+    </div>
+    <div id="result3" class="result info">Click "Run Test" to start...</div>
+  </div>
+
+  <!-- Test 4: Extension Marker -->
+  <div class="test-section">
+    <h2>Test 4: Extension Marker Operations</h2>
+    <p>Tests adding, checking, and removing extension markers.</p>
+    <div class="test-controls">
+      <button onclick="testExtensionMarker()">Run Test</button>
+      <button onclick="clearResult('result4')">Clear</button>
+    </div>
+    <div id="result4" class="result info">Click "Run Test" to start...</div>
+  </div>
+
+  <!-- Test 5: Non-Extension Data -->
+  <div class="test-section">
+    <h2>Test 5: Non-Extension Data Detection</h2>
+    <p>Tests that regular clipboard data (without marker) is correctly identified.</p>
+    <div class="test-controls">
+      <button onclick="testNonExtensionData()">Run Test</button>
+      <button onclick="clearResult('result5')">Clear</button>
+    </div>
+    <div id="result5" class="result info">Click "Run Test" to start...</div>
+  </div>
+
+  <!-- Test 6: End-to-End Workflow -->
+  <div class="test-section">
+    <h2>Test 6: End-to-End Workflow</h2>
+    <p>Tests complete write → read → verify workflow.</p>
+    <div class="test-controls">
+      <button onclick="testEndToEnd()">Run Test</button>
+      <button onclick="clearResult('result6')">Clear</button>
+    </div>
+    <div id="result6" class="result info">Click "Run Test" to start...</div>
+  </div>
+
+  <!-- Run All Tests -->
+  <div class="test-section">
+    <h2>Run All Tests</h2>
+    <div class="test-controls">
+      <button onclick="runAllTests()" style="background: #28a745;">Run All Tests</button>
+      <button onclick="clearAllResults()">Clear All</button>
+    </div>
+  </div>
+
+  <script src="clipboard-manager.js"></script>
+  <script>
+    // Initialize clipboard manager
+    const clipboardManager = new ClipboardManager();
+
+    // Sample test data
+    const sampleElementorData = {
+      elType: 'widget',
+      widgetType: 'heading',
+      id: 'a1b2c3d4',
+      settings: {
+        title: 'Test Heading',
+        header_size: 'h2',
+        align: 'center'
+      },
+      elements: [],
+      isInner: false
+    };
+
+    // Test 1: Write Multi-Format Data
+    async function testWriteMultiFormat() {
+      const resultDiv = document.getElementById('result1');
+      resultDiv.className = 'result info';
+      resultDiv.textContent = 'Running test...';
+
+      try {
+        const success = await clipboardManager.writeMultiFormat(sampleElementorData);
+        
+        if (success) {
+          resultDiv.className = 'result success';
+          resultDiv.textContent = '✓ SUCCESS: Data written to clipboard\n\n' +
+            'Sample data:\n' + JSON.stringify(sampleElementorData, null, 2) +
+            '\n\nTry pasting (Ctrl+V) in a text editor to see the marked data.';
+        } else {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = '✗ FAILED: Write returned false';
+        }
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = '✗ ERROR: ' + error.message;
+      }
+    }
+
+    // Test 2: Read Extension Data
+    async function testReadExtensionData() {
+      const resultDiv = document.getElementById('result2');
+      resultDiv.className = 'result info';
+      resultDiv.textContent = 'Running test... (Make sure you ran Test 1 first)';
+
+      try {
+        const data = await clipboardManager.readExtensionData();
+        
+        if (data) {
+          resultDiv.className = 'result success';
+          resultDiv.textContent = '✓ SUCCESS: Extension data found in clipboard\n\n' +
+            'Data:\n' + JSON.stringify(data, null, 2);
+        } else {
+          resultDiv.className = 'result warning';
+          resultDiv.textContent = '⚠ WARNING: No extension data found in clipboard\n\n' +
+            'Make sure to run Test 1 first to write data to clipboard.';
+        }
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = '✗ ERROR: ' + error.message;
+      }
+    }
+
+    // Test 3: Has Extension Data
+    async function testHasExtensionData() {
+      const resultDiv = document.getElementById('result3');
+      resultDiv.className = 'result info';
+      resultDiv.textContent = 'Running test...';
+
+      try {
+        const hasData = await clipboardManager.hasExtensionData();
+        
+        if (hasData) {
+          resultDiv.className = 'result success';
+          resultDiv.textContent = '✓ SUCCESS: Extension data detected in clipboard\n\n' +
+            'hasExtensionData() returned: true';
+        } else {
+          resultDiv.className = 'result warning';
+          resultDiv.textContent = '⚠ WARNING: No extension data detected\n\n' +
+            'hasExtensionData() returned: false\n' +
+            'Make sure to run Test 1 first.';
+        }
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = '✗ ERROR: ' + error.message;
+      }
+    }
+
+    // Test 4: Extension Marker Operations
+    function testExtensionMarker() {
+      const resultDiv = document.getElementById('result4');
+      resultDiv.className = 'result info';
+      resultDiv.textContent = 'Running test...';
+
+      try {
+        const testData = { test: 'data', value: 123 };
+        
+        // Add marker
+        const markedData = clipboardManager.addExtensionMarker(testData);
+        const hasMarker = clipboardManager.hasExtensionMarker(markedData);
+        const metadata = clipboardManager.getExtensionMetadata(markedData);
+        
+        // Remove marker
+        const cleanedData = clipboardManager.removeExtensionMarker(markedData);
+        const hasMarkerAfterRemoval = clipboardManager.hasExtensionMarker(cleanedData);
+        
+        let output = '✓ SUCCESS: All marker operations work correctly\n\n';
+        output += '1. Original data:\n' + JSON.stringify(testData, null, 2) + '\n\n';
+        output += '2. After adding marker:\n' + JSON.stringify(markedData, null, 2) + '\n\n';
+        output += '3. Has marker: ' + hasMarker + '\n\n';
+        output += '4. Metadata:\n' + JSON.stringify(metadata, null, 2) + '\n\n';
+        output += '5. After removing marker:\n' + JSON.stringify(cleanedData, null, 2) + '\n\n';
+        output += '6. Has marker after removal: ' + hasMarkerAfterRemoval;
+        
+        resultDiv.className = 'result success';
+        resultDiv.textContent = output;
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = '✗ ERROR: ' + error.message;
+      }
+    }
+
+    // Test 5: Non-Extension Data Detection
+    async function testNonExtensionData() {
+      const resultDiv = document.getElementById('result5');
+      resultDiv.className = 'result info';
+      resultDiv.textContent = 'Running test...';
+
+      try {
+        // Write regular data without marker
+        const regularData = { regular: 'data', without: 'marker' };
+        await navigator.clipboard.writeText(JSON.stringify(regularData));
+        
+        // Try to read as extension data
+        const data = await clipboardManager.readExtensionData();
+        const hasData = await clipboardManager.hasExtensionData();
+        
+        if (!data && !hasData) {
+          resultDiv.className = 'result success';
+          resultDiv.textContent = '✓ SUCCESS: Regular data correctly identified as non-extension data\n\n' +
+            'readExtensionData() returned: null\n' +
+            'hasExtensionData() returned: false\n\n' +
+            'This confirms the extension marker detection works correctly.';
+        } else {
+          resultDiv.className = 'result error';
+          resultDiv.textContent = '✗ FAILED: Regular data was incorrectly identified as extension data';
+        }
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = '✗ ERROR: ' + error.message;
+      }
+    }
+
+    // Test 6: End-to-End Workflow
+    async function testEndToEnd() {
+      const resultDiv = document.getElementById('result6');
+      resultDiv.className = 'result info';
+      resultDiv.textContent = 'Running end-to-end test...';
+
+      try {
+        let output = 'End-to-End Test Results:\n\n';
+        
+        // Step 1: Write data
+        output += '1. Writing data to clipboard...\n';
+        const writeSuccess = await clipboardManager.writeMultiFormat(sampleElementorData);
+        output += '   Result: ' + (writeSuccess ? '✓ Success' : '✗ Failed') + '\n\n';
+        
+        // Step 2: Check if data exists
+        output += '2. Checking if extension data exists...\n';
+        const hasData = await clipboardManager.hasExtensionData();
+        output += '   Result: ' + (hasData ? '✓ Found' : '✗ Not found') + '\n\n';
+        
+        // Step 3: Read data back
+        output += '3. Reading data from clipboard...\n';
+        const readData = await clipboardManager.readExtensionData();
+        output += '   Result: ' + (readData ? '✓ Success' : '✗ Failed') + '\n\n';
+        
+        // Step 4: Verify data integrity
+        output += '4. Verifying data integrity...\n';
+        if (readData) {
+          const cleanedData = clipboardManager.removeExtensionMarker(readData);
+          const dataMatches = JSON.stringify(cleanedData) === JSON.stringify(sampleElementorData);
+          output += '   Result: ' + (dataMatches ? '✓ Data matches' : '✗ Data mismatch') + '\n\n';
+          
+          if (writeSuccess && hasData && readData && dataMatches) {
+            resultDiv.className = 'result success';
+            output += '✓ ALL TESTS PASSED: End-to-end workflow successful!';
+          } else {
+            resultDiv.className = 'result error';
+            output += '✗ SOME TESTS FAILED: Check results above';
+          }
+        } else {
+          resultDiv.className = 'result error';
+          output += '   Result: ✗ Could not verify (no data read)\n\n';
+          output += '✗ TEST FAILED: Could not complete workflow';
+        }
+        
+        resultDiv.textContent = output;
+      } catch (error) {
+        resultDiv.className = 'result error';
+        resultDiv.textContent = '✗ ERROR: ' + error.message + '\n\n' + error.stack;
+      }
+    }
+
+    // Run all tests sequentially
+    async function runAllTests() {
+      await testWriteMultiFormat();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await testReadExtensionData();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await testHasExtensionData();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      testExtensionMarker();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await testNonExtensionData();
+      await new Promise(resolve => setTimeout(resolve, 500));
+      await testEndToEnd();
+    }
+
+    // Clear result
+    function clearResult(id) {
+      const resultDiv = document.getElementById(id);
+      resultDiv.className = 'result info';
+      resultDiv.textContent = 'Click "Run Test" to start...';
+    }
+
+    // Clear all results
+    function clearAllResults() {
+      for (let i = 1; i <= 6; i++) {
+        clearResult('result' + i);
+      }
+    }
+
+    // Show initial info
+    console.log('Clipboard Manager Test Suite loaded');
+    console.log('ClipboardManager:', clipboardManager);
+  </script>
+</body>
+</html>

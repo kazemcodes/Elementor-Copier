@@ -1,0 +1,931 @@
+/**
+ * Elementor Copier Admin Styles
+ *
+ * @package ElementorCopier
+ */
+
+/* ==========================================================================
+   Container & Layout
+   ========================================================================== */
+
+.elementor-copier-admin {
+    max-width: 1200px;
+}
+
+.elementor-copier-container {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+    margin-top: 20px;
+}
+
+.elementor-copier-section {
+    padding: 20px 30px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.elementor-copier-section:last-child {
+    border-bottom: none;
+}
+
+.elementor-copier-section h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.elementor-copier-section .description {
+    margin-bottom: 15px;
+    color: #646970;
+}
+
+.elementor-copier-section .submit {
+    margin: 0;
+    padding: 0;
+}
+
+/* ==========================================================================
+   Form Elements
+   ========================================================================== */
+
+.elementor-copier-admin .form-table th {
+    padding: 15px 10px 15px 0;
+    width: 200px;
+    font-weight: 600;
+}
+
+.elementor-copier-admin .form-table td {
+    padding: 15px 10px;
+}
+
+.elementor-copier-admin input[type="url"],
+.elementor-copier-admin input[type="text"],
+.elementor-copier-admin input[type="password"] {
+    width: 100%;
+    max-width: 500px;
+    padding: 8px 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    transition: border-color 0.2s ease;
+}
+
+.elementor-copier-admin fieldset label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.elementor-copier-admin fieldset input[type="radio"] {
+    margin-left: 5px;
+}
+
+.elementor-copier-admin input[type="url"]:focus,
+.elementor-copier-admin input[type="text"]:focus,
+.elementor-copier-admin input[type="password"]:focus {
+    border-color: #2271b1;
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* Input Validation States */
+.elementor-copier-admin input.valid {
+    border-color: #00a32a;
+}
+
+.elementor-copier-admin input.invalid {
+    border-color: #d63638;
+}
+
+.validation-message {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.validation-message.success {
+    color: #00a32a;
+}
+
+.validation-message.error {
+    color: #d63638;
+}
+
+/* ==========================================================================
+   Content Tree
+   ========================================================================== */
+
+#content-tree-section {
+    margin-top: 20px;
+}
+
+.elementor-copier-tree {
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 15px;
+    background: #f9f9f9;
+    min-height: 200px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Tree Structure */
+.content-tree-root {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.content-tree-children {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 30px;
+}
+
+.tree-item {
+    margin: 5px 0;
+}
+
+.tree-item-content {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 3px;
+    transition: all 0.2s ease;
+}
+
+.tree-item-content:hover {
+    background: #f0f6fc;
+    border-color: #2271b1;
+}
+
+/* Tree Toggle */
+.tree-toggle {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    font-size: 12px;
+    color: #646970;
+    flex-shrink: 0;
+}
+
+.tree-toggle:hover {
+    color: #2271b1;
+}
+
+.tree-toggle-spacer {
+    display: inline-block;
+    width: 20px;
+    flex-shrink: 0;
+}
+
+/* Tree Checkbox */
+.tree-checkbox {
+    margin: 0 8px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+/* Tree Label */
+.tree-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    margin: 0;
+    padding: 0 8px;
+}
+
+.tree-item-title {
+    flex: 1;
+    font-size: 14px;
+    color: #1d2327;
+}
+
+.tree-item-type {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 3px;
+    background: #f0f0f1;
+    color: #50575e;
+    margin-left: 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.tree-item-type.type-page {
+    background: #d7f1ff;
+    color: #0c5d8f;
+}
+
+.tree-item-type.type-section {
+    background: #e5f5fa;
+    color: #135e96;
+}
+
+.tree-item-type.type-widget {
+    background: #f0e5ff;
+    color: #6b2fb5;
+}
+
+/* Tree Item States */
+.tree-item-page > .tree-item-content {
+    font-weight: 600;
+    background: #f6f7f7;
+}
+
+.tree-item-section > .tree-item-content {
+    background: #fafafa;
+}
+
+/* Indeterminate Checkbox State */
+.tree-checkbox:indeterminate {
+    opacity: 0.6;
+}
+
+/* ==========================================================================
+   Template List
+   ========================================================================== */
+
+#template-list-container {
+    position: relative;
+    min-height: 100px;
+}
+
+.elementor-copier-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.elementor-copier-loading .spinner {
+    float: none;
+    margin: 0 auto 15px;
+}
+
+.elementor-copier-loading p {
+    margin: 0;
+    color: #646970;
+    font-size: 14px;
+}
+
+.template-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.template-item {
+    position: relative;
+    padding: 15px;
+    border: 2px solid #dcdcde;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.template-item:hover {
+    border-color: #2271b1;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.template-item.selected {
+    border-color: #2271b1;
+    background: #f0f6fc;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.template-item-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.template-item-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1d2327;
+    margin: 0;
+    line-height: 1.4;
+    flex: 1;
+    word-break: break-word;
+}
+
+.template-item-type {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 3px;
+    background: #f0f0f1;
+    color: #50575e;
+    margin-left: 10px;
+    white-space: nowrap;
+}
+
+.template-item-type.type-page {
+    background: #d7f1ff;
+    color: #0c5d8f;
+}
+
+.template-item-type.type-section {
+    background: #e5f5fa;
+    color: #135e96;
+}
+
+.template-item-type.type-widget {
+    background: #f0e5ff;
+    color: #6b2fb5;
+}
+
+.template-item-id {
+    font-size: 12px;
+    color: #646970;
+    margin-top: 5px;
+}
+
+.template-item-checkbox {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 18px;
+    height: 18px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.template-item:hover .template-item-checkbox,
+.template-item.selected .template-item-checkbox {
+    opacity: 1;
+}
+
+.template-item.selected .template-item-checkbox {
+    accent-color: #2271b1;
+}
+
+/* Empty State */
+.template-list-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: #646970;
+    font-size: 14px;
+}
+
+.template-list-empty::before {
+    content: "\f128";
+    font-family: dashicons;
+    font-size: 48px;
+    display: block;
+    margin-bottom: 15px;
+    color: #c3c4c7;
+}
+
+/* ==========================================================================
+   Action Buttons
+   ========================================================================== */
+
+.elementor-copier-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+#copy-widget-btn,
+#load-content-btn,
+#copy-content-btn {
+    min-width: 150px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+#copy-widget-btn:disabled,
+#load-content-btn:disabled,
+#copy-content-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+#copy-loading.spinner,
+#load-content-spinner.spinner,
+#copy-content-spinner.spinner {
+    float: none;
+    margin: 0;
+}
+
+#copy-loading.spinner.is-active,
+#load-content-spinner.spinner.is-active,
+#copy-content-spinner.spinner.is-active {
+    display: inline-block;
+}
+
+/* ==========================================================================
+   Progress Bar
+   ========================================================================== */
+
+.batch-progress-bar {
+    display: inline-block;
+    width: 300px;
+    height: 30px;
+    background: #f0f0f1;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    margin-left: 15px;
+    vertical-align: middle;
+}
+
+.progress-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #2271b1 0%, #135e96 100%);
+    transition: width 0.3s ease;
+    border-radius: 3px;
+}
+
+.progress-bar-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1d2327;
+    z-index: 1;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+/* ==========================================================================
+   Status Messages
+   ========================================================================== */
+
+.elementor-copier-status,
+#elementor-copier-messages {
+    margin-top: 20px;
+}
+
+.elementor-copier-status .notice,
+#elementor-copier-messages .notice {
+    margin: 10px 0;
+    padding: 12px 15px;
+    border-left-width: 4px;
+    border-left-style: solid;
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.elementor-copier-status .notice p,
+#elementor-copier-messages .notice p {
+    margin: 0.5em 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.elementor-copier-status .notice-success,
+#elementor-copier-messages .notice-success {
+    border-left-color: #00a32a;
+}
+
+.elementor-copier-status .notice-error,
+#elementor-copier-messages .notice-error {
+    border-left-color: #d63638;
+}
+
+.elementor-copier-status .notice-warning,
+#elementor-copier-messages .notice-warning {
+    border-left-color: #dba617;
+}
+
+.elementor-copier-status .notice-info,
+#elementor-copier-messages .notice-info {
+    border-left-color: #2271b1;
+}
+
+/* Success Message Icon */
+.elementor-copier-status .notice-success::before,
+#elementor-copier-messages .notice-success::before {
+    content: "\f147";
+    font-family: dashicons;
+    font-size: 20px;
+    color: #00a32a;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Error Message Icon */
+.elementor-copier-status .notice-error::before,
+#elementor-copier-messages .notice-error::before {
+    content: "\f534";
+    font-family: dashicons;
+    font-size: 20px;
+    color: #d63638;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Warning Message Icon */
+.elementor-copier-status .notice-warning::before,
+#elementor-copier-messages .notice-warning::before {
+    content: "\f227";
+    font-family: dashicons;
+    font-size: 20px;
+    color: #dba617;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Info Message Icon */
+.elementor-copier-status .notice-info::before,
+#elementor-copier-messages .notice-info::before {
+    content: "\f348";
+    font-family: dashicons;
+    font-size: 20px;
+    color: #2271b1;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* ==========================================================================
+   Loading States
+   ========================================================================== */
+
+.elementor-copier-admin .spinner {
+    background-image: url(../../../wp-admin/images/spinner.gif);
+    background-size: 20px 20px;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    opacity: 0.7;
+}
+
+@media (min-resolution: 192dpi) {
+    .elementor-copier-admin .spinner {
+        background-image: url(../../../wp-admin/images/spinner-2x.gif);
+    }
+}
+
+/* Loading Overlay */
+.elementor-copier-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.elementor-copier-loading-overlay .spinner {
+    margin: 0 10px 0 0;
+}
+
+.elementor-copier-loading-text {
+    font-size: 14px;
+    color: #646970;
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   Target Selection
+   ========================================================================== */
+
+#target-selection-section {
+    background: #f9f9f9;
+}
+
+.target-options {
+    margin-top: 15px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+}
+
+.target-options .form-table {
+    margin-top: 0;
+}
+
+#existing-page-select,
+#template-type {
+    min-width: 300px;
+}
+
+/* ==========================================================================
+   Paste Preview & Media Options
+   ========================================================================== */
+
+.paste-preview-box {
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 15px;
+    background: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.paste-target-options {
+    margin-top: 15px;
+    padding: 15px;
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+}
+
+.paste-target-options .form-table {
+    margin-top: 0;
+}
+
+.paste-preview-item {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+.preview-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.preview-type {
+    display: inline-block;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-radius: 3px;
+    background: #f0f0f1;
+    color: #50575e;
+}
+
+.preview-type.type-widget {
+    background: #f0e5ff;
+    color: #6b2fb5;
+}
+
+.preview-type.type-section {
+    background: #e5f5fa;
+    color: #135e96;
+}
+
+.preview-type.type-column {
+    background: #fff4e5;
+    color: #996800;
+}
+
+.preview-type.type-page {
+    background: #d7f1ff;
+    color: #0c5d8f;
+}
+
+.preview-widget-type {
+    font-size: 12px;
+    color: #646970;
+    font-weight: 500;
+}
+
+.preview-details {
+    margin-bottom: 15px;
+}
+
+.preview-detail {
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.preview-detail strong {
+    color: #1d2327;
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.preview-media-count {
+    color: #2271b1;
+}
+
+.preview-media-options {
+    margin: 15px 0;
+    padding: 15px;
+    background: #f0f6fc;
+    border: 1px solid #c3e0f5;
+    border-radius: 4px;
+}
+
+.media-option-label {
+    display: block;
+    cursor: pointer;
+    margin: 0;
+}
+
+.media-option-label input[type="checkbox"] {
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.media-option-label strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #1d2327;
+}
+
+.media-option-label .description {
+    display: block;
+    margin-left: 24px;
+    font-size: 12px;
+    color: #646970;
+    line-height: 1.4;
+}
+
+.preview-data {
+    margin-top: 15px;
+}
+
+.preview-data details {
+    cursor: pointer;
+}
+
+.preview-data summary {
+    font-size: 13px;
+    color: #2271b1;
+    padding: 8px;
+    background: #f6f7f7;
+    border-radius: 3px;
+    user-select: none;
+}
+
+.preview-data summary:hover {
+    background: #e5e5e5;
+}
+
+.preview-data pre {
+    margin-top: 10px;
+    padding: 10px;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    border-radius: 3px;
+    font-size: 11px;
+    line-height: 1.4;
+    overflow-x: auto;
+    max-height: 300px;
+}
+
+.paste-target-selection {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid #e5e5e5;
+}
+
+/* Media Progress Bar */
+.media-progress-bar {
+    display: inline-block;
+    width: 300px;
+    height: 30px;
+    background: #f0f0f1;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    margin-left: 15px;
+    vertical-align: middle;
+}
+
+.media-progress-bar .progress-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #00a32a 0%, #008a20 100%);
+    transition: width 0.3s ease;
+    border-radius: 3px;
+}
+
+.media-progress-bar .progress-bar-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1d2327;
+    z-index: 1;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.8);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media screen and (max-width: 782px) {
+    .elementor-copier-section {
+        padding: 15px 20px;
+    }
+
+    .elementor-copier-admin .form-table th,
+    .elementor-copier-admin .form-table td {
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .elementor-copier-admin .form-table th {
+        padding-bottom: 5px;
+    }
+
+    .elementor-copier-admin input[type="url"],
+    .elementor-copier-admin input[type="text"],
+    .elementor-copier-admin input[type="password"] {
+        max-width: 100%;
+    }
+
+    .template-list {
+        grid-template-columns: 1fr;
+    }
+
+    .elementor-copier-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #copy-widget-btn {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .elementor-copier-container {
+        border-left: none;
+        border-right: none;
+    }
+
+    .elementor-copier-section {
+        padding: 15px;
+    }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+.template-item:focus {
+    outline: 2px solid #2271b1;
+    outline-offset: 2px;
+}
+
+.template-item:focus:not(:focus-visible) {
+    outline: none;
+}
+
+#copy-widget-btn:focus {
+    box-shadow: 0 0 0 2px #2271b1;
+}
+
+/* Screen reader text */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
