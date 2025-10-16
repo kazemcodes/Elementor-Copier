@@ -2,8 +2,9 @@
   "manifest_version": 3,
   "name": "Elementor Copier",
   "version": "1.0.0",
-  "description": "Copy and paste Elementor sections across different WordPress sites with ease!",
-  "homepage_url": "https://github.com/yourusername/elementor-copier",
+  "description": "Copy and paste Elementor sections, columns, and widgets across different WordPress sites. Features visual selector, keyboard shortcuts, and cross-site compatibility.",
+  "homepage_url": "https://github.com/kazemcodes/elementor-copy",
+  "author": "kazemcodes",
   "permissions": [
     "activeTab",
     "clipboardWrite",

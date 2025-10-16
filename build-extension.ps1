@@ -61,5 +61,5 @@ Write-Host "Build complete!" -ForegroundColor Green
 Write-Host "  ZIP: $releasesDir\$zipName" -ForegroundColor Cyan
 Write-Host "  Extracted: $extractedDir" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "Ready for Chrome Web Store submission!" -ForegroundColor Green
+Write-Host "Ready for GitHub Release!" -ForegroundColor Green
 Write-Host "Support: bc1qwncc5gfrzt0hwhwt9ad9vyv6eg8gxk4wlg6atm" -ForegroundColor Magenta

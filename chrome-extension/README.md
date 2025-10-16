@@ -28,16 +28,21 @@ chrome-extension/
 
 ## Building for Production
 
-1. Remove all console.log statements
-2. Minify JavaScript files (optional)
-3. Test thoroughly
-4. Create ZIP file for Chrome Web Store
+1. Run the build script: `.\build-extension.ps1`
+2. The extension will be packaged in the `releases/` folder
+3. Test thoroughly before releasing
+4. Create a GitHub release with the generated ZIP file
 
 ## Development
 
 - All modules are loaded in MAIN world context for Elementor API access
 - Content script runs in ISOLATED world for security
 - Communication happens via window.postMessage
+
+## Installation
+
+This extension is distributed through GitHub Releases only. Download the latest release from:
+https://github.com/kazemcodes/elementor-copy/releases
 
 ## Support
 

@@ -18,7 +18,7 @@ This will:
 ### Output Structure
 ```
 releases/
-├── elementor-copier-v1.0.0.zip          # For Chrome Web Store
+├── elementor-copier-v1.0.0.zip          # For GitHub Release
 └── elementor-copier-v1.0.0/             # For local testing
     ├── manifest.json
     ├── background.js
@@ -66,7 +66,7 @@ Release package is VALID!
   ZIP: releases/elementor-copier-v1.0.0.zip
   Extracted: releases/elementor-copier-v1.0.0
 
-Ready for installation and Chrome Web Store submission!
+Ready for installation and GitHub Release!
 ```
 
 ## Development Workflow
@@ -128,14 +128,15 @@ chrome-extension/
 - `build-release.ps1` - Build scripts
 - Any other non-essential files
 
-## Chrome Web Store Submission
+## GitHub Release
 
 ### 1. Prepare ZIP
 The ZIP file is ready at: `releases/elementor-copier-v1.0.0.zip`
 
-### 2. Upload to Chrome Web Store
-1. Go to [Chrome Web Store Developer Dashboard](https://chrome.google.com/webstore/devconsole)
-2. Click "New Item"
+### 2. Create GitHub Release
+The GitHub Actions workflow will automatically create a release when you push changes to the main branch. Alternatively, you can manually create a release:
+1. Go to [GitHub Releases](https://github.com/kazemcodes/elementor-copy/releases)
+2. Click "Draft a new release"
 3. Upload `releases/elementor-copier-v1.0.0.zip`
 4. Fill in store listing details
 5. Submit for review
@@ -283,7 +284,7 @@ Remove-Item -Force releases/elementor-copier-v1.0.0.zip
 - Individual files: 10-50 KB each
 
 ### Size Limits
-- Chrome Web Store: 10 MB max
+- GitHub Release: 2 GB max (more than enough)
 - Individual file: No specific limit
 - Icons: Should be optimized
 

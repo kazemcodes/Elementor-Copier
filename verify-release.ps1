@@ -59,7 +59,7 @@ if ($allGood) {
     Write-Host "`nRelease package is VALID!" -ForegroundColor Green
     Write-Host "  ZIP: $zipPath" -ForegroundColor Cyan
     Write-Host "  Extracted: $extractedDir" -ForegroundColor Cyan
-    Write-Host "`nReady for installation and Chrome Web Store submission!" -ForegroundColor Green
+    Write-Host "`nReady for installation and GitHub Release!" -ForegroundColor Green
 } else {
     Write-Host "`nRelease package has ERRORS!" -ForegroundColor Red
     exit 1
