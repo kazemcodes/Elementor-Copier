@@ -2,20 +2,23 @@
 
 Write-Host "Verifying Elementor Copier Release..." -ForegroundColor Cyan
 
-$zipPath = "releases/elementor-copier-v1.0.0.zip"
+$version = "1.0.0"
+$zipPath = "releases/elementor-copier-v$version.zip"
+$extractedDir = "releases/elementor-copier-v$version"
 
 if (-not (Test-Path $zipPath)) {
-    Write-Host "ERROR: Release ZIP not found!" -ForegroundColor Red
+    Write-Host "ERROR: Release ZIP not found at $zipPath!" -ForegroundColor Red
     exit 1
 }
 
-# Extract to temp
-$tempDir = "temp-verify"
-if (Test-Path $tempDir) {
-    Remove-Item -Recurse -Force $tempDir
-}
+# Use the already extracted folder from build script
+$tempDir = $extractedDir
 
-Expand-Archive -Path $zipPath -DestinationPath $tempDir
+if (-not (Test-Path $tempDir)) {
+    Write-Host "ERROR: Extracted folder not found at $tempDir!" -ForegroundColor Red
+    Write-Host "Run build-extension.ps1 first to create the release." -ForegroundColor Yellow
+    exit 1
+}
 
 Write-Host "`nChecking required files..." -ForegroundColor Yellow
 
@@ -52,12 +55,11 @@ Write-Host "  Name: $($manifest.name)"
 Write-Host "  Version: $($manifest.version)"
 Write-Host "  Manifest Version: $($manifest.manifest_version)"
 
-# Cleanup
-Remove-Item -Recurse -Force $tempDir
-
 if ($allGood) {
     Write-Host "`nRelease package is VALID!" -ForegroundColor Green
-    Write-Host "Ready for installation and Chrome Web Store submission!" -ForegroundColor Cyan
+    Write-Host "  ZIP: $zipPath" -ForegroundColor Cyan
+    Write-Host "  Extracted: $extractedDir" -ForegroundColor Cyan
+    Write-Host "`nReady for installation and Chrome Web Store submission!" -ForegroundColor Green
 } else {
     Write-Host "`nRelease package has ERRORS!" -ForegroundColor Red
     exit 1

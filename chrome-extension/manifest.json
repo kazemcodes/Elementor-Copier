@@ -4,48 +4,59 @@
   "version": "1.0.0",
   "description": "Copy and paste Elementor sections across different WordPress sites with ease!",
   "homepage_url": "https://github.com/yourusername/elementor-copier",
-  
   "permissions": [
     "activeTab",
     "clipboardWrite",
     "clipboardRead",
     "contextMenus",
     "scripting",
-    "offscreen"
+    "offscreen",
+    "storage",
+    "notifications"
   ],
-  
   "host_permissions": [
     "http://*/*",
     "https://*/*"
   ],
-  
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
-  
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["content-v2.js"],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "element-selector.js",
+        "content-v2.js"
+      ],
+      "css": [
+        "styles/highlight.css"
+      ],
       "run_at": "document_end",
       "all_frames": false
     },
     {
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
       "js": [
         "content-sanitizer.js",
         "elementor-format-converter.js",
         "elementor-editor-detector.js",
         "editor-injector.js",
-        "page-bridge.js"
+        "page-bridge.js",
+        "clipboard-manager.js",
+        "paste-interceptor.js"
       ],
       "run_at": "document_start",
       "world": "MAIN",
       "all_frames": false
     }
   ],
-  
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
@@ -54,13 +65,11 @@
       "128": "icons/icon128.png"
     }
   },
-  
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  
   "web_accessible_resources": [
     {
       "resources": [
@@ -74,9 +83,14 @@
         "error-handler.js",
         "elementor-editor-detector.js",
         "editor-injector.js",
-        "page-bridge.js"
+        "page-bridge.js",
+        "element-selector.js",
+        "styles/highlight.css"
       ],
-      "matches": ["http://*/*", "https://*/*"]
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
     }
   ]
 }

@@ -1,95 +1,341 @@
 /**
- * Elementor Copier - Highlight Styles
- * Styles for highlighting Elementor elements
+ * Elementor Copier - Chrome DevTools Style Highlighter
+ * Advanced element highlighting with detailed information
  */
 
-/* Highlight overlay */
-.elementor-copier-highlight {
-  position: relative;
+/* Main highlight overlay - Chrome DevTools style */
+.elementor-copier-overlay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 2147483647;
+  transition: all 0.1s ease-out;
+}
+
+/* Content area (blue) */
+.elementor-copier-overlay-content {
+  position: absolute;
+  background: rgba(111, 168, 220, 0.35);
+  border: 1px solid rgba(111, 168, 220, 0.7);
+}
+
+/* Padding area (green) */
+.elementor-copier-overlay-padding {
+  position: absolute;
+  background: rgba(147, 196, 125, 0.35);
+  border: 1px solid rgba(147, 196, 125, 0.7);
+}
+
+/* Margin area (orange) */
+.elementor-copier-overlay-margin {
+  position: absolute;
+  background: rgba(246, 178, 107, 0.35);
+  border: 1px solid rgba(246, 178, 107, 0.7);
+}
+
+/* Info tooltip - Chrome DevTools style */
+.elementor-copier-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 2px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 11px;
+  line-height: 16px;
+  white-space: nowrap;
+  z-index: 2147483647;
+  pointer-events: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.elementor-copier-tooltip-tag {
+  color: #e06c75;
+  font-weight: 600;
+}
+
+.elementor-copier-tooltip-id {
+  color: #61afef;
+}
+
+.elementor-copier-tooltip-class {
+  color: #98c379;
+}
+
+.elementor-copier-tooltip-size {
+  color: #abb2bf;
+  margin-left: 8px;
+}
+
+.elementor-copier-tooltip-type {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-left: 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+/* Element type badges */
+.elementor-copier-tooltip-type.section {
+  background: rgba(0, 163, 42, 0.3);
+  color: #4ade80;
+}
+
+.elementor-copier-tooltip-type.column {
+  background: rgba(240, 184, 73, 0.3);
+  color: #fbbf24;
+}
+
+.elementor-copier-tooltip-type.widget {
+  background: rgba(0, 115, 170, 0.3);
+  color: #60a5fa;
+}
+
+/* Hover state */
+.elementor-copier-hover {
+  cursor: pointer;
+}
+
+/* Active/Selected state */
+.elementor-copier-selected .elementor-copier-overlay-content {
+  background: rgba(111, 168, 220, 0.5);
+  border: 2px solid rgba(111, 168, 220, 1);
+}
+
+/* Copy animation */
+@keyframes elementor-copier-copy-flash {
+  0% {
+    background: rgba(76, 175, 80, 0.6);
+  }
+  100% {
+    background: rgba(76, 175, 80, 0);
+  }
+}
+
+.elementor-copier-copying .elementor-copier-overlay-content {
+  animation: elementor-copier-copy-flash 0.6s ease-out;
+}
+
+/* Context menu indicator */
+.elementor-copier-context-active {
+  outline: 2px dashed rgba(111, 168, 220, 0.8);
+  outline-offset: 2px;
+}
+
+/* Measurement lines (like Chrome DevTools) */
+.elementor-copier-ruler {
+  position: absolute;
+  background: rgba(255, 0, 0, 0.3);
+  z-index: 2147483646;
+  pointer-events: none;
+}
+
+.elementor-copier-ruler-horizontal {
+  height: 1px;
+  left: 0;
+  right: 0;
+}
+
+.elementor-copier-ruler-vertical {
+  width: 1px;
+  top: 0;
+  bottom: 0;
+}
+
+/* Dimension labels */
+.elementor-copier-dimension {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 10px;
+  z-index: 2147483647;
+  pointer-events: none;
+}
+
+/* Nested element indicator */
+.elementor-copier-nested-indicator {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 2px;
+  font-size: 10px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  z-index: 2147483647;
+  pointer-events: none;
+}
+
+/* Widget count badge */
+.elementor-copier-count-badge {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0, 115, 170, 0.9);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  z-index: 2147483647;
+  pointer-events: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Keyboard shortcut hint */
+.elementor-copier-hint {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 12px 16px;
+  border-radius: 4px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  font-size: 12px;
+  z-index: 2147483647;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: elementor-copier-hint-fade-in 0.3s ease-out;
+}
+
+@keyframes elementor-copier-hint-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.elementor-copier-hint kbd {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-family: monospace;
+  font-size: 11px;
+  margin: 0 2px;
+}
+
+/* Smooth transitions */
+* {
+  transition: outline 0.1s ease-out;
+}
+
+/* Notification animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Notification styles */
+.elementor-copier-notification {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Element Labels */
+.elementor-copier-label {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   transition: all 0.2s ease;
 }
 
-.elementor-copier-highlight::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  z-index: 999999;
+.elementor-copier-label:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
 }
 
-/* Widget highlight */
-.elementor-copier-highlight-widget::after {
-  border: 2px solid #0073aa;
-  background: rgba(0, 115, 170, 0.1);
-}
-
-/* Section highlight */
-.elementor-copier-highlight-section::after {
-  border: 2px solid #00a32a;
-  background: rgba(0, 163, 42, 0.1);
-}
-
-/* Column highlight */
-.elementor-copier-highlight-column::after {
-  border: 2px solid #f0b849;
-  background: rgba(240, 184, 73, 0.1);
-}
-
-/* Info badge */
-.elementor-copier-badge {
-  position: absolute;
-  top: -25px;
-  left: 0;
-  background: #333;
+.elementor-copier-label-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
   color: white;
-  padding: 4px 8px;
-  border-radius: 3px;
+  font-weight: 600;
   font-size: 11px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  z-index: 1000000;
-  pointer-events: none;
-  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.elementor-copier-badge::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 10px;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 4px solid #333;
+.elementor-copier-label-icon {
+  font-size: 14px;
 }
 
-/* Animation */
-@keyframes elementor-copier-pulse {
-  0%, 100% {
+.elementor-copier-label-type {
+  flex: 1;
+}
+
+.elementor-copier-label-id {
+  opacity: 0.8;
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+}
+
+.elementor-copier-label-btn {
+  background: #f8f9fa;
+  border: none;
+  border-top: 1px solid #dee2e6;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.elementor-copier-label-btn:hover {
+  background: #e9ecef;
+  color: #000;
+}
+
+.elementor-copier-label-btn:active {
+  background: #dee2e6;
+  transform: scale(0.95);
+}
+
+/* Animation for labels */
+@keyframes labelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
     opacity: 1;
-  }
-  50% {
-    opacity: 0.7;
+    transform: translateY(0);
   }
 }
 
-.elementor-copier-copying {
-  animation: elementor-copier-pulse 0.5s ease-in-out;
-}
-
-/* Success flash */
-@keyframes elementor-copier-success {
-  0% {
-    background: rgba(76, 175, 80, 0.3);
-  }
-  100% {
-    background: transparent;
-  }
-}
-
-.elementor-copier-success {
-  animation: elementor-copier-success 0.5s ease-out;
+.elementor-copier-label {
+  animation: labelFadeIn 0.3s ease-out;
 }

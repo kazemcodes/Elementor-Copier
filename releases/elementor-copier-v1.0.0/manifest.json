@@ -11,7 +11,9 @@
     "clipboardRead",
     "contextMenus",
     "scripting",
-    "offscreen"
+    "offscreen",
+    "storage",
+    "notifications"
   ],
   
   "host_permissions": [
@@ -27,7 +29,8 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["content-v2.js"],
+      "js": ["element-selector.js", "content-v2.js"],
+      "css": ["styles/highlight.css"],
       "run_at": "document_end",
       "all_frames": false
     },
@@ -38,7 +41,9 @@
         "elementor-format-converter.js",
         "elementor-editor-detector.js",
         "editor-injector.js",
-        "page-bridge.js"
+        "page-bridge.js",
+        "clipboard-manager.js",
+        "paste-interceptor.js"
       ],
       "run_at": "document_start",
       "world": "MAIN",
@@ -74,7 +79,9 @@
         "error-handler.js",
         "elementor-editor-detector.js",
         "editor-injector.js",
-        "page-bridge.js"
+        "page-bridge.js",
+        "element-selector.js",
+        "styles/highlight.css"
       ],
       "matches": ["http://*/*", "https://*/*"]
     }

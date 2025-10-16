@@ -8,13 +8,28 @@
 
 ## ✨ Features
 
-- **Cross-Site Copy & Paste**: Copy Elementor sections from one WordPress site and paste them into another
-- **Smart Widget Conversion**: Automatically converts custom widgets (Slider Revolution, WoodMart, etc.) to HTML widgets when the plugin isn't installed on the target site
-- **Visual Highlighting**: Hover over Elementor sections to highlight them before copying
-- **Media Preservation**: Maintains all images and media URLs from the source site
-- **Version Compatibility**: Handles different Elementor versions seamlessly
-- **Content Sanitization**: Removes potentially harmful scripts while preserving styling
-- **One-Click Copy**: Simple right-click context menu integration
+### 🎯 Chrome DevTools-Style Element Selector
+- **Multi-layer visual overlay** (content, padding, margin) just like Chrome DevTools
+- **Smart element detection** with automatic hierarchy awareness
+- **Real-time tooltips** showing element type, ID, dimensions, and child count
+- **Keyboard navigation** with arrow keys for precise selection
+- **Smooth animations** and professional visual feedback
+
+### ⌨️ Powerful Keyboard Shortcuts
+- `Ctrl+Shift+C` - Enable element selector
+- `Alt+C` - Quick copy hovered element
+- `↑`/`↓` - Navigate parent/child elements
+- `ESC` - Cancel selection
+- `Ctrl+V` - Paste element
+
+### 🚀 Advanced Capabilities
+- **Cross-Site Copy & Paste**: Copy elements between different WordPress sites
+- **Smart Widget Conversion**: Auto-converts custom widgets to HTML when needed
+- **Media Preservation**: Maintains all images and media URLs
+- **Complete Data Extraction**: Copies all settings, styling, and responsive configurations
+- **Version Compatibility**: Works with different Elementor versions
+- **Content Sanitization**: Secure clipboard operations with XSS protection
+- **Multiple Copy Methods**: Context menu, keyboard shortcuts, or quick copy
 
 ## 🚀 Installation
 
@@ -33,18 +48,37 @@
 
 ## 📖 How to Use
 
-### Copying Content
-1. Navigate to any WordPress site with Elementor
-2. Open the Elementor editor
-3. **Right-click** on any section you want to copy
-4. Select **"Copy Elementor Section"** from the context menu
-5. The section data is now in your clipboard!
+### Quick Start (30 seconds)
+1. Open any Elementor editor
+2. Press **Ctrl+Shift+C** to enable element selector
+3. Click on any element to copy it
+4. Go to another Elementor editor
+5. Press **Ctrl+V** to paste
 
-### Pasting Content
-1. Navigate to your target WordPress site
-2. Open the Elementor editor
-3. Press **Ctrl+V** (or Cmd+V on Mac) anywhere in the editor
-4. The section will be automatically pasted with all its content!
+### Alternative Methods
+
+**Method 1: Keyboard Selector (Recommended)**
+- Press `Ctrl+Shift+C` to enable Chrome DevTools-style selector
+- Hover over elements to see visual highlights
+- Use `↑`/`↓` arrow keys to navigate element hierarchy
+- Click to copy the selected element
+
+**Method 2: Context Menu**
+- Right-click on any Elementor element
+- Select "Copy Elementor Section" from context menu
+- Paste with `Ctrl+V` in target editor
+
+**Method 3: Quick Copy**
+- Hover over any element
+- Press `Alt+C` to instantly copy it
+
+## 📚 Documentation
+
+- **[📘 Complete User Guide](USER_GUIDE.md)** - Comprehensive documentation with tutorials
+- **[⚡ Quick Reference Card](QUICK_REFERENCE.md)** - Essential shortcuts and commands
+- **[🚀 Installation Guide](INSTALLATION.md)** - Detailed installation instructions
+- **[📝 Changelog](CHANGELOG.md)** - Version history and updates
+- **[🎨 Features Overview](FEATURES_v1.0.0.md)** - All features explained
 
 ## 🎯 Key Capabilities
 

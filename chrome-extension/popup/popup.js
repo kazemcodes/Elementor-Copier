@@ -22,21 +22,65 @@ document.addEventListener('DOMContentLoaded', async () => {
  * Check if Elementor is detected on current page
  */
 async function checkElementorStatus(tab) {
+  const statusEl = document.getElementById('status');
+  const statusIcon = document.getElementById('statusIcon');
+  const statusText = document.getElementById('statusText');
+  const statsEl = document.getElementById('stats');
+  const actionsEl = document.getElementById('actions');
+
   try {
-    // Get stats from storage
+    // First, try to get fresh stats from content script
+    chrome.tabs.sendMessage(tab.id, { action: 'getStats' }, async (response) => {
+      if (chrome.runtime.lastError) {
+        console.log('Content script not responding, checking storage:', chrome.runtime.lastError.message);
+        // Fallback to storage
+        await checkFromStorage();
+        return;
+      }
+
+      if (response && response.stats) {
+        displayStats(response.stats);
+      } else {
+        // Fallback to storage
+        await checkFromStorage();
+      }
+    });
+
+    // Also check storage as backup (with slight delay)
+    setTimeout(async () => {
+      const data = await chrome.storage.local.get('stats');
+      if (data.stats && data.stats.elementorDetected) {
+        displayStats(data.stats);
+      }
+    }, 500);
+
+  } catch (error) {
+    console.error('Error checking Elementor status:', error);
+    statusIcon.textContent = '✗';
+    statusText.textContent = 'Error Checking Status';
+    statusEl.classList.add('error');
+  }
+
+  async function checkFromStorage() {
     const data = await chrome.storage.local.get('stats');
     const stats = data.stats || {};
+    
+    if (stats.elementorDetected) {
+      displayStats(stats);
+    } else {
+      // Not detected
+      statusIcon.textContent = '✗';
+      statusText.textContent = 'Elementor Not Detected';
+      statusEl.classList.add('error');
+    }
+  }
 
-    const statusEl = document.getElementById('status');
-    const statusIcon = document.getElementById('statusIcon');
-    const statusText = document.getElementById('statusText');
-    const statsEl = document.getElementById('stats');
-    const actionsEl = document.getElementById('actions');
-
+  function displayStats(stats) {
     if (stats.elementorDetected) {
       // Elementor detected
       statusIcon.textContent = '✓';
       statusText.textContent = 'Elementor Detected';
+      statusEl.classList.remove('error');
       statusEl.classList.add('success', 'detected');
 
       // Show stats
@@ -50,13 +94,11 @@ async function checkElementorStatus(tab) {
       actionsEl.style.display = 'block';
       actionsEl.classList.add('fade-in');
     } else {
-      // Elementor not detected
+      // Not detected
       statusIcon.textContent = '✗';
       statusText.textContent = 'Elementor Not Detected';
       statusEl.classList.add('error');
     }
-  } catch (error) {
-    console.error('Error checking Elementor status:', error);
   }
 }
 

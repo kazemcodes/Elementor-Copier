@@ -14,6 +14,9 @@ const RETRY_CONFIG = {
   backoffMultiplier: 2
 };
 
+// Track context menu state per tab
+const tabContextState = new Map();
+
 // Create context menu when extension is installed
 chrome.runtime.onInstalled.addListener(() => {
   // Parent menu
@@ -28,7 +31,8 @@ chrome.runtime.onInstalled.addListener(() => {
     id: 'copy-widget',
     parentId: 'elementor-copier-parent',
     title: 'Copy Widget',
-    contexts: ['all']
+    contexts: ['all'],
+    enabled: true
   });
 
   // Copy section
@@ -36,7 +40,8 @@ chrome.runtime.onInstalled.addListener(() => {
     id: 'copy-section',
     parentId: 'elementor-copier-parent',
     title: 'Copy Section',
-    contexts: ['all']
+    contexts: ['all'],
+    enabled: true
   });
 
   // Copy column
@@ -44,7 +49,8 @@ chrome.runtime.onInstalled.addListener(() => {
     id: 'copy-column',
     parentId: 'elementor-copier-parent',
     title: 'Copy Column',
-    contexts: ['all']
+    contexts: ['all'],
+    enabled: true
   });
 
   // Copy entire page
@@ -77,6 +83,19 @@ chrome.runtime.onInstalled.addListener(() => {
 // Handle context menu clicks
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   console.log('Context menu clicked:', info.menuItemId);
+
+  // Check if we have Elementor element at this location
+  const contextState = tabContextState.get(tab.id);
+  
+  // If trying to copy but no Elementor element, show helpful message
+  if (!contextState?.hasElementor && 
+      (info.menuItemId === 'copy-widget' || 
+       info.menuItemId === 'copy-section' || 
+       info.menuItemId === 'copy-column' ||
+       info.menuItemId === 'copy-page')) {
+    showNotification('No Elementor element at this location. Try right-clicking on an Elementor section, column, or widget.', 'warning');
+    return;
+  }
 
   // Send message to content script
   chrome.tabs.sendMessage(tab.id, {
@@ -125,9 +144,16 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 // Handle messages from content script
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  console.log('Message received in background:', request);
+  console.log('Message received in background:', request, 'from:', sender);
 
   if (request.action === 'copyToClipboard') {
+    // Only handle if this is from content script, not from offscreen document
+    // Offscreen document will handle its own copyToClipboard messages
+    if (sender.url && sender.url.includes('offscreen.html')) {
+      // This is from offscreen document, ignore it
+      return false;
+    }
+    
     // Copy data to clipboard with retry logic
     copyToClipboardWithRetry(request.data, 0)
       .then(() => {
@@ -160,7 +186,66 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     logError(request.error.code, request.error.message, request.error.message);
     sendResponse({ success: true });
   }
+
+  if (request.action === 'contextMenuOpened') {
+    // Store context menu state for this tab
+    const tabId = sender.tab?.id;
+    if (tabId) {
+      tabContextState.set(tabId, {
+        hasElementor: request.hasElementor,
+        elementType: request.elementType,
+        timestamp: Date.now()
+      });
+      console.log(`[Background] Context menu state updated for tab ${tabId}:`, request);
+      
+      // Update context menu items based on element type
+      updateContextMenuItems(request.hasElementor, request.elementType);
+    }
+    sendResponse({ success: true });
+  }
 });
+
+/**
+ * Update context menu items based on element type
+ */
+function updateContextMenuItems(hasElementor, elementType) {
+  if (!hasElementor) {
+    // Disable all copy options when not on Elementor element
+    chrome.contextMenus.update('copy-widget', { 
+      enabled: false,
+      title: 'Copy Widget (no element selected)'
+    });
+    chrome.contextMenus.update('copy-section', { 
+      enabled: false,
+      title: 'Copy Section (no element selected)'
+    });
+    chrome.contextMenus.update('copy-column', { 
+      enabled: false,
+      title: 'Copy Column (no element selected)'
+    });
+    return;
+  }
+
+  // Enable appropriate options based on element type
+  const isWidget = elementType && elementType.startsWith('widget');
+  const isSection = elementType === 'section';
+  const isColumn = elementType === 'column';
+
+  chrome.contextMenus.update('copy-widget', { 
+    enabled: isWidget,
+    title: isWidget ? `Copy Widget (${elementType})` : 'Copy Widget'
+  });
+  
+  chrome.contextMenus.update('copy-section', { 
+    enabled: isSection,
+    title: isSection ? 'Copy Section ✓' : 'Copy Section'
+  });
+  
+  chrome.contextMenus.update('copy-column', { 
+    enabled: isColumn,
+    title: isColumn ? 'Copy Column ✓' : 'Copy Column'
+  });
+}
 
 /**
  * Copy data to clipboard with retry logic
@@ -178,10 +263,24 @@ async function copyToClipboardWithRetry(data, retryCount = 0) {
     // Use offscreen document for clipboard access
     await setupOffscreenDocument();
     
+    // Wait a bit for offscreen document to be ready
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     // Send message to offscreen document to write to clipboard
-    const response = await chrome.runtime.sendMessage({
-      action: 'copyToClipboard',
-      data: data
+    // chrome.runtime.sendMessage broadcasts to all contexts including offscreen
+    const response = await new Promise((resolve, reject) => {
+      chrome.runtime.sendMessage({
+        action: 'copyToClipboard',
+        data: data
+      }, (response) => {
+        if (chrome.runtime.lastError) {
+          reject(new Error(chrome.runtime.lastError.message));
+        } else if (!response) {
+          reject(new Error('No response from offscreen document'));
+        } else {
+          resolve(response);
+        }
+      });
     });
 
     if (!response || !response.success) {
@@ -232,6 +331,7 @@ async function setupOffscreenDocument() {
   });
 
   if (existingContexts.length > 0) {
+    console.log('✓ Offscreen document already exists');
     return; // Already exists
   }
 
@@ -242,10 +342,11 @@ async function setupOffscreenDocument() {
       reasons: ['CLIPBOARD'],
       justification: 'Write Elementor data to clipboard'
     });
-    console.log('✓ Offscreen document created');
+    console.log('✓ Offscreen document created successfully');
   } catch (error) {
     // Document might already exist or browser doesn't support offscreen API
-    console.warn('Could not create offscreen document:', error);
+    console.error('✗ Could not create offscreen document:', error);
+    throw error;
   }
 }
 

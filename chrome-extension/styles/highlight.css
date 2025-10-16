@@ -230,3 +230,112 @@
 * {
   transition: outline 0.1s ease-out;
 }
+
+/* Notification animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Notification styles */
+.elementor-copier-notification {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Element Labels */
+.elementor-copier-label {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.elementor-copier-label:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+}
+
+.elementor-copier-label-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  color: white;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.elementor-copier-label-icon {
+  font-size: 14px;
+}
+
+.elementor-copier-label-type {
+  flex: 1;
+}
+
+.elementor-copier-label-id {
+  opacity: 0.8;
+  font-size: 10px;
+  font-family: 'Courier New', monospace;
+}
+
+.elementor-copier-label-btn {
+  background: #f8f9fa;
+  border: none;
+  border-top: 1px solid #dee2e6;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.elementor-copier-label-btn:hover {
+  background: #e9ecef;
+  color: #000;
+}
+
+.elementor-copier-label-btn:active {
+  background: #dee2e6;
+  transform: scale(0.95);
+}
+
+/* Animation for labels */
+@keyframes labelFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.elementor-copier-label {
+  animation: labelFadeIn 0.3s ease-out;
+}

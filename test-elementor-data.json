@@ -1,0 +1,110 @@
+{
+  "version": "1.0.0",
+  "type": "elementor-copier",
+  "elementType": "section",
+  "data": {
+    "id": "test123",
+    "elType": "section",
+    "settings": {
+      "layout": "boxed",
+      "content_width": "full"
+    },
+    "elements": [
+      {
+        "id": "col001",
+        "elType": "column",
+        "settings": {
+          "_column_size": 50
+        },
+        "elements": [
+          {
+            "id": "widget001",
+            "elType": "widget",
+            "settings": {
+              "title": "Welcome to Our Test Section",
+              "header_size": "h2"
+            },
+            "widgetType": "heading.default"
+          },
+          {
+            "id": "widget002",
+            "elType": "widget",
+            "settings": {
+              "editor": "<p>This is a test section created by the Elementor Copier extension. You can paste this into any Elementor page to test the functionality.</p><p>The extension successfully extracts and copies Elementor sections, columns, and widgets across different WordPress sites.</p>"
+            },
+            "widgetType": "text-editor.default"
+          },
+          {
+            "id": "widget003",
+            "elType": "widget",
+            "settings": {
+              "text": "Click Me",
+              "link": {
+                "url": "https://example.com",
+                "is_external": true
+              },
+              "size": "md",
+              "button_type": "primary"
+            },
+            "widgetType": "button.default"
+          }
+        ]
+      },
+      {
+        "id": "col002",
+        "elType": "column",
+        "settings": {
+          "_column_size": 50
+        },
+        "elements": [
+          {
+            "id": "widget004",
+            "elType": "widget",
+            "settings": {
+              "image": {
+                "url": "https://via.placeholder.com/600x400/4A90E2/ffffff?text=Test+Image",
+                "alt": "Test placeholder image",
+                "id": ""
+              }
+            },
+            "widgetType": "image.default"
+          },
+          {
+            "id": "widget005",
+            "elType": "widget",
+            "settings": {},
+            "widgetType": "divider.default"
+          },
+          {
+            "id": "widget006",
+            "elType": "widget",
+            "settings": {
+              "editor": "<ul><li>Feature 1: Easy to use</li><li>Feature 2: Cross-site compatible</li><li>Feature 3: Preserves all settings</li></ul>"
+            },
+            "widgetType": "text-editor.default"
+          }
+        ]
+      }
+    ]
+  },
+  "media": [
+    {
+      "id": "media001",
+      "url": "https://via.placeholder.com/600x400/4A90E2/ffffff?text=Test+Image",
+      "type": "image",
+      "alt": "Test placeholder image",
+      "width": 600,
+      "height": 400
+    }
+  ],
+  "metadata": {
+    "sourceUrl": "https://test-site.example.com/test-page/",
+    "copiedAt": "2025-10-16T14:45:00.000Z",
+    "elementorVersion": "3.31.4"
+  },
+  "__ELEMENTOR_COPIER_DATA__": {
+    "version": "1.0.0",
+    "timestamp": 1729091100000,
+    "source": "elementor-copier-extension"
+  }
+}

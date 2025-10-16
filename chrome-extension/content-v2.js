@@ -3,7 +3,7 @@
  * Runs on all pages to detect and extract Elementor data
  */
 
-(function() {
+(function () {
   'use strict';
 
   // State
@@ -52,7 +52,7 @@
   }
 
   console.log('🚀 [v2.0] Content script starting...');
-  
+
   // Inject critical classes first - MUST happen before anything else
   try {
     console.log('🔧 [v2.0] About to inject critical classes...');
@@ -61,15 +61,21 @@
   } catch (error) {
     console.error('❌ [v2.0] Failed to inject critical classes:', error);
   }
-  
+
   console.log('📦 [v2.0] Modules will be loaded in MAIN world via manifest');
   console.log('✨ [v2.0] Elementor Copier: Content script loaded - NEW VERSION');
-  
+
   // Note: Modules are now loaded in MAIN world (page context) via manifest.json
   // The page-bridge.js script will initialize them there
   // This content script only handles copy operations and context menu
-  
-  detectElementor();
+
+  // Wait for DOM to be ready before detecting Elementor
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', detectElementor);
+  } else {
+    // DOM is already ready
+    detectElementor();
+  }
 
   /**
    * Load format converter module
@@ -363,7 +369,7 @@
    */
   function handleModuleInitializationError(moduleName, error) {
     console.error(`[Editor Integration] Module initialization error (${moduleName}):`, error);
-    
+
     // Log error for debugging
     const errorDetails = {
       module: moduleName,
@@ -371,7 +377,7 @@
       timestamp: new Date().toISOString(),
       url: window.location.href
     };
-    
+
     // Send error to background for tracking
     try {
       chrome.runtime.sendMessage({
@@ -460,7 +466,7 @@
    */
   function handleConversionError(context, error) {
     console.error(`[Conversion Error] ${context}:`, error);
-    
+
     if (notificationManager) {
       notificationManager.warning(
         'Conversion Warning',
@@ -476,7 +482,7 @@
    */
   function handleModuleError(moduleName, error) {
     console.error(`[Module Error] ${moduleName}:`, error);
-    
+
     // Log to background for tracking
     try {
       chrome.runtime.sendMessage({
@@ -496,20 +502,48 @@
    * Detect if page uses Elementor
    */
   function detectElementor() {
+    console.log('[Detector] Starting Elementor detection...');
+
     // Check for Elementor markers
     const hasElementorClass = document.querySelector('[data-elementor-type]') !== null;
     const hasElementorId = document.querySelector('[data-elementor-id]') !== null;
     const hasElementorSettings = document.querySelector('[data-elementor-settings]') !== null;
-    
-    elementorDetected = hasElementorClass || hasElementorId || hasElementorSettings;
-    
+    const hasElementorElement = document.querySelector('[data-element_type]') !== null;
+
+    // Check for Elementor in URL (editor mode)
+    const isElementorEditor = window.location.href.includes('action=elementor') ||
+      window.location.href.includes('elementor-preview');
+
+    // Check for Elementor body class
+    const hasElementorBodyClass = document.body.classList.contains('elementor-page') ||
+      document.body.classList.contains('elementor-editor-active');
+
+    elementorDetected = hasElementorClass || hasElementorId || hasElementorSettings ||
+      hasElementorElement || isElementorEditor || hasElementorBodyClass;
+
     if (elementorDetected) {
       console.log('✓ Elementor detected on this page');
+      console.log('[Detector] Detection details:', {
+        hasElementorClass,
+        hasElementorId,
+        hasElementorSettings,
+        hasElementorElement,
+        isElementorEditor,
+        hasElementorBodyClass
+      });
       initializeExtension();
     } else {
       console.log('✗ Elementor not detected on this page');
+      // Try again after a delay in case content is loading
+      setTimeout(() => {
+        console.log('[Detector] Retrying detection...');
+        const retry = detectElementor();
+        if (!retry) {
+          console.log('[Detector] Still no Elementor found after retry');
+        }
+      }, 2000);
     }
-    
+
     return elementorDetected;
   }
 
@@ -517,54 +551,122 @@
    * Initialize extension features
    */
   function initializeExtension() {
+    console.log('[Init] Initializing extension features...');
+
     // Add event listeners
     document.addEventListener('contextmenu', handleContextMenu, true);
-    
+
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', handleKeyboardShortcuts);
+
     // Send stats to background
     sendStats();
+
+    console.log('[Init] Extension initialized successfully');
   }
 
   /**
    * Handle context menu event
    */
   function handleContextMenu(event) {
-    lastClickedElement = event.target;
-    console.log('Context menu opened on:', lastClickedElement);
+    // Find closest Elementor element
+    const elementorElement = event.target.closest('[data-element_type]');
+
+    if (elementorElement) {
+      // Store the Elementor element instead of the raw target
+      lastClickedElement = elementorElement;
+      const elementType = elementorElement.getAttribute('data-element_type');
+      console.log('[Context Menu] Elementor element found:', elementType);
+
+      // Send info to background to enable/disable menu items
+      chrome.runtime.sendMessage({
+        action: 'contextMenuOpened',
+        elementType: elementType,
+        hasElementor: true
+      });
+    } else {
+      // Store the target anyway (for debugging)
+      lastClickedElement = event.target;
+      console.log('[Context Menu] No Elementor element at this location');
+
+      // Send info to background to disable menu items
+      chrome.runtime.sendMessage({
+        action: 'contextMenuOpened',
+        elementType: null,
+        hasElementor: false
+      });
+    }
+  }
+
+  /**
+   * Handle keyboard shortcuts
+   */
+  function handleKeyboardShortcuts(event) {
+    // Ctrl+Shift+C or Cmd+Shift+C to enable element selector
+    if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'C') {
+      event.preventDefault();
+      console.log('[Keyboard] Element selector shortcut triggered');
+      enableHighlightMode();
+    }
+
+    // Ctrl+Shift+X or Cmd+Shift+X to disable element selector
+    if ((event.ctrlKey || event.metaKey) && event.shiftKey && event.key === 'X') {
+      event.preventDefault();
+      console.log('[Keyboard] Disable selector shortcut triggered');
+      disableHighlightMode();
+    }
   }
 
   /**
    * Listen for messages from background script
    */
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    console.log('Message received in content script:', request);
+    console.log('[Message] Received in content script:', request);
 
     try {
       switch (request.action) {
         case 'copy-widget':
           copyWidget(lastClickedElement, sendResponse);
           break;
-        
+
         case 'copy-section':
           copySection(lastClickedElement, sendResponse);
           break;
-        
+
         case 'copy-column':
           copyColumn(lastClickedElement, sendResponse);
           break;
-        
+
         case 'copy-page':
           copyPage(sendResponse);
           break;
-        
+
         case 'toggle-highlight':
           toggleHighlightMode(sendResponse);
           break;
-        
+
+        case 'getStats':
+          // Return current stats
+          const widgets = document.querySelectorAll('[data-element_type^="widget."]').length;
+          const sections = document.querySelectorAll('[data-element_type="section"]').length;
+          const columns = document.querySelectorAll('[data-element_type="column"]').length;
+
+          sendResponse({
+            success: true,
+            stats: {
+              widgets,
+              sections,
+              columns,
+              elementorDetected
+            }
+          });
+          break;
+
         case 'writeToClipboard':
           // Handle clipboard write directly in content script context
           writeToClipboardDirect(request.data, sendResponse);
           break;
-        
+
         default:
           sendResponse({ success: false, error: 'Unknown action' });
       }
@@ -586,19 +688,19 @@
       console.log('[Clipboard] Data type:', data.type);
       console.log('[Clipboard] Element type:', data.elementType);
       console.log('[Clipboard] Data size:', JSON.stringify(data).length, 'characters');
-      
+
       const jsonString = JSON.stringify(data, null, 2);
       console.log('[Clipboard] JSON string created, length:', jsonString.length);
       console.log('[Clipboard] First 500 chars:', jsonString.substring(0, 500));
-      
+
       await navigator.clipboard.writeText(jsonString);
       console.log('✓ Clipboard write successful from content script');
-      
+
       // Verify write
       const readBack = await navigator.clipboard.readText();
       console.log('[Clipboard] Verification - read back length:', readBack.length);
       console.log('[Clipboard] Verification - matches:', readBack === jsonString);
-      
+
       callback({ success: true });
     } catch (error) {
       console.error('✗ Content script clipboard write failed:', error);
@@ -613,7 +715,7 @@
   function copyWidget(element, callback) {
     try {
       const widgetElement = findElementorElement(element, 'widget');
-      
+
       if (!widgetElement) {
         const error = createDetailedError(
           'WIDGET_NOT_FOUND',
@@ -626,7 +728,7 @@
       }
 
       const data = extractElementData(widgetElement);
-      
+
       if (!data) {
         const error = createDetailedError(
           'EXTRACTION_FAILED',
@@ -661,7 +763,7 @@
 
       // Copy to clipboard with retry logic
       copyToClipboardWithRetry(clipboardData, callback);
-      
+
     } catch (error) {
       const detailedError = createDetailedError(
         'UNEXPECTED_ERROR',
@@ -681,7 +783,7 @@
   function copySection(element, callback) {
     try {
       const sectionElement = findElementorElement(element, 'section');
-      
+
       if (!sectionElement) {
         const error = createDetailedError(
           'SECTION_NOT_FOUND',
@@ -694,7 +796,7 @@
       }
 
       const data = extractElementData(sectionElement);
-      
+
       if (!data) {
         const error = createDetailedError(
           'EXTRACTION_FAILED',
@@ -707,10 +809,10 @@
       }
 
       // Check if section has content
-      const hasContent = data.elements && data.elements.some(column => 
+      const hasContent = data.elements && data.elements.some(column =>
         column.elements && column.elements.length > 0
       );
-      
+
       if (!hasContent) {
         console.warn('[Elementor Copier] Warning: Copying empty section (no widgets inside)');
         console.warn('[Elementor Copier] This section may not paste correctly in the editor');
@@ -736,7 +838,7 @@
       clipboardData = processClipboardData(clipboardData);
 
       copyToClipboardWithRetry(clipboardData, callback);
-      
+
     } catch (error) {
       const detailedError = createDetailedError(
         'UNEXPECTED_ERROR',
@@ -756,7 +858,7 @@
   function copyColumn(element, callback) {
     try {
       const columnElement = findElementorElement(element, 'column');
-      
+
       if (!columnElement) {
         const error = createDetailedError(
           'COLUMN_NOT_FOUND',
@@ -769,7 +871,7 @@
       }
 
       const data = extractElementData(columnElement);
-      
+
       if (!data) {
         const error = createDetailedError(
           'EXTRACTION_FAILED',
@@ -801,7 +903,7 @@
       clipboardData = processClipboardData(clipboardData);
 
       copyToClipboardWithRetry(clipboardData, callback);
-      
+
     } catch (error) {
       const detailedError = createDetailedError(
         'UNEXPECTED_ERROR',
@@ -821,7 +923,7 @@
   function copyPage(callback) {
     try {
       const pageElement = document.querySelector('[data-elementor-type="wp-page"], [data-elementor-type="page"]');
-      
+
       if (!pageElement) {
         const error = createDetailedError(
           'PAGE_NOT_FOUND',
@@ -834,7 +936,7 @@
       }
 
       const data = extractElementData(pageElement);
-      
+
       if (!data) {
         const error = createDetailedError(
           'EXTRACTION_FAILED',
@@ -867,7 +969,7 @@
       clipboardData = processClipboardData(clipboardData);
 
       copyToClipboardWithRetry(clipboardData, callback);
-      
+
     } catch (error) {
       const detailedError = createDetailedError(
         'UNEXPECTED_ERROR',
@@ -892,19 +994,19 @@
     // Search upwards in DOM tree
     while (current && depth < maxDepth) {
       const elType = current.getAttribute('data-element_type');
-      
+
       if (type === 'widget' && elType && elType.startsWith('widget.')) {
         return current;
       }
-      
+
       if (type === 'section' && elType === 'section') {
         return current;
       }
-      
+
       if (type === 'column' && elType === 'column') {
         return current;
       }
-      
+
       current = current.parentElement;
       depth++;
     }
@@ -920,7 +1022,7 @@
       console.log('[Extract] ========== EXTRACTING ELEMENT DATA ==========');
       console.log('[Extract] Element:', element);
       console.log('[Extract] Element classes:', element.className);
-      
+
       const data = {
         id: element.getAttribute('data-id') || generateId(),
         elType: element.getAttribute('data-element_type') || 'unknown',
@@ -952,26 +1054,26 @@
         data.widgetType = data.elType.replace('widget.', '');
         console.log('[Extract] Widget type:', data.widgetType);
       }
-      
+
       // CRITICAL: Extract content from rendered HTML (for frontend pages)
       // When copying from frontend, settings aren't available, so we extract rendered content
       if (data.elType === 'widget' || data.elType.startsWith('widget.')) {
         console.log('[Extract] Extracting widget content from rendered HTML...');
-        
+
         // Get widget type from data-widget_type attribute
         const widgetType = element.getAttribute('data-widget_type');
         if (widgetType) {
           data.widgetType = widgetType;
           console.log('[Extract] Widget type from attribute:', widgetType);
         }
-        
+
         // Extract content based on widget type
         const widgetContent = element.querySelector('.elementor-widget-container');
         if (widgetContent) {
           // Store the rendered HTML content
           data.renderedContent = widgetContent.innerHTML;
           console.log('[Extract] Rendered content extracted:', data.renderedContent.substring(0, 200));
-          
+
           // Try to extract specific content based on widget type
           if (widgetType && widgetType.includes('image')) {
             const img = widgetContent.querySelector('img');
@@ -1007,7 +1109,7 @@
       // Extract child elements recursively
       // Different selectors for different element types and Elementor versions
       let childElements = [];
-      
+
       if (data.elType === 'section') {
         // For sections, get columns
         childElements = element.querySelectorAll(':scope > .elementor-container > .elementor-column, :scope > .elementor-container > .elementor-row > .elementor-column');
@@ -1024,9 +1126,9 @@
         childElements = element.querySelectorAll(':scope > .elementor-element');
         console.log('[Extract] Generic: Found', childElements.length, 'child elements');
       }
-      
+
       console.log('[Extract] Total child elements found:', childElements.length);
-      
+
       if (childElements.length > 0) {
         data.elements = [];
         childElements.forEach((child, index) => {
@@ -1043,7 +1145,7 @@
 
       console.log('[Extract] ✓ Extraction complete. Final data:', JSON.stringify(data, null, 2));
       return data;
-      
+
     } catch (error) {
       console.error('[Extract] ✗ Error extracting element data:', error);
       console.error('[Extract] Error stack:', error.stack);
@@ -1126,7 +1228,7 @@
         try {
           const computedStyle = window.getComputedStyle(el);
           const bgImage = computedStyle.backgroundImage;
-          
+
           if (bgImage && bgImage !== 'none') {
             const urlMatches = bgImage.match(/url\(['"]?([^'")\s]+)['"]?\)/gi);
             if (urlMatches) {
@@ -1207,20 +1309,20 @@
       if (settingsAttr) {
         try {
           const settings = JSON.parse(settingsAttr);
-          
+
           // Check for common Elementor image settings
           const imageFields = ['image', 'background_image', 'background_video_link', 'video_link'];
           imageFields.forEach(field => {
             if (settings[field]) {
               let url = null;
-              
+
               // Handle different formats
               if (typeof settings[field] === 'string') {
                 url = settings[field];
               } else if (settings[field].url) {
                 url = settings[field].url;
               }
-              
+
               if (url && !seenUrls.has(url)) {
                 seenUrls.add(url);
                 const mediaType = field.includes('video') ? 'video' : 'image';
@@ -1242,7 +1344,7 @@
 
       console.log(`Extracted ${mediaArray.length} media items from element`);
       return mediaArray;
-      
+
     } catch (error) {
       console.error('Error extracting media URLs:', error);
       return [];
@@ -1261,18 +1363,18 @@
       if (chrome.runtime.lastError) {
         const error = chrome.runtime.lastError;
         console.error('✗ Runtime error:', error);
-        
+
         // Retry logic
         if (retryCount < RETRY_CONFIG.maxRetries) {
           const delay = RETRY_CONFIG.retryDelay * Math.pow(RETRY_CONFIG.backoffMultiplier, retryCount);
           console.log(`Retrying clipboard operation in ${delay}ms (attempt ${retryCount + 1}/${RETRY_CONFIG.maxRetries})...`);
-          
+
           setTimeout(() => {
             copyToClipboardWithRetry(data, callback, retryCount + 1);
           }, delay);
           return;
         }
-        
+
         // Max retries reached
         const detailedError = createDetailedError(
           'CLIPBOARD_COMMUNICATION_FAILED',
@@ -1281,8 +1383,8 @@
           error
         );
         logError(detailedError);
-        callback({ 
-          success: false, 
+        callback({
+          success: false,
           error: detailedError.userMessage,
           errorCode: detailedError.code
         });
@@ -1291,7 +1393,7 @@
 
       if (response && response.success) {
         console.log('✓ Copied to clipboard');
-        
+
         // Verify clipboard content
         navigator.clipboard.readText().then(text => {
           console.log('[Clipboard Verify] Length:', text.length);
@@ -1303,12 +1405,12 @@
             console.error('[Clipboard Verify] ✗ NOT valid JSON!', e.message);
           }
         });
-        
+
         // Show visual feedback
         showSuccessAnimation(data.elementType);
-        
-        callback({ 
-          success: true, 
+
+        callback({
+          success: true,
           message: `${formatElementType(data.elementType)} copied successfully!`,
           elementType: data.elementType
         });
@@ -1317,13 +1419,13 @@
         if (retryCount < RETRY_CONFIG.maxRetries) {
           const delay = RETRY_CONFIG.retryDelay * Math.pow(RETRY_CONFIG.backoffMultiplier, retryCount);
           console.log(`Retrying clipboard operation in ${delay}ms (attempt ${retryCount + 1}/${RETRY_CONFIG.maxRetries})...`);
-          
+
           setTimeout(() => {
             copyToClipboardWithRetry(data, callback, retryCount + 1);
           }, delay);
           return;
         }
-        
+
         // Max retries reached
         const detailedError = createDetailedError(
           'CLIPBOARD_WRITE_FAILED',
@@ -1333,8 +1435,8 @@
         );
         logError(detailedError);
         console.error('✗ Failed to copy to clipboard:', response?.error);
-        callback({ 
-          success: false, 
+        callback({
+          success: false,
           error: detailedError.userMessage,
           errorCode: detailedError.code
         });
@@ -1354,7 +1456,7 @@
    */
   function toggleHighlightMode(callback) {
     highlightMode = !highlightMode;
-    
+
     if (highlightMode) {
       enableHighlightMode();
       callback({ success: true, message: 'Highlight mode enabled' });
@@ -1368,27 +1470,149 @@
    * Enable highlight mode
    */
   function enableHighlightMode() {
+    console.log('[Highlight] Enabling highlight mode...');
+
     // Add hover listeners to all Elementor elements
     const elements = document.querySelectorAll('[data-element_type]');
+    console.log('[Highlight] Found', elements.length, 'Elementor elements');
+
+    if (elements.length === 0) {
+      console.warn('[Highlight] No Elementor elements found! Make sure you are on an Elementor page.');
+      alert('No Elementor elements found on this page. Make sure you are viewing an Elementor-built page.');
+      return;
+    }
+
+    highlightMode = true;
     elements.forEach(el => {
       el.addEventListener('mouseenter', highlightElement);
       el.addEventListener('mouseleave', unhighlightElement);
+      el.addEventListener('click', handleElementClick);
       el.style.cursor = 'pointer';
+
+      // Add visual label box
+      addElementLabel(el);
     });
+
+    console.log('[Highlight] Highlight mode enabled for', elements.length, 'elements');
+    showTemporaryNotification('Element selector enabled! Click copy buttons or click elements directly.');
+  }
+
+  /**
+   * Add visual label box to element
+   */
+  function addElementLabel(element) {
+    const elementType = element.getAttribute('data-element_type');
+    const elementId = element.getAttribute('data-id');
+
+    // Don't add labels to nested widgets (only top-level sections, columns, and direct widgets)
+    const parent = element.parentElement;
+    if (parent && parent.hasAttribute('data-element_type')) {
+      const parentType = parent.getAttribute('data-element_type');
+      // Skip if parent is a widget (nested widget)
+      if (parentType && parentType.startsWith('widget.')) {
+        return;
+      }
+    }
+
+    // Create label container
+    const label = document.createElement('div');
+    label.className = 'elementor-copier-label';
+    label.setAttribute('data-copier-label', elementId);
+
+    // Determine element info
+    let typeName = 'Element';
+    let typeColor = '#666';
+    let icon = '📦';
+
+    if (elementType === 'section') {
+      typeName = 'Section';
+      typeColor = '#00a32a';
+      icon = '📐';
+    } else if (elementType === 'column') {
+      typeName = 'Column';
+      typeColor = '#f0b849';
+      icon = '📊';
+    } else if (elementType && elementType.startsWith('widget.')) {
+      const widgetName = elementType.replace('widget.', '').replace(/-/g, ' ');
+      typeName = widgetName.charAt(0).toUpperCase() + widgetName.slice(1);
+      typeColor = '#0073aa';
+      icon = '🧩';
+    }
+
+    // Create label content
+    label.innerHTML = `
+      <div class="elementor-copier-label-header" style="background: ${typeColor}">
+        <span class="elementor-copier-label-icon">${icon}</span>
+        <span class="elementor-copier-label-type">${typeName}</span>
+        <span class="elementor-copier-label-id">#${elementId}</span>
+      </div>
+      <button class="elementor-copier-label-btn" data-element-id="${elementId}">
+        📋 Copy
+      </button>
+    `;
+
+    // Position label at top-left of element
+    label.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 999999;
+      background: white;
+      border: 2px solid ${typeColor};
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 12px;
+      pointer-events: auto;
+      min-width: 150px;
+    `;
+
+    // Add click handler to copy button
+    const copyBtn = label.querySelector('.elementor-copier-label-btn');
+    copyBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      // Find the element and copy it
+      const targetElement = document.querySelector(`[data-id="${elementId}"]`);
+      if (targetElement) {
+        handleElementClick({ currentTarget: targetElement, preventDefault: () => { }, stopPropagation: () => { } });
+      }
+    });
+
+    // Make element position relative if it's not already positioned
+    const computedStyle = window.getComputedStyle(element);
+    if (computedStyle.position === 'static') {
+      element.style.position = 'relative';
+    }
+
+    // Add label to element
+    element.appendChild(label);
   }
 
   /**
    * Disable highlight mode
    */
   function disableHighlightMode() {
+    console.log('[Highlight] Disabling highlight mode...');
+
+    highlightMode = false;
     // Remove hover listeners
     const elements = document.querySelectorAll('[data-element_type]');
     elements.forEach(el => {
       el.removeEventListener('mouseenter', highlightElement);
       el.removeEventListener('mouseleave', unhighlightElement);
+      el.removeEventListener('click', handleElementClick);
       el.style.cursor = '';
       el.style.outline = '';
     });
+
+    // Remove all labels
+    const labels = document.querySelectorAll('.elementor-copier-label');
+    labels.forEach(label => label.remove());
+
+    console.log('[Highlight] Highlight mode disabled');
+    showTemporaryNotification('Element selector disabled');
   }
 
   /**
@@ -1397,13 +1621,16 @@
   function highlightElement(event) {
     const el = event.currentTarget;
     const elType = el.getAttribute('data-element_type');
-    
+
     if (elType.startsWith('widget.')) {
-      el.style.outline = '2px solid #0073aa';
+      el.style.outline = '3px solid #0073aa';
+      el.style.outlineOffset = '2px';
     } else if (elType === 'section') {
-      el.style.outline = '2px solid #00a32a';
+      el.style.outline = '3px solid #00a32a';
+      el.style.outlineOffset = '2px';
     } else if (elType === 'column') {
-      el.style.outline = '2px solid #f0b849';
+      el.style.outline = '3px solid #f0b849';
+      el.style.outlineOffset = '2px';
     }
   }
 
@@ -1412,6 +1639,82 @@
    */
   function unhighlightElement(event) {
     event.currentTarget.style.outline = '';
+    event.currentTarget.style.outlineOffset = '';
+  }
+
+  /**
+   * Handle element click in highlight mode
+   */
+  function handleElementClick(event) {
+    if (!highlightMode) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const element = event.currentTarget;
+    const elementType = element.getAttribute('data-element_type');
+
+    console.log('[Click] Element clicked:', elementType);
+
+    // Callback to handle copy result
+    const handleCopyResult = (response) => {
+      if (response && response.success) {
+        showTemporaryNotification('✓ Element copied successfully!', 2000);
+      } else {
+        showTemporaryNotification('✗ Copy failed: ' + (response?.error || 'Unknown error'), 3000);
+      }
+      // Disable highlight mode after copying
+      disableHighlightMode();
+    };
+
+    // Determine what to copy based on element type
+    if (elementType === 'section' || elementType.startsWith('section')) {
+      copySection(element, handleCopyResult);
+    } else if (elementType === 'column') {
+      copySection(element, handleCopyResult); // Copy column as section
+    } else if (elementType.startsWith('widget.')) {
+      copyWidget(element, handleCopyResult);
+    } else {
+      copyWidget(element, handleCopyResult); // Default to widget copy
+    }
+  }
+
+  /**
+   * Show temporary notification to user
+   */
+  function showTemporaryNotification(message, duration = 3000) {
+    // Remove any existing notification
+    const existing = document.querySelector('.elementor-copier-notification');
+    if (existing) {
+      existing.remove();
+    }
+
+    // Create notification
+    const notification = document.createElement('div');
+    notification.className = 'elementor-copier-notification';
+    notification.textContent = message;
+    notification.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #2196f3;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 4px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 14px;
+      z-index: 999999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      animation: slideIn 0.3s ease-out;
+    `;
+
+    document.body.appendChild(notification);
+
+    // Remove after duration
+    setTimeout(() => {
+      notification.style.animation = 'slideOut 0.3s ease-out';
+      setTimeout(() => notification.remove(), 300);
+    }, duration);
   }
 
   /**
@@ -1476,12 +1779,12 @@
   function logError(error) {
     // Add to error log
     errorLog.push(error);
-    
+
     // Maintain max size
     if (errorLog.length > MAX_ERROR_LOG_SIZE) {
       errorLog.shift();
     }
-    
+
     // Log to console with detailed information
     console.group(`🔴 Elementor Copier Error [${error.code}]`);
     console.error('Technical Message:', error.technicalMessage);
@@ -1493,7 +1796,7 @@
       console.error('Original Error:', error.originalError);
     }
     console.groupEnd();
-    
+
     // Send error to background for tracking
     chrome.runtime.sendMessage({
       action: 'logError',
@@ -1508,7 +1811,7 @@
   /**
    * Get error log (for debugging)
    */
-  window.elementorCopierGetErrorLog = function() {
+  window.elementorCopierGetErrorLog = function () {
     return errorLog;
   };
 
@@ -1535,7 +1838,7 @@
       pointer-events: none;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     `;
-    
+
     // Add animation keyframes
     if (!document.getElementById('elementor-copier-animations')) {
       const style = document.createElement('style');
@@ -1567,16 +1870,16 @@
       `;
       document.head.appendChild(style);
     }
-    
+
     overlay.innerHTML = `
       <div style="text-align: center;">
         <div style="font-size: 48px; margin-bottom: 10px;">✓</div>
         <div>${formatElementType(elementType)} Copied!</div>
       </div>
     `;
-    
+
     document.body.appendChild(overlay);
-    
+
     // Fade out and remove
     setTimeout(() => {
       overlay.style.animation = 'successFadeOut 0.4s ease-out';

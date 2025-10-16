@@ -926,3 +926,80 @@ if (typeof module !== 'undefined' && module.exports) {
 if (typeof window !== 'undefined') {
   window.PasteInterceptor = PasteInterceptor;
 }
+
+// Auto-initialize when in Elementor editor (MAIN world)
+if (typeof window !== 'undefined' && window.ElementorEditorDetector) {
+  console.log('[Paste Interceptor] Auto-initialization starting...');
+  
+  // Wait for DOM to be ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializePasteInterceptor);
+  } else {
+    // DOM is already ready
+    initializePasteInterceptor();
+  }
+  
+  async function initializePasteInterceptor() {
+    try {
+      // Wait a bit for all modules to load
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Check if we're in Elementor editor
+      const detector = new window.ElementorEditorDetector();
+      const isEditor = detector.isElementorEditor();
+      
+      if (!isEditor) {
+        console.log('[Paste Interceptor] Not in Elementor editor, skipping initialization');
+        return;
+      }
+      
+      console.log('[Paste Interceptor] In Elementor editor, initializing paste functionality...');
+      
+      // Initialize required modules
+      const clipboardManager = window.ClipboardManager ? new window.ClipboardManager() : null;
+      const editorInjector = window.EditorContextInjector ? new window.EditorContextInjector() : null;
+      const formatConverter = window.ElementorFormatConverter || null;
+      
+      if (!clipboardManager) {
+        console.error('[Paste Interceptor] ClipboardManager not available');
+        return;
+      }
+      
+      if (!editorInjector) {
+        console.error('[Paste Interceptor] EditorContextInjector not available');
+        return;
+      }
+      
+      // Initialize clipboard manager
+      await clipboardManager.initialize();
+      
+      // Initialize editor injector
+      await editorInjector.initialize();
+      
+      // Create and initialize paste interceptor
+      const pasteInterceptor = new PasteInterceptor();
+      const success = await pasteInterceptor.initialize(
+        clipboardManager,
+        detector,
+        editorInjector,
+        formatConverter,
+        null, // mediaURLHandler
+        null, // versionCompatibility
+        null  // notificationManager
+      );
+      
+      if (success) {
+        console.log('✅ [Paste Interceptor] Paste functionality is ready!');
+        console.log('✅ [Paste Interceptor] You can now paste copied Elementor elements with Ctrl+V / Cmd+V');
+        
+        // Store globally for debugging
+        window.elementorCopierPasteInterceptor = pasteInterceptor;
+      } else {
+        console.error('[Paste Interceptor] Initialization failed');
+      }
+      
+    } catch (error) {
+      console.error('[Paste Interceptor] Auto-initialization error:', error);
+    }
+  }
+}
