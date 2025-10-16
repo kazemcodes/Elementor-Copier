@@ -885,7 +885,7 @@
       console.log('[CopySection] About to call copyToClipboardWithRetry');
       console.log('[CopySection] Callback type:', typeof callback);
       console.log('[CopySection] Clipboard data ready:', !!clipboardData);
-      
+
       copyToClipboardWithRetry(clipboardData, callback);
 
     } catch (error) {
@@ -1435,15 +1435,15 @@
     console.log('[Copy] Attempting clipboard write...');
     console.log('[Copy] Data type:', data.elementType);
     console.log('[Copy] Data size:', JSON.stringify(data).length, 'characters');
-    
+
     // Try direct clipboard API first (works in most modern browsers)
     const jsonString = JSON.stringify(data, null, 2);
-    
+
     console.log('[Copy] Using direct Clipboard API');
     navigator.clipboard.writeText(jsonString)
       .then(() => {
         console.log('✓ Copied to clipboard via Clipboard API');
-        
+
         // Verify clipboard content
         navigator.clipboard.readText().then(text => {
           console.log('[Clipboard Verify] Length:', text.length);
@@ -1468,7 +1468,7 @@
       .catch((error) => {
         console.error('[Copy] Clipboard API failed:', error);
         console.log('[Copy] Falling back to background script method...');
-        
+
         // Fallback to background script
         chrome.runtime.sendMessage({
           action: 'copyToClipboard',
@@ -1476,11 +1476,11 @@
         }, (response) => {
           console.log('[Copy] Response callback invoked');
           console.log('[Copy] Received response from background:', response);
-      
+
           if (chrome.runtime.lastError) {
             const error = chrome.runtime.lastError;
             console.error('✗ Background script error:', error);
-            
+
             const detailedError = createDetailedError(
               'CLIPBOARD_FALLBACK_FAILED',
               'Both clipboard methods failed',

@@ -108,6 +108,267 @@
   };
 
   /**
+   * Intelligently convert custom widget to standard Elementor widget
+   * Analyzes the widget content and settings to determine the best standard widget match
+   * 
+   * @param {Object} element - The custom widget element
+   * @param {string} widgetType - The custom widget type
+   * @returns {Object|null} Converted standard widget or null if no conversion possible
+   */
+  function convertCustomWidgetToStandard(element, widgetType) {
+    const settings = element.settings || {};
+    const renderedContent = element.renderedContent || '';
+
+    // Image-based widgets (pix-img-box, image-box, etc.)
+    if (widgetType.includes('img') || widgetType.includes('image')) {
+      const imageUrl = extractImageUrl(settings, renderedContent);
+      if (imageUrl) {
+        return {
+          elType: 'widget',
+          id: generateElementId(),
+          widgetType: 'image',
+          settings: {
+            image: {
+              url: imageUrl,
+              id: settings.image?.id || '',
+              alt: settings.image?.alt || ''
+            },
+            image_size: 'full',
+            _element_id: '',
+            _css_classes: `converted-from-${widgetType.replace(/\./g, '-')}`
+          },
+          elements: [],
+          isInner: element.isInner || false
+        };
+      }
+    }
+
+    // Heading widgets
+    if (widgetType.includes('heading') || widgetType.includes('title')) {
+      const headingData = extractHeadingData(settings, renderedContent);
+      if (headingData.title) {
+        return {
+          elType: 'widget',
+          id: generateElementId(),
+          widgetType: 'heading',
+          settings: {
+            title: headingData.title,
+            header_size: headingData.tag || 'h2',
+            align: headingData.align || '',
+            _element_id: '',
+            _css_classes: `converted-from-${widgetType.replace(/\./g, '-')}`
+          },
+          elements: [],
+          isInner: element.isInner || false
+        };
+      }
+    }
+
+    // Text/content widgets
+    if (widgetType.includes('text') || widgetType.includes('content') || widgetType.includes('editor')) {
+      const textContent = extractTextContent(settings, renderedContent);
+      if (textContent) {
+        return {
+          elType: 'widget',
+          id: generateElementId(),
+          widgetType: 'text-editor',
+          settings: {
+            editor: textContent,
+            _element_id: '',
+            _css_classes: `converted-from-${widgetType.replace(/\./g, '-')}`
+          },
+          elements: [],
+          isInner: element.isInner || false
+        };
+      }
+    }
+
+    // Button widgets
+    if (widgetType.includes('button') || widgetType.includes('btn')) {
+      const buttonData = extractButtonData(settings, renderedContent);
+      if (buttonData.text) {
+        return {
+          elType: 'widget',
+          id: generateElementId(),
+          widgetType: 'button',
+          settings: {
+            text: buttonData.text,
+            link: buttonData.link || { url: '' },
+            align: buttonData.align || 'center',
+            _element_id: '',
+            _css_classes: `converted-from-${widgetType.replace(/\./g, '-')}`
+          },
+          elements: [],
+          isInner: element.isInner || false
+        };
+      }
+    }
+
+    // Icon widgets
+    if (widgetType.includes('icon') && !widgetType.includes('box')) {
+      const iconData = extractIconData(settings, renderedContent);
+      if (iconData.icon) {
+        return {
+          elType: 'widget',
+          id: generateElementId(),
+          widgetType: 'icon',
+          settings: {
+            selected_icon: iconData.icon,
+            view: 'default',
+            _element_id: '',
+            _css_classes: `converted-from-${widgetType.replace(/\./g, '-')}`
+          },
+          elements: [],
+          isInner: element.isInner || false
+        };
+      }
+    }
+
+    // Divider widgets
+    if (widgetType.includes('divider') || widgetType.includes('separator')) {
+      return {
+        elType: 'widget',
+        id: generateElementId(),
+        widgetType: 'divider',
+        settings: {
+          style: 'solid',
+          weight: { size: 1, unit: 'px' },
+          _element_id: '',
+          _css_classes: `converted-from-${widgetType.replace(/\./g, '-')}`
+        },
+        elements: [],
+        isInner: element.isInner || false
+      };
+    }
+
+    // Spacer widgets
+    if (widgetType.includes('spacer') || widgetType.includes('space')) {
+      return {
+        elType: 'widget',
+        id: generateElementId(),
+        widgetType: 'spacer',
+        settings: {
+          space: { size: 50, unit: 'px' },
+          _element_id: '',
+          _css_classes: `converted-from-${widgetType.replace(/\./g, '-')}`
+        },
+        elements: [],
+        isInner: element.isInner || false
+      };
+    }
+
+    // No conversion available
+    return null;
+  }
+
+  /**
+   * Helper: Extract image URL from settings or rendered content
+   */
+  function extractImageUrl(settings, renderedContent) {
+    // Check settings first
+    if (settings.image?.url) return settings.image.url;
+    if (settings.img?.url) return settings.img.url;
+    if (settings.src) return settings.src;
+
+    // Parse from rendered HTML
+    if (renderedContent) {
+      const imgMatch = renderedContent.match(/<img[^>]+src=["']([^"']+)["']/i);
+      if (imgMatch) return imgMatch[1];
+    }
+
+    return null;
+  }
+
+  /**
+   * Helper: Extract heading data from settings or rendered content
+   */
+  function extractHeadingData(settings, renderedContent) {
+    const result = { title: '', tag: 'h2', align: '' };
+
+    // Check settings
+    if (settings.title) result.title = settings.title;
+    if (settings.heading) result.title = settings.heading;
+    if (settings.header_size) result.tag = settings.header_size;
+    if (settings.tag) result.tag = settings.tag;
+    if (settings.align) result.align = settings.align;
+
+    // Parse from rendered HTML if no title in settings
+    if (!result.title && renderedContent) {
+      const headingMatch = renderedContent.match(/<(h[1-6])[^>]*>([^<]+)<\/\1>/i);
+      if (headingMatch) {
+        result.tag = headingMatch[1];
+        result.title = headingMatch[2].trim();
+      }
+    }
+
+    return result;
+  }
+
+  /**
+   * Helper: Extract text content from settings or rendered content
+   */
+  function extractTextContent(settings, renderedContent) {
+    // Check settings
+    if (settings.editor) return settings.editor;
+    if (settings.content) return settings.content;
+    if (settings.text) return settings.text;
+
+    // Use rendered content
+    if (renderedContent) {
+      // Clean up the HTML a bit
+      return renderedContent.trim();
+    }
+
+    return null;
+  }
+
+  /**
+   * Helper: Extract button data from settings or rendered content
+   */
+  function extractButtonData(settings, renderedContent) {
+    const result = { text: '', link: null, align: 'center' };
+
+    // Check settings
+    if (settings.text) result.text = settings.text;
+    if (settings.button_text) result.text = settings.button_text;
+    if (settings.link) result.link = settings.link;
+    if (settings.url) result.link = { url: settings.url };
+    if (settings.align) result.align = settings.align;
+
+    // Parse from rendered HTML
+    if (!result.text && renderedContent) {
+      const buttonMatch = renderedContent.match(/<(?:a|button)[^>]*>([^<]+)<\/(?:a|button)>/i);
+      if (buttonMatch) result.text = buttonMatch[1].trim();
+
+      const hrefMatch = renderedContent.match(/href=["']([^"']+)["']/i);
+      if (hrefMatch) result.link = { url: hrefMatch[1] };
+    }
+
+    return result;
+  }
+
+  /**
+   * Helper: Extract icon data from settings or rendered content
+   */
+  function extractIconData(settings, renderedContent) {
+    const result = { icon: null };
+
+    // Check settings
+    if (settings.selected_icon) result.icon = settings.selected_icon;
+    if (settings.icon) result.icon = settings.icon;
+
+    // Parse from rendered HTML
+    if (!result.icon && renderedContent) {
+      const iconMatch = renderedContent.match(/class=["']([^"']*(?:fa|icon)[^"']*)["']/i);
+      if (iconMatch) {
+        result.icon = { value: iconMatch[1], library: 'fa-solid' };
+      }
+    }
+
+    return result;
+  }
+
+  /**
    * Convert extension data to Elementor native format
    * @param {Object} extensionData - Data in extension format
    * @param {Object} options - Conversion options
@@ -135,7 +396,7 @@
 
       // Convert the main element
       let converted = convertElement(extensionData.data, sourceVersion, targetVersion);
-      
+
       console.log('[FormatConverter] After conversion:', JSON.stringify(converted, null, 2));
       console.log('[FormatConverter] Converted element type:', converted?.elType);
       console.log('[FormatConverter] Converted has children:', !!converted?.elements);
@@ -220,22 +481,33 @@
       widgetType.includes('_') && !isStandardElementorWidget(widgetType) // Other custom widgets
     );
 
-    // If custom widget and has renderedContent, convert to HTML widget
-    if (isCustomWidget && element.renderedContent) {
-      console.log(`[FormatConverter] Converting custom widget "${widgetType}" to HTML widget with rendered content`);
-      
-      return {
-        elType: 'widget',
-        id: elementId,
-        widgetType: 'html',
-        settings: {
-          html: element.renderedContent,
-          _element_id: '',
-          _css_classes: `elementor-copier-fallback ${widgetType.replace(/\./g, '-')}`
-        },
-        elements: [],
-        isInner: element.isInner || false
-      };
+    // If custom widget, try to convert to standard Elementor widget
+    if (isCustomWidget) {
+      console.log(`[FormatConverter] Custom widget detected: "${widgetType}"`);
+
+      // Try intelligent conversion first
+      const intelligentConversion = convertCustomWidgetToStandard(element, widgetType);
+      if (intelligentConversion) {
+        console.log(`[FormatConverter] ✓ Converted "${widgetType}" to "${intelligentConversion.widgetType}"`);
+        return intelligentConversion;
+      }
+
+      // Fallback to HTML widget if conversion not possible
+      if (element.renderedContent) {
+        console.log(`[FormatConverter] ⚠ No conversion available, using HTML widget for "${widgetType}"`);
+        return {
+          elType: 'widget',
+          id: elementId,
+          widgetType: 'html',
+          settings: {
+            html: element.renderedContent,
+            _element_id: '',
+            _css_classes: `elementor-copier-fallback ${widgetType.replace(/\./g, '-')}`
+          },
+          elements: [],
+          isInner: element.isInner || false
+        };
+      }
     }
 
     // Build base structure
