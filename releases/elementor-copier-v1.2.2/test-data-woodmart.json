@@ -1,0 +1,247 @@
+{
+  "theme": "WoodMart",
+  "description": "Real-world widget samples from WoodMart theme",
+  "widgets": [
+    {
+      "name": "WoodMart Banner",
+      "widgetType": "wd_banner",
+      "description": "Banner widget with image, text overlay, and button",
+      "element": {
+        "elType": "widget",
+        "widgetType": "wd_banner",
+        "settings": {
+          "image": {
+            "url": "https://example.com/wp-content/uploads/banner-image.jpg",
+            "id": 123
+          },
+          "title": "Summer Sale",
+          "subtitle": "Up to 50% Off",
+          "link": {
+            "url": "https://example.com/shop/sale",
+            "is_external": false
+          },
+          "button_text": "Shop Now",
+          "banner_style": "default",
+          "content_width": "100",
+          "text_alignment": "center"
+        },
+        "renderedContent": "<div class=\"wd-banner\"><img src=\"https://example.com/wp-content/uploads/banner-image.jpg\" alt=\"Summer Sale\"><div class=\"banner-content\"><h3>Summer Sale</h3><p>Up to 50% Off</p><a href=\"https://example.com/shop/sale\" class=\"btn\">Shop Now</a></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "section",
+        "description": "Should convert to section with background image and inner widgets for text and button"
+      }
+    },
+    {
+      "name": "WoodMart Info Box",
+      "widgetType": "wd_info_box",
+      "description": "Info box with icon, title, description, and link",
+      "element": {
+        "elType": "widget",
+        "widgetType": "wd_info_box",
+        "settings": {
+          "image": {
+            "value": {
+              "library": "fa-solid",
+              "value": "fas fa-shipping-fast"
+            }
+          },
+          "title": "Free Shipping",
+          "description": "Free shipping on orders over $50",
+          "link": {
+            "url": "https://example.com/shipping-info"
+          },
+          "style": "base",
+          "alignment": "center"
+        },
+        "renderedContent": "<div class=\"info-box\"><i class=\"fas fa-shipping-fast\"></i><h4>Free Shipping</h4><p>Free shipping on orders over $50</p></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "icon-box",
+        "description": "Should convert to Elementor icon-box widget"
+      }
+    },
+    {
+      "name": "WoodMart Products",
+      "widgetType": "wd_products",
+      "description": "Product grid widget",
+      "element": {
+        "elType": "widget",
+        "widgetType": "wd_products",
+        "settings": {
+          "post_type": "product",
+          "items_per_page": 8,
+          "columns": 4,
+          "orderby": "date",
+          "order": "DESC",
+          "product_style": "default"
+        },
+        "renderedContent": "<div class=\"wd-products-grid\"><div class=\"product\"><img src=\"https://example.com/product1.jpg\"><h3>Product 1</h3><span class=\"price\">$29.99</span></div><div class=\"product\"><img src=\"https://example.com/product2.jpg\"><h3>Product 2</h3><span class=\"price\">$39.99</span></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "html",
+        "description": "Should fallback to HTML widget (no direct Elementor equivalent)"
+      }
+    },
+    {
+      "name": "WoodMart Video",
+      "widgetType": "wd_video",
+      "description": "Video player widget",
+      "element": {
+        "elType": "widget",
+        "widgetType": "wd_video",
+        "settings": {
+          "video_type": "youtube",
+          "youtube_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "autoplay": "no",
+          "mute": "no"
+        },
+        "renderedContent": "<div class=\"wd-video\"><iframe src=\"https://www.youtube.com/embed/dQw4w9WgXcQ\" frameborder=\"0\" allowfullscreen></iframe></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "video",
+        "description": "Should convert to Elementor video widget"
+      }
+    },
+    {
+      "name": "WoodMart Image Gallery",
+      "widgetType": "wd_gallery",
+      "description": "Image gallery with lightbox",
+      "element": {
+        "elType": "widget",
+        "widgetType": "wd_gallery",
+        "settings": {
+          "images": [
+            {
+              "id": 101,
+              "url": "https://example.com/gallery1.jpg"
+            },
+            {
+              "id": 102,
+              "url": "https://example.com/gallery2.jpg"
+            },
+            {
+              "id": 103,
+              "url": "https://example.com/gallery3.jpg"
+            },
+            {
+              "id": 104,
+              "url": "https://example.com/gallery4.jpg"
+            }
+          ],
+          "columns": 3,
+          "spacing": "default",
+          "lightbox": "yes"
+        },
+        "renderedContent": "<div class=\"wd-gallery\"><div class=\"gallery-item\"><img src=\"https://example.com/gallery1.jpg\"></div><div class=\"gallery-item\"><img src=\"https://example.com/gallery2.jpg\"></div><div class=\"gallery-item\"><img src=\"https://example.com/gallery3.jpg\"></div><div class=\"gallery-item\"><img src=\"https://example.com/gallery4.jpg\"></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "image-gallery",
+        "description": "Should convert to Elementor image-gallery widget"
+      }
+    },
+    {
+      "name": "WoodMart Countdown",
+      "widgetType": "wd_countdown_timer",
+      "description": "Countdown timer for sales",
+      "element": {
+        "elType": "widget",
+        "widgetType": "wd_countdown_timer",
+        "settings": {
+          "date": "2025-12-31 23:59:59",
+          "timezone": "UTC",
+          "style": "standard",
+          "show_days": "yes",
+          "show_hours": "yes",
+          "show_minutes": "yes",
+          "show_seconds": "yes"
+        },
+        "renderedContent": "<div class=\"wd-countdown\" data-end-date=\"2025-12-31 23:59:59\"><div class=\"countdown-item\"><span class=\"countdown-number\">45</span><span class=\"countdown-label\">Days</span></div><div class=\"countdown-item\"><span class=\"countdown-number\">12</span><span class=\"countdown-label\">Hours</span></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "countdown",
+        "description": "Should convert to Elementor countdown widget"
+      }
+    },
+    {
+      "name": "WoodMart Pricing Table",
+      "widgetType": "wd_pricing_tables",
+      "description": "Pricing table widget",
+      "element": {
+        "elType": "widget",
+        "widgetType": "wd_pricing_tables",
+        "settings": {
+          "title": "Premium Plan",
+          "price": "49",
+          "currency": "$",
+          "period": "month",
+          "features": "Unlimited Products\n24/7 Support\nFree Updates\nPriority Support",
+          "button_text": "Get Started",
+          "button_link": {
+            "url": "https://example.com/pricing"
+          },
+          "featured": "no"
+        },
+        "renderedContent": "<div class=\"pricing-table\"><h3>Premium Plan</h3><div class=\"price\"><span class=\"currency\">$</span><span class=\"amount\">49</span><span class=\"period\">/month</span></div><ul class=\"features\"><li>Unlimited Products</li><li>24/7 Support</li><li>Free Updates</li><li>Priority Support</li></ul><a href=\"https://example.com/pricing\" class=\"btn\">Get Started</a></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "price-table",
+        "description": "Should convert to Elementor price-table widget"
+      }
+    },
+    {
+      "name": "WoodMart Social Icons",
+      "widgetType": "wd_social_icons",
+      "description": "Social media icons",
+      "element": {
+        "elType": "widget",
+        "widgetType": "wd_social_icons",
+        "settings": {
+          "icons": [
+            {
+              "social": "facebook",
+              "link": {
+                "url": "https://facebook.com/example"
+              }
+            },
+            {
+              "social": "twitter",
+              "link": {
+                "url": "https://twitter.com/example"
+              }
+            },
+            {
+              "social": "instagram",
+              "link": {
+                "url": "https://instagram.com/example"
+              }
+            }
+          ],
+          "style": "default",
+          "size": "medium"
+        },
+        "renderedContent": "<div class=\"social-icons\"><a href=\"https://facebook.com/example\" class=\"social-icon facebook\"><i class=\"fab fa-facebook\"></i></a><a href=\"https://twitter.com/example\" class=\"social-icon twitter\"><i class=\"fab fa-twitter\"></i></a><a href=\"https://instagram.com/example\" class=\"social-icon instagram\"><i class=\"fab fa-instagram\"></i></a></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "social-icons",
+        "description": "Should convert to Elementor social-icons widget"
+      }
+    }
+  ]
+}

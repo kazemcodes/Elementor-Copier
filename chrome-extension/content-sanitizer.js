@@ -376,6 +376,20 @@ class ContentSanitizer {
       sanitized.settings = {};
     }
 
+    // Preserve conversion metadata if present (for debugging and tracking)
+    if (elementData._conversionMeta && typeof elementData._conversionMeta === 'object') {
+      sanitized._conversionMeta = {
+        originalType: String(elementData._conversionMeta.originalType || ''),
+        converter: String(elementData._conversionMeta.converter || ''),
+        dataLoss: Boolean(elementData._conversionMeta.dataLoss),
+        warnings: Array.isArray(elementData._conversionMeta.warnings) 
+          ? elementData._conversionMeta.warnings.map(w => String(w))
+          : [],
+        source: String(elementData._conversionMeta.source || ''),
+        timestamp: String(elementData._conversionMeta.timestamp || '')
+      };
+    }
+
     // Recursively sanitize nested elements
     if (Array.isArray(elementData.elements)) {
       sanitized.elements = elementData.elements

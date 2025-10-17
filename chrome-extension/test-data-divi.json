@@ -1,0 +1,254 @@
+{
+  "theme": "Divi",
+  "description": "Real-world widget samples from Divi theme (optional test data)",
+  "note": "Divi uses a different builder system (et_pb_*), but may be copied to Elementor sites",
+  "widgets": [
+    {
+      "name": "Divi Video",
+      "widgetType": "et_pb_video",
+      "description": "Video module with YouTube/Vimeo support",
+      "element": {
+        "elType": "widget",
+        "widgetType": "et_pb_video",
+        "settings": {
+          "src": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+          "src_webm": "",
+          "play_icon_color": "#ffffff",
+          "show_image_overlay": "on",
+          "image_src": "https://example.com/video-thumbnail.jpg"
+        },
+        "renderedContent": "<div class=\"et_pb_video_box\"><div class=\"et_pb_video_overlay\"><img src=\"https://example.com/video-thumbnail.jpg\"></div><iframe src=\"https://www.youtube.com/embed/ScMzIvxBSi4\" frameborder=\"0\" allowfullscreen></iframe></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "video",
+        "description": "Should convert to Elementor video widget"
+      }
+    },
+    {
+      "name": "Divi Gallery",
+      "widgetType": "et_pb_gallery",
+      "description": "Image gallery module",
+      "element": {
+        "elType": "widget",
+        "widgetType": "et_pb_gallery",
+        "settings": {
+          "gallery_ids": "45,46,47,48,49,50",
+          "fullwidth": "off",
+          "posts_number": 6,
+          "show_title_and_caption": "on",
+          "show_pagination": "on",
+          "orientation": "landscape"
+        },
+        "renderedContent": "<div class=\"et_pb_gallery\"><div class=\"et_pb_gallery_item\"><img src=\"https://example.com/gallery-1.jpg\" alt=\"Image 1\"></div><div class=\"et_pb_gallery_item\"><img src=\"https://example.com/gallery-2.jpg\" alt=\"Image 2\"></div><div class=\"et_pb_gallery_item\"><img src=\"https://example.com/gallery-3.jpg\" alt=\"Image 3\"></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "image-gallery",
+        "description": "Should convert to Elementor image-gallery widget"
+      }
+    },
+    {
+      "name": "Divi Contact Form",
+      "widgetType": "et_pb_contact_form",
+      "description": "Contact form with custom fields",
+      "element": {
+        "elType": "widget",
+        "widgetType": "et_pb_contact_form",
+        "settings": {
+          "email": "contact@example.com",
+          "title": "Get In Touch",
+          "success_message": "Thanks for contacting us!",
+          "submit_button_text": "Send Message",
+          "custom_fields": [
+            {
+              "field_id": "name",
+              "field_title": "Name",
+              "field_type": "input",
+              "required_mark": "on"
+            },
+            {
+              "field_id": "email",
+              "field_title": "Email Address",
+              "field_type": "email",
+              "required_mark": "on"
+            },
+            {
+              "field_id": "message",
+              "field_title": "Message",
+              "field_type": "text",
+              "required_mark": "on"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"et_pb_contact_form\"><h3>Get In Touch</h3><form><p><input type=\"text\" name=\"name\" placeholder=\"Name\" required></p><p><input type=\"email\" name=\"email\" placeholder=\"Email Address\" required></p><p><textarea name=\"message\" placeholder=\"Message\" required></textarea></p><button type=\"submit\">Send Message</button></form></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "form",
+        "description": "Should convert to Elementor form widget"
+      }
+    },
+    {
+      "name": "Divi Slider",
+      "widgetType": "et_pb_slider",
+      "description": "Full-width slider module",
+      "element": {
+        "elType": "widget",
+        "widgetType": "et_pb_slider",
+        "settings": {
+          "show_arrows": "on",
+          "show_pagination": "on",
+          "auto": "on",
+          "auto_speed": 7000,
+          "slides": [
+            {
+              "heading": "Welcome to Our Website",
+              "button_text": "Learn More",
+              "button_link": "https://example.com/about",
+              "background_image": "https://example.com/slide-bg-1.jpg",
+              "background_color": "#2ea3f2"
+            },
+            {
+              "heading": "Discover Our Services",
+              "button_text": "View Services",
+              "button_link": "https://example.com/services",
+              "background_image": "https://example.com/slide-bg-2.jpg",
+              "background_color": "#2ea3f2"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"et_pb_slider\"><div class=\"et_pb_slide\" style=\"background-image: url(https://example.com/slide-bg-1.jpg);\"><div class=\"et_pb_slide_content\"><h2>Welcome to Our Website</h2><a href=\"https://example.com/about\" class=\"et_pb_button\">Learn More</a></div></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "slides",
+        "description": "Should convert to Elementor slides widget"
+      }
+    },
+    {
+      "name": "Divi Testimonial",
+      "widgetType": "et_pb_testimonial",
+      "description": "Single testimonial module",
+      "element": {
+        "elType": "widget",
+        "widgetType": "et_pb_testimonial",
+        "settings": {
+          "author": "Jane Doe",
+          "job_title": "CEO, Example Inc",
+          "company_name": "Example Inc",
+          "url": "https://example.com",
+          "portrait_url": "https://example.com/jane-portrait.jpg",
+          "quote_icon": "on",
+          "background_layout": "light"
+        },
+        "renderedContent": "<div class=\"et_pb_testimonial\"><div class=\"et_pb_testimonial_portrait\"><img src=\"https://example.com/jane-portrait.jpg\" alt=\"Jane Doe\"></div><div class=\"et_pb_testimonial_description\"><p>Working with this team has been an absolute pleasure. Their professionalism and expertise are unmatched.</p></div><div class=\"et_pb_testimonial_meta\"><strong>Jane Doe</strong><span>CEO, Example Inc</span></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "testimonial",
+        "description": "Should convert to Elementor testimonial widget"
+      }
+    },
+    {
+      "name": "Divi Pricing Table",
+      "widgetType": "et_pb_pricing_tables",
+      "description": "Pricing table module",
+      "element": {
+        "elType": "widget",
+        "widgetType": "et_pb_pricing_tables",
+        "settings": {
+          "featured_table_background_color": "#2ea3f2",
+          "show_bullet": "on",
+          "tables": [
+            {
+              "title": "Starter",
+              "subtitle": "Perfect for individuals",
+              "currency": "$",
+              "price": "19",
+              "per": "month",
+              "button_text": "Sign Up",
+              "button_url": "https://example.com/signup/starter",
+              "bullet_items": [
+                "5 Projects",
+                "10GB Storage",
+                "Email Support"
+              ]
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"et_pb_pricing_table\"><div class=\"et_pb_pricing_heading\"><h2>Starter</h2><span class=\"et_pb_best_value\">Perfect for individuals</span></div><div class=\"et_pb_pricing_content_top\"><span class=\"et_pb_dollar_sign\">$</span><span class=\"et_pb_sum\">19</span><span class=\"et_pb_frequency\">/month</span></div><ul class=\"et_pb_pricing\"><li>5 Projects</li><li>10GB Storage</li><li>Email Support</li></ul><a href=\"https://example.com/signup/starter\" class=\"et_pb_button\">Sign Up</a></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "price-table",
+        "description": "Should convert to Elementor price-table widget"
+      }
+    },
+    {
+      "name": "Divi Countdown Timer",
+      "widgetType": "et_pb_countdown_timer",
+      "description": "Countdown timer module",
+      "element": {
+        "elType": "widget",
+        "widgetType": "et_pb_countdown_timer",
+        "settings": {
+          "date_time": "2025-12-25 00:00",
+          "use_background_color": "on",
+          "background_color": "#2ea3f2",
+          "title": "Special Offer Ends In:"
+        },
+        "renderedContent": "<div class=\"et_pb_countdown_timer\" data-end-date=\"2025-12-25 00:00\"><h3>Special Offer Ends In:</h3><div class=\"et_pb_countdown_timer_container\"><div class=\"section\"><span class=\"value\">45</span><span class=\"label\">Days</span></div><div class=\"section\"><span class=\"value\">12</span><span class=\"label\">Hours</span></div><div class=\"section\"><span class=\"value\">30</span><span class=\"label\">Minutes</span></div><div class=\"section\"><span class=\"value\">15</span><span class=\"label\">Seconds</span></div></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "countdown",
+        "description": "Should convert to Elementor countdown widget"
+      }
+    },
+    {
+      "name": "Divi Social Media Follow",
+      "widgetType": "et_pb_social_media_follow",
+      "description": "Social media icons module",
+      "element": {
+        "elType": "widget",
+        "widgetType": "et_pb_social_media_follow",
+        "settings": {
+          "icon_color": "#ffffff",
+          "networks": [
+            {
+              "social_network": "facebook",
+              "url": "https://facebook.com/example"
+            },
+            {
+              "social_network": "twitter",
+              "url": "https://twitter.com/example"
+            },
+            {
+              "social_network": "instagram",
+              "url": "https://instagram.com/example"
+            },
+            {
+              "social_network": "linkedin",
+              "url": "https://linkedin.com/company/example"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"et_pb_social_media_follow\"><ul><li class=\"et_pb_social_icon facebook\"><a href=\"https://facebook.com/example\"><i class=\"fab fa-facebook\"></i></a></li><li class=\"et_pb_social_icon twitter\"><a href=\"https://twitter.com/example\"><i class=\"fab fa-twitter\"></i></a></li><li class=\"et_pb_social_icon instagram\"><a href=\"https://instagram.com/example\"><i class=\"fab fa-instagram\"></i></a></li><li class=\"et_pb_social_icon linkedin\"><a href=\"https://linkedin.com/company/example\"><i class=\"fab fa-linkedin\"></i></a></li></ul></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "social-icons",
+        "description": "Should convert to Elementor social-icons widget"
+      }
+    }
+  ]
+}

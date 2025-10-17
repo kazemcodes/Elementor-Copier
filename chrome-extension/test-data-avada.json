@@ -1,0 +1,490 @@
+{
+  "theme": "Avada",
+  "description": "Real-world widget samples from Avada theme (Fusion Builder)",
+  "note": "Avada uses Fusion Builder with fusion_* widget types",
+  "widgets": [
+    {
+      "name": "Fusion Slider",
+      "widgetType": "fusion_slider",
+      "description": "Full-featured slider with multiple slides and transitions",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_slider",
+        "settings": {
+          "slider_type": "flex",
+          "slideshow_speed": 7000,
+          "animation": "fade",
+          "autoplay": "yes",
+          "loop": "yes",
+          "nav_arrows": "yes",
+          "slides": [
+            {
+              "type": "image",
+              "image": "https://example.com/slide-1.jpg",
+              "heading": "Welcome to Our Business",
+              "caption": "Innovative solutions for modern challenges",
+              "link": "https://example.com/about",
+              "link_text": "Learn More"
+            },
+            {
+              "type": "image",
+              "image": "https://example.com/slide-2.jpg",
+              "heading": "Our Services",
+              "caption": "Comprehensive solutions tailored to your needs",
+              "link": "https://example.com/services",
+              "link_text": "View Services"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"fusion-slider-container\"><div class=\"fusion-slider\"><div class=\"fusion-slide\" style=\"background-image: url(https://example.com/slide-1.jpg);\"><div class=\"slide-content\"><h2>Welcome to Our Business</h2><p>Innovative solutions for modern challenges</p><a href=\"https://example.com/about\" class=\"fusion-button\">Learn More</a></div></div></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "slides",
+        "description": "Should convert to Elementor slides widget with individual slide elements"
+      }
+    },
+    {
+      "name": "Fusion Pricing Table",
+      "widgetType": "fusion_pricing_table",
+      "description": "Pricing table with features and call-to-action",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_pricing_table",
+        "settings": {
+          "type": "1",
+          "title": "Professional",
+          "price": "79",
+          "currency": "$",
+          "time": "per month",
+          "features": [
+            "50 Projects",
+            "100GB Storage",
+            "Priority Support",
+            "Advanced Analytics",
+            "Custom Integrations"
+          ],
+          "button_text": "Choose Plan",
+          "button_link": "https://example.com/signup/professional"
+        },
+        "renderedContent": "<div class=\"fusion-pricing-table\"><div class=\"pricing-header\"><h3 class=\"title\">Professional</h3></div><div class=\"pricing-price\"><span class=\"currency\">$</span><span class=\"price\">79</span><span class=\"time\">per month</span></div><ul class=\"pricing-features\"><li>50 Projects</li><li>100GB Storage</li><li>Priority Support</li><li>Advanced Analytics</li><li>Custom Integrations</li></ul><div class=\"pricing-footer\"><a href=\"https://example.com/signup/professional\" class=\"fusion-button\">Choose Plan</a></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "price-table",
+        "description": "Should convert to Elementor price-table widget"
+      }
+    },
+    {
+      "name": "Fusion Testimonials",
+      "widgetType": "fusion_testimonials",
+      "description": "Testimonial carousel with multiple reviews",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_testimonials",
+        "settings": {
+          "design": "classic",
+          "backgroundcolor": "#f9f9f9",
+          "testimonials": [
+            {
+              "name": "John Smith",
+              "avatar": "https://example.com/avatar-john.jpg",
+              "company": "Tech Solutions Inc",
+              "link": "https://techsolutions.example.com",
+              "content": "Outstanding service and exceptional results. The team went above and beyond our expectations."
+            },
+            {
+              "name": "Sarah Johnson",
+              "avatar": "https://example.com/avatar-sarah.jpg",
+              "company": "Digital Marketing Pro",
+              "link": "https://digitalmarketing.example.com",
+              "content": "Professional, reliable, and innovative. Highly recommend their services to anyone looking for quality work."
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"fusion-testimonials\"><div class=\"testimonial-item\"><div class=\"testimonial-content\"><p>Outstanding service and exceptional results. The team went above and beyond our expectations.</p></div><div class=\"testimonial-author\"><img src=\"https://example.com/avatar-john.jpg\" alt=\"John Smith\"><div class=\"author-info\"><strong>John Smith</strong><span>Tech Solutions Inc</span></div></div></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "testimonial",
+        "description": "Should convert to Elementor testimonial widget (first testimonial) or carousel"
+      }
+    },
+    {
+      "name": "Fusion FontAwesome Icon",
+      "widgetType": "fusion_fontawesome",
+      "description": "Icon with optional text content",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_fontawesome",
+        "settings": {
+          "icon": "fa-rocket fas",
+          "size": "large",
+          "circle": "yes",
+          "iconcolor": "#ffffff",
+          "circlecolor": "#2ea3f2",
+          "link": "https://example.com/features",
+          "alignment": "center"
+        },
+        "renderedContent": "<div class=\"fusion-fontawesome-icon\" style=\"text-align: center;\"><a href=\"https://example.com/features\"><span class=\"icon-wrapper circle\" style=\"background-color: #2ea3f2;\"><i class=\"fa-rocket fas\" style=\"color: #ffffff; font-size: 48px;\"></i></span></a></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "icon",
+        "description": "Should convert to Elementor icon widget"
+      }
+    },
+    {
+      "name": "Fusion Progress Bar",
+      "widgetType": "fusion_progress",
+      "description": "Animated progress bar with percentage",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_progress",
+        "settings": {
+          "percentage": "85",
+          "unit": "%",
+          "filledcolor": "#2ea3f2",
+          "unfilledcolor": "#f2f3f5",
+          "textcolor": "#ffffff",
+          "show_percentage": "yes",
+          "height": "37px"
+        },
+        "renderedContent": "<div class=\"fusion-progress-bar\"><div class=\"progress\" style=\"height: 37px; background-color: #f2f3f5;\"><div class=\"progress-bar\" role=\"progressbar\" aria-valuenow=\"85\" aria-valuemin=\"0\" aria-valuemax=\"100\" style=\"width: 85%; background-color: #2ea3f2;\"><span class=\"progress-title\" style=\"color: #ffffff;\">85%</span></div></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "progress",
+        "description": "Should convert to Elementor progress widget"
+      }
+    },
+    {
+      "name": "Fusion Counter Box",
+      "widgetType": "fusion_counter_box",
+      "description": "Animated counter with icon and text",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_counter_box",
+        "settings": {
+          "value": "2500",
+          "delimiter": ",",
+          "unit": "+",
+          "unit_pos": "suffix",
+          "icon": "fa-users fas",
+          "icon_size": "50",
+          "icon_color": "#2ea3f2",
+          "text": "Happy Clients",
+          "value_color": "#2ea3f2"
+        },
+        "renderedContent": "<div class=\"fusion-counter-box\"><div class=\"counter-box-icon\"><i class=\"fa-users fas\" style=\"font-size: 50px; color: #2ea3f2;\"></i></div><div class=\"counter-box-content\"><div class=\"display-counter\" data-value=\"2500\" data-delimiter=\",\" style=\"color: #2ea3f2;\"><span class=\"counter-value\">2500</span><span class=\"counter-unit\">+</span></div><div class=\"counter-box-text\">Happy Clients</div></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "counter",
+        "description": "Should convert to Elementor counter widget"
+      }
+    },
+    {
+      "name": "Fusion Accordion",
+      "widgetType": "fusion_accordion",
+      "description": "Collapsible accordion panels",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_accordion",
+        "settings": {
+          "type": "accordions",
+          "boxed_mode": "yes",
+          "items": [
+            {
+              "title": "What services do you offer?",
+              "content": "<p>We offer a comprehensive range of services including web development, mobile app development, UI/UX design, and digital marketing solutions.</p>",
+              "open": "yes"
+            },
+            {
+              "title": "How long does a typical project take?",
+              "content": "<p>Project timelines vary depending on scope and complexity. Most projects are completed within 4-12 weeks from kickoff to launch.</p>",
+              "open": "no"
+            },
+            {
+              "title": "Do you provide ongoing support?",
+              "content": "<p>Yes, we offer various support and maintenance packages to ensure your project continues to run smoothly after launch.</p>",
+              "open": "no"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"fusion-accordion\"><div class=\"fusion-panel panel-default\"><div class=\"panel-heading\"><h4 class=\"panel-title\"><a data-toggle=\"collapse\" class=\"active\">What services do you offer?</a></h4></div><div class=\"panel-collapse collapse in\"><div class=\"panel-body\"><p>We offer a comprehensive range of services including web development, mobile app development, UI/UX design, and digital marketing solutions.</p></div></div></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "accordion",
+        "description": "Should convert to Elementor accordion widget"
+      }
+    },
+    {
+      "name": "Fusion Tabs",
+      "widgetType": "fusion_tabs",
+      "description": "Tabbed content sections",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_tabs",
+        "settings": {
+          "design": "classic",
+          "layout": "horizontal",
+          "tabs": [
+            {
+              "title": "Overview",
+              "icon": "fa-home fas",
+              "content": "<h3>Company Overview</h3><p>We are a leading provider of innovative digital solutions, helping businesses transform their online presence and achieve their goals.</p>"
+            },
+            {
+              "title": "Services",
+              "icon": "fa-cogs fas",
+              "content": "<h3>Our Services</h3><ul><li>Web Development</li><li>Mobile Apps</li><li>UI/UX Design</li><li>Digital Marketing</li></ul>"
+            },
+            {
+              "title": "Contact",
+              "icon": "fa-envelope fas",
+              "content": "<h3>Get In Touch</h3><p>Ready to start your project? Contact us today for a free consultation.</p>"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"fusion-tabs\"><ul class=\"nav nav-tabs\"><li class=\"active\"><a data-toggle=\"tab\"><i class=\"fa-home fas\"></i>Overview</a></li><li><a data-toggle=\"tab\"><i class=\"fa-cogs fas\"></i>Services</a></li></ul><div class=\"tab-content\"><div class=\"tab-pane active\"><h3>Company Overview</h3><p>We are a leading provider of innovative digital solutions.</p></div></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "tabs",
+        "description": "Should convert to Elementor tabs widget"
+      }
+    },
+    {
+      "name": "Fusion Google Map",
+      "widgetType": "fusion_map",
+      "description": "Embedded Google Map with markers",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_map",
+        "settings": {
+          "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+          "type": "roadmap",
+          "zoom": 14,
+          "scrollwheel": "yes",
+          "markers": [
+            {
+              "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+              "latitude": "37.4224764",
+              "longitude": "-122.0842499"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"fusion-google-map\" style=\"height: 400px;\"><iframe src=\"https://maps.google.com/maps?q=1600+Amphitheatre+Parkway,+Mountain+View,+CA+94043&amp;z=14&amp;output=embed\" width=\"100%\" height=\"400\" frameborder=\"0\"></iframe></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "google_maps",
+        "description": "Should convert to Elementor google_maps widget"
+      }
+    },
+    {
+      "name": "Fusion YouTube",
+      "widgetType": "fusion_youtube",
+      "description": "YouTube video embed with custom settings",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_youtube",
+        "settings": {
+          "id": "dQw4w9WgXcQ",
+          "alignment": "center",
+          "width": "100%",
+          "height": "450",
+          "autoplay": "no"
+        },
+        "renderedContent": "<div class=\"fusion-video\" style=\"text-align: center;\"><iframe width=\"100%\" height=\"450\" src=\"https://www.youtube.com/embed/dQw4w9WgXcQ\" frameborder=\"0\" allowfullscreen></iframe></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "video",
+        "description": "Should convert to Elementor video widget with YouTube source"
+      }
+    },
+    {
+      "name": "Fusion Image Gallery",
+      "widgetType": "fusion_gallery",
+      "description": "Image gallery with lightbox and hover effects",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_gallery",
+        "settings": {
+          "layout": "grid",
+          "columns": 4,
+          "lightbox": "yes",
+          "images": [
+            {
+              "id": 201,
+              "url": "https://example.com/gallery/image-1.jpg",
+              "caption": "Project Alpha"
+            },
+            {
+              "id": 202,
+              "url": "https://example.com/gallery/image-2.jpg",
+              "caption": "Project Beta"
+            },
+            {
+              "id": 203,
+              "url": "https://example.com/gallery/image-3.jpg",
+              "caption": "Project Gamma"
+            },
+            {
+              "id": 204,
+              "url": "https://example.com/gallery/image-4.jpg",
+              "caption": "Project Delta"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"fusion-gallery\"><div class=\"fusion-gallery-item\"><a href=\"https://example.com/gallery/image-1.jpg\" data-rel=\"lightbox\"><img src=\"https://example.com/gallery/image-1.jpg\" alt=\"Project Alpha\"></a></div><div class=\"fusion-gallery-item\"><a href=\"https://example.com/gallery/image-2.jpg\" data-rel=\"lightbox\"><img src=\"https://example.com/gallery/image-2.jpg\" alt=\"Project Beta\"></a></div></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "image-gallery",
+        "description": "Should convert to Elementor image-gallery widget"
+      }
+    },
+    {
+      "name": "Fusion Icon List",
+      "widgetType": "fusion_checklist",
+      "description": "List with icons and text items",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_checklist",
+        "settings": {
+          "icon": "fa-check fas",
+          "iconcolor": "#2ea3f2",
+          "circle": "yes",
+          "items": [
+            {
+              "content": "24/7 Customer Support",
+              "icon": "fa-check fas"
+            },
+            {
+              "content": "Free Lifetime Updates",
+              "icon": "fa-check fas"
+            },
+            {
+              "content": "Money Back Guarantee",
+              "icon": "fa-check fas"
+            },
+            {
+              "content": "Premium Quality Code",
+              "icon": "fa-check fas"
+            }
+          ]
+        },
+        "renderedContent": "<ul class=\"fusion-checklist\"><li><span class=\"icon-wrapper\"><i class=\"fa-check fas\" style=\"color: #2ea3f2;\"></i></span><span class=\"list-item-content\">24/7 Customer Support</span></li><li><span class=\"icon-wrapper\"><i class=\"fa-check fas\" style=\"color: #2ea3f2;\"></i></span><span class=\"list-item-content\">Free Lifetime Updates</span></li></ul>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "icon-list",
+        "description": "Should convert to Elementor icon-list widget"
+      }
+    },
+    {
+      "name": "Fusion Social Links",
+      "widgetType": "fusion_social_links",
+      "description": "Social media icon links",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_social_links",
+        "settings": {
+          "icons_boxed": "yes",
+          "color_type": "brand",
+          "links": [
+            {
+              "social_network": "facebook",
+              "link": "https://facebook.com/example"
+            },
+            {
+              "social_network": "twitter",
+              "link": "https://twitter.com/example"
+            },
+            {
+              "social_network": "instagram",
+              "link": "https://instagram.com/example"
+            },
+            {
+              "social_network": "linkedin",
+              "link": "https://linkedin.com/company/example"
+            }
+          ]
+        },
+        "renderedContent": "<div class=\"fusion-social-links\"><a href=\"https://facebook.com/example\" target=\"_blank\" class=\"fusion-social-network-icon facebook\"><i class=\"fab fa-facebook\"></i></a><a href=\"https://twitter.com/example\" target=\"_blank\" class=\"fusion-social-network-icon twitter\"><i class=\"fab fa-twitter\"></i></a></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "social-icons",
+        "description": "Should convert to Elementor social-icons widget"
+      }
+    },
+    {
+      "name": "Fusion Audio",
+      "widgetType": "fusion_audio",
+      "description": "Audio player widget",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_audio",
+        "settings": {
+          "src": "https://example.com/audio/podcast-episode-1.mp3",
+          "loop": "off",
+          "autoplay": "off",
+          "preload": "none"
+        },
+        "renderedContent": "<div class=\"fusion-audio\"><audio controls preload=\"none\" style=\"width: 100%;\"><source src=\"https://example.com/audio/podcast-episode-1.mp3\" type=\"audio/mpeg\">Your browser does not support the audio element.</audio></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "audio",
+        "description": "Should convert to Elementor audio widget"
+      }
+    },
+    {
+      "name": "Fusion Countdown",
+      "widgetType": "fusion_countdown",
+      "description": "Countdown timer with custom styling",
+      "element": {
+        "elType": "widget",
+        "widgetType": "fusion_countdown",
+        "settings": {
+          "countdown_end": "2025-12-31 23:59:59",
+          "timezone": "America/New_York",
+          "show_weeks": "no",
+          "show_days": "yes",
+          "show_hours": "yes",
+          "show_minutes": "yes",
+          "show_seconds": "yes",
+          "heading_text": "Limited Time Offer Ends In:",
+          "link_url": "https://example.com/special-offer",
+          "link_text": "Shop Now"
+        },
+        "renderedContent": "<div class=\"fusion-countdown-container\"><h3>Limited Time Offer Ends In:</h3><div class=\"fusion-countdown\" data-countdown=\"2025-12-31 23:59:59\"><div class=\"countdown-counter\"><span class=\"countdown-amount\">45</span><span class=\"countdown-period\">Days</span></div><div class=\"countdown-counter\"><span class=\"countdown-amount\">12</span><span class=\"countdown-period\">Hours</span></div></div><a href=\"https://example.com/special-offer\" class=\"fusion-button\">Shop Now</a></div>",
+        "elements": [],
+        "isInner": false
+      },
+      "expectedConversion": {
+        "widgetType": "countdown",
+        "description": "Should convert to Elementor countdown widget"
+      }
+    }
+  ]
+}
