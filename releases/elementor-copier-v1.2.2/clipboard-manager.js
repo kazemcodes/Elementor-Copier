@@ -20,6 +20,33 @@ const EXTENSION_VERSION = '1.0.0';
 class ClipboardManager {
   constructor() {
     this.clipboardAPI = navigator.clipboard;
+    this.initialized = false;
+  }
+
+  /**
+   * Initialize the clipboard manager
+   * @returns {Promise<boolean>} Success status
+   */
+  async initialize() {
+    if (this.initialized) {
+      console.log('[ClipboardManager] Already initialized');
+      return true;
+    }
+
+    try {
+      // Check if Clipboard API is available
+      if (!this.clipboardAPI) {
+        console.warn('[ClipboardManager] Clipboard API not available');
+        return false;
+      }
+
+      this.initialized = true;
+      console.log('[ClipboardManager] Initialized successfully');
+      return true;
+    } catch (error) {
+      console.error('[ClipboardManager] Initialization failed:', error);
+      return false;
+    }
   }
 
   /**

@@ -20,26 +20,48 @@ class ElementorEditorDetector {
    * @returns {boolean} True if Elementor editor is detected
    */
   isElementorEditor() {
-    // Check for window.elementor object (main editor API)
-    const hasElementor = typeof window.elementor !== 'undefined' && window.elementor !== null;
-    
-    // Check for window.elementorFrontend object (frontend rendering)
-    const hasElementorFrontend = typeof window.elementorFrontend !== 'undefined' && window.elementorFrontend !== null;
-    
-    // Check if we're in the main editor page (URL contains action=elementor)
-    const isMainEditorPage = window.location.href.includes('action=elementor');
-    
-    // Check if we're in the preview iframe (URL contains elementor-preview)
-    const isPreviewFrame = window.location.href.includes('elementor-preview');
-    
-    // Verify we're in edit mode by checking for config
-    const hasConfig = hasElementor && window.elementor.config;
-    
-    // We're in editor if:
-    // 1. Main editor page with elementor object
-    // 2. Preview iframe with elementor object and config
-    // 3. Preview iframe with elementorFrontend
-    return isMainEditorPage || (hasElementor && hasConfig) || (isPreviewFrame && hasElementorFrontend);
+    try {
+      // Check for window.elementor object (main editor API)
+      const hasElementor = typeof window.elementor !== 'undefined' && window.elementor !== null;
+      
+      // Check for window.elementorFrontend object (frontend rendering)
+      const hasElementorFrontend = typeof window.elementorFrontend !== 'undefined' && window.elementorFrontend !== null;
+      
+      // Check if we're in the main editor page (URL contains action=elementor)
+      const isMainEditorPage = window.location.href.includes('action=elementor');
+      
+      // Check if we're in the preview iframe (URL contains elementor-preview)
+      const isPreviewFrame = window.location.href.includes('elementor-preview');
+      
+      // Check for Elementor data attributes on the page
+      const hasElementorElements = document.querySelector('[data-elementor-type]') !== null ||
+                                   document.querySelector('[data-element_type]') !== null;
+      
+      // Verify we're in edit mode by checking for config
+      const hasConfig = hasElementor && window.elementor.config;
+      
+      // We're in editor if:
+      // 1. Main editor page with elementor object
+      // 2. Preview iframe with elementor object and config
+      // 3. Preview iframe with elementorFrontend
+      // 4. Page has Elementor elements (for frontend pages)
+      const isEditor = isMainEditorPage || (hasElementor && hasConfig) || (isPreviewFrame && hasElementorFrontend);
+      
+      console.log('[ElementorEditorDetector] Detection check:', {
+        hasElementor,
+        hasElementorFrontend,
+        isMainEditorPage,
+        isPreviewFrame,
+        hasElementorElements,
+        hasConfig,
+        isEditor
+      });
+      
+      return isEditor;
+    } catch (error) {
+      console.error('[ElementorEditorDetector] Error in isElementorEditor:', error);
+      return false;
+    }
   }
 
   /**

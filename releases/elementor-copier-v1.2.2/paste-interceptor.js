@@ -946,6 +946,18 @@ if (typeof window !== 'undefined' && window.ElementorEditorDetector) {
       
       // Check if we're in Elementor editor
       const detector = new window.ElementorEditorDetector();
+      
+      // Wait for Elementor to be ready (with timeout)
+      try {
+        await Promise.race([
+          detector.waitForElementorReady(),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Elementor detection timeout')), 5000))
+        ]);
+        console.log('[Paste Interceptor] Elementor is ready');
+      } catch (timeoutError) {
+        console.warn('[Paste Interceptor] Elementor detection timed out, checking anyway...');
+      }
+      
       const isEditor = detector.isElementorEditor();
       
       if (!isEditor) {
@@ -970,8 +982,10 @@ if (typeof window !== 'undefined' && window.ElementorEditorDetector) {
         return;
       }
       
-      // Initialize clipboard manager
-      await clipboardManager.initialize();
+      // Initialize clipboard manager (if it has initialize method)
+      if (clipboardManager.initialize) {
+        await clipboardManager.initialize();
+      }
       
       // Initialize editor injector
       await editorInjector.initialize();
